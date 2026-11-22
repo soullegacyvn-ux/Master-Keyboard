@@ -2,7 +2,7 @@
 
 Master Keyboard redesigns Steam’s on-screen keyboard for **Bazzite and SteamOS Gaming Mode**. The Decky Loader plugin adds function keys, text editing shortcuts, controller feedback and customizable keyboard themes for handheld play.
 
-[**Download v1.0.0 for Decky Loader**](https://github.com/soullegacyvn-ux/Master-Keyboard/releases/tag/v1.0.0)
+[**Download the latest release for Decky Loader**](https://github.com/soullegacyvn-ux/Master-Keyboard/releases/latest)
 
 ![Master Keyboard poster showing cropped keycaps from Jade Enamel, Wukong, RTC-86, RTR-85 and Cyber Alloy](master-keyboard.png)
 
@@ -24,19 +24,28 @@ If Decky is already installed, skip to the next section.
 - **Bazzite** — Switch to Desktop Mode, open a terminal, and run `ujust setup-decky`. Follow the installer and return to Gaming Mode. [Bazzite Decky setup guide](https://docs.bazzite.gg/Handheld_and_HTPC_edition/Handheld_Wiki/)
 - **SteamOS** — Switch to Desktop Mode and download the official Decky installer. Move `decky_installer.desktop` to your desktop, open it, and choose **Latest Release** when prompted. Then select **Return to Gaming Mode**. [Decky Loader installation guide](https://github.com/SteamDeckHomebrew/decky-loader#-installation)
 
-### 2. Import the Master Keyboard ZIP
+### 2. Install Master Keyboard
 
-1. In Desktop Mode, download [**Master-Keyboard-1.0.0.zip**](https://github.com/soullegacyvn-ux/Master-Keyboard/releases/download/v1.0.0/Master-Keyboard-1.0.0.zip) to **Downloads** and leave it zipped.
+#### From Decky's Custom Store
+
+1. In Gaming Mode, open the Quick Access Menu (**…**) and select the **Decky** plug icon.
+2. Open **Settings → General → Store Channel** and select **Custom**. Enter `https://master-keyboard-decky-store.soullegacyvn.workers.dev/plugins` as the Store URL.
+3. Open Decky's Store and install **Master Keyboard**. Decky checks this catalog for updates while the Custom channel is selected.
+
+#### From a ZIP
+
+1. In Desktop Mode, download the Master Keyboard install ZIP from [GitHub Releases](https://github.com/soullegacyvn-ux/Master-Keyboard/releases/latest) to **Downloads** and leave it zipped.
 2. Return to Gaming Mode. Open the Quick Access Menu (**…**) and select the **Decky** plug icon.
 3. Select the **Settings** gear. Under **General**, turn on **Developer mode**.
 4. Open **Developer**, choose **Install Plugin from ZIP File**, select the downloaded ZIP, and confirm the installation.
-5. Return to the Decky menu, open **Master Keyboard**, turn on **Enabled**, and select one of the six playable themes. Open Steam’s on-screen keyboard to try it.
+
+After installation, open **Master Keyboard** in Decky, turn on **Enabled**, and select one of the six Free themes. Open Steam’s on-screen keyboard to try it.
 
 If you use another Steam keyboard theme in CSS Loader, disable it before enabling Master Keyboard.
 
 ## Free and Premium themes
 
-The Free release includes **six playable themes** and **14 Premium previews**. When Premium launches, open **Master Keyboard** in Decky to view the one-time unlock price and pay with PayPal. **Restore purchase** lets you recover access through your receipt email.
+The plugin includes **six Free themes** and previews of **14 Premium themes**. Open **Master Keyboard** in Decky to view the one-time price and pay with PayPal. Premium unlocks automatically after payment confirmation and works offline after activation. Use **Restore purchase** and your receipt email to recover access or transfer activation to a new installation.
 
 ## Feedback
 
