@@ -36,7 +36,7 @@ If you use another Steam keyboard theme in CSS Loader, disable it before enablin
 
 ## Free and Premium themes
 
-The first Free release includes **six playable themes** and **14 locked theme previews**. PayPal checkout and purchase recovery will open with the Premium launch. The planned one-time launch price is **$4.99 USD**, with an intended regular price of **$9.99 USD** after launch.
+The Free release includes **six playable themes** and **14 Premium previews**. When Premium launches, open **Master Keyboard** in Decky to view the one-time unlock price and pay with PayPal. **Restore purchase** lets you recover access through your receipt email.
 
 ## Feedback
 
