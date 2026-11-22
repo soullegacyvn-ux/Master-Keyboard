@@ -43,9 +43,9 @@ After installation, open **Master Keyboard** in Decky, turn on **Enabled**, and 
 
 If you use another Steam keyboard theme in CSS Loader, disable it before enabling Master Keyboard.
 
-## Free and Premium themes
+## Themes
 
-The plugin includes **six Free themes** and previews of **14 Premium themes**. Open **Master Keyboard** in Decky to view the one-time price. Select **Checkout with PayPal** to show a QR code, scan it with your phone, and complete payment on PayPal. The handheld stays in Gaming Mode and unlocks Premium automatically. Activated themes work offline. Use **Restore purchase** and your receipt email to recover access or transfer activation to a new installation.
+Master Keyboard includes six ready-to-use themes and previews of fourteen additional styles.
 
 ## Feedback
 
