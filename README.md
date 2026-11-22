@@ -41,6 +41,12 @@ If Decky is already installed, skip to the next section.
 
 After installation, open **Master Keyboard** in Decky, turn on **Enabled**, and select one of the six Free themes. Open Steam’s on-screen keyboard to try it.
 
+### Update Master Keyboard
+
+On **v1.2.0 or later**, open **Decky → Master Keyboard → Check for updates**. When a release is available, choose **Install update** and confirm in Decky.
+
+For versions before v1.2.0, install the latest ZIP over your current copy or update through the Master Keyboard Custom Store above. Your saved settings carry over.
+
 If you use another Steam keyboard theme in CSS Loader, disable it before enabling Master Keyboard.
 
 ## Themes
