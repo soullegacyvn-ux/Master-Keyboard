@@ -1,0 +1,15 @@
+{
+  "name": "Master Keyboard",
+  "author": "Vincent",
+  "flags": [],
+  "api_version": 1,
+  "publish": {
+    "tags": [
+      "keyboard",
+      "accessibility",
+      "customization"
+    ],
+    "description": "On-screen keyboard for Bazzite and SteamOS Gaming Mode, with an Fn layer, text editing shortcuts, and custom keycap themes.",
+    "image": "https://raw.githubusercontent.com/soullegacyvn-ux/Master-Keyboard/main/master-keyboard.png"
+  }
+}
