@@ -45,7 +45,7 @@ If you use another Steam keyboard theme in CSS Loader, disable it before enablin
 
 ## Free and Premium themes
 
-The plugin includes **six Free themes** and previews of **14 Premium themes**. Open **Master Keyboard** in Decky to view the one-time price and pay with PayPal. Premium unlocks automatically after payment confirmation and works offline after activation. Use **Restore purchase** and your receipt email to recover access or transfer activation to a new installation.
+The plugin includes **six Free themes** and previews of **14 Premium themes**. Open **Master Keyboard** in Decky to view the one-time price. Select **Checkout with PayPal** to show a QR code, scan it with your phone, and complete payment on PayPal. The handheld stays in Gaming Mode and unlocks Premium automatically. Activated themes work offline. Use **Restore purchase** and your receipt email to recover access or transfer activation to a new installation.
 
 ## Feedback
 
