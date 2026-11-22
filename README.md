@@ -2,7 +2,7 @@
 
 Master Keyboard redesigns Steam’s on-screen keyboard for **Bazzite and SteamOS Gaming Mode**. The Decky Loader plugin adds function keys, text editing shortcuts, controller feedback and customizable keyboard themes for handheld play.
 
-[**Download v0.3.0-beta.1 for Decky Loader**](https://github.com/soullegacyvn-ux/Master-Keyboard/releases/tag/v0.3.0-beta.1)
+[**Download v1.0.0 for Decky Loader**](https://github.com/soullegacyvn-ux/Master-Keyboard/releases/tag/v1.0.0)
 
 ![Master Keyboard poster showing cropped keycaps from Jade Enamel, Wukong, RTC-86, RTR-85 and Cyber Alloy](master-keyboard.png)
 
@@ -26,7 +26,7 @@ If Decky is already installed, skip to the next section.
 
 ### 2. Import the Master Keyboard ZIP
 
-1. In Desktop Mode, download [**Master-Keyboard-0.3.0-beta.1.zip**](https://github.com/soullegacyvn-ux/Master-Keyboard/releases/download/v0.3.0-beta.1/Master-Keyboard-0.3.0-beta.1.zip) to **Downloads** and leave it zipped.
+1. In Desktop Mode, download [**Master-Keyboard-1.0.0.zip**](https://github.com/soullegacyvn-ux/Master-Keyboard/releases/download/v1.0.0/Master-Keyboard-1.0.0.zip) to **Downloads** and leave it zipped.
 2. Return to Gaming Mode. Open the Quick Access Menu (**…**) and select the **Decky** plug icon.
 3. Select the **Settings** gear. Under **General**, turn on **Developer mode**.
 4. Open **Developer**, choose **Install Plugin from ZIP File**, select the downloaded ZIP, and confirm the installation.
@@ -36,7 +36,7 @@ If you use another Steam keyboard theme in CSS Loader, disable it before enablin
 
 ## Free and Premium themes
 
-The public beta includes **six playable themes** and **14 locked theme previews**. PayPal checkout and purchase recovery will open with the Premium launch. The planned one-time launch price is **$4.99 USD**, with an intended regular price of **$9.99 USD** after launch.
+The first Free release includes **six playable themes** and **14 locked theme previews**. PayPal checkout and purchase recovery will open with the Premium launch. The planned one-time launch price is **$4.99 USD**, with an intended regular price of **$9.99 USD** after launch.
 
 ## Feedback
 
