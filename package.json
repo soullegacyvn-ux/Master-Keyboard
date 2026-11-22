@@ -1,0 +1,7 @@
+{
+  "name": "masterkeyboard",
+  "version": "1.1.1",
+  "author": "Vincent",
+  "description": "On-screen keyboard for Bazzite and SteamOS Gaming Mode, with an Fn layer, text editing shortcuts, and custom keycap themes.",
+  "private": true
+}
