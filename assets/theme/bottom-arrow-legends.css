@@ -1,0 +1,21 @@
+/* Text previews and Steam's arrows stay the same size when Shift changes direction. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 .Row_4
+[data-key^="Arrow"][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-bottom-arrow-size: clamp(13px, calc(var(--retro-row-height) * .34), 18px);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 .Row_4
+[data-key^="Arrow"][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX
+> span:not(.virtualkeyboard_AltGrLabel_21WhT, .virtualkeyboard_InactiveLabel_1lPIY) {
+  font-size: var(--mk-bottom-arrow-size);
+  line-height: 1;
+  opacity: 1;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 .Row_4
+[data-key^="Arrow"][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX > span > svg {
+  display: block;
+  inline-size: var(--mk-bottom-arrow-size);
+  block-size: var(--mk-bottom-arrow-size);
+  margin: 0;
+}

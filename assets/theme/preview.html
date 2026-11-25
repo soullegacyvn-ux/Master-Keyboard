@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:; font-src data:">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Masterkeyboard preview</title>
+<style>
+:root { --mk-preview-height: __MASTERKEYBOARD_HEIGHT__px; }
+html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; }
+body { --mk-preview-scale: 0.19; }
+@media (min-width: 224px) { body { --mk-preview-scale: 0.21; } }
+@media (min-width: 244px) { body { --mk-preview-scale: 0.23; } }
+@media (min-width: 264px) { body { --mk-preview-scale: 0.25; } }
+@media (min-width: 285px) { body { --mk-preview-scale: 0.27; } }
+@media (min-width: 305px) { body { --mk-preview-scale: 0.29; } }
+@media (min-width: 326px) { body { --mk-preview-scale: 0.31; } }
+@media (min-width: 346px) { body { --mk-preview-scale: 0.33; } }
+@media (min-width: 367px) { body { --mk-preview-scale: 0.35; } }
+.mk-preview-scale {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1024px;
+  height: var(--mk-preview-height);
+  transform: translate(-50%, -50%) scale(var(--mk-preview-scale));
+}
+.mk-preview-keyboard { padding: 3px 2px 1px; font: 16px/1.2 Arial, sans-serif; }
+.mk-preview-row { display: flex; width: 100%; }
+.mk-preview-hit {
+  display: flex;
+  flex-direction: column;
+  padding: 1px 1px 2px 2px;
+  flex: var(--mk-preview-weight) 1 0;
+  min-width: 0;
+}
+.mk-preview-cap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  text-align: center;
+}
+.mk-preview-cap[data-preview-glyph] > span { margin-left: 19px; }
+.mk-preview-cap[data-preview-glyph]::after {
+  content: attr(data-preview-glyph);
+  position: absolute;
+  left: 21px;
+  top: calc(50% - 9px);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #f0ebdb;
+  background: #302e2a;
+}
+.mk-preview-cap[data-preview-glyph="X"]::after { left: auto; right: 17px; }
+.mk-preview-profile-badge {
+  --retro-badge-label: attr(data-profile-glyph);
+  display: var(--mk-profile-preview-badge-display, none);
+}
+.mk-preview-cap .mk-preview-space-badge {
+  --retro-badge-label: "Y";
+  position: absolute;
+}
+
+</style>
+<style>__MASTERKEYBOARD_STYLE__</style>
+<style>
+.mk-preview-keyboard { border-radius: 10px; }
+.mk-preview-scale .mk-preview-cap > span {
+  font-size: clamp(24px, calc(var(--retro-row-height) * .53), 32px);
+  line-height: 1;
+  font-weight: 700;
+}
+.mk-preview-scale .mk-preview-cap > span._3FZukK3yuHnaZ_X3yujMNS {
+  font-size: 17px;
+  line-height: 16px;
+}
+.mk-preview-scale
+:is([data-key="Tab"], [data-key="CapsLock"], [data-key="Shift"], [data-key="Backspace"],
+    [data-key="Enter"], [data-key="SwitchKeys_Steam"], [data-key="SwitchKeys_Layout"],
+    [data-key="MasterkeyboardSelectAll"], [data-key="VKClose"]) .mk-preview-cap > span {
+  font-size: 19px;
+  line-height: 20px;
+}
+@media (max-width: 310px) {
+  .mk-preview-scale .mk-preview-cap > span._3FZukK3yuHnaZ_X3yujMNS {
+    display: none;
+  }
+}
+</style>
+</head>
+<body>
+  <div class="mk-preview-scale">
+    <div class="mk-preview-keyboard DefaultTheme _45rH7-kY4P2uVEb3TxZhm">
+<div class="mk-preview-row Row_0"><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="`" data-key-row="0" style="--mk-preview-weight:0.5"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span class="_3FZukK3yuHnaZ_X3yujMNS">~</span><span>`</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="1" data-key-row="0" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span class="_3FZukK3yuHnaZ_X3yujMNS">!</span><span>1</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="2" data-key-row="0" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span class="_3FZukK3yuHnaZ_X3yujMNS">@</span><span>2</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="3" data-key-row="0" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span class="_3FZukK3yuHnaZ_X3yujMNS">#</span><span>3</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="4" data-key-row="0" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span class="_3FZukK3yuHnaZ_X3yujMNS">$</span><span>4</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="5" data-key-row="0" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span class="_3FZukK3yuHnaZ_X3yujMNS">%</span><span>5</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="6" data-key-row="0" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span class="_3FZukK3yuHnaZ_X3yujMNS">^</span><span>6</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="7" data-key-row="0" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span class="_3FZukK3yuHnaZ_X3yujMNS">&amp;</span><span>7</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="8" data-key-row="0" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span class="_3FZukK3yuHnaZ_X3yujMNS">*</span><span>8</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="9" data-key-row="0" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span class="_3FZukK3yuHnaZ_X3yujMNS">(</span><span>9</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="0" data-key-row="0" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span class="_3FZukK3yuHnaZ_X3yujMNS">)</span><span>0</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="-" data-key-row="0" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span class="_3FZukK3yuHnaZ_X3yujMNS">_</span><span>-</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="=" data-key-row="0" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span class="_3FZukK3yuHnaZ_X3yujMNS">+</span><span>=</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="Backspace" data-key-row="0" style="--mk-preview-weight:1.8"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW _3LsB3VZBjMjAp0RCa_3MGS" data-preview-glyph="X"><div class="mk-preview-profile-badge _3VtXfHDGV1q2LCVruVnHed" data-profile-glyph="X" aria-hidden="true"></div><span>Backspace</span></div></div></div>
+<div class="mk-preview-row Row_1"><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="Tab" data-key-row="1" style="--mk-preview-weight:1.05"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW _3GfcsK1T47BLa5UQ3e4Xh3"><span>Tab</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="q" data-key-row="1" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>q</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="w" data-key-row="1" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>w</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="e" data-key-row="1" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>e</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="r" data-key-row="1" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>r</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="t" data-key-row="1" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>t</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="y" data-key-row="1" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>y</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="u" data-key-row="1" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>u</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="i" data-key-row="1" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>i</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="o" data-key-row="1" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>o</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="p" data-key-row="1" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>p</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="[" data-key-row="1" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span class="_3FZukK3yuHnaZ_X3yujMNS">{</span><span>[</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="]" data-key-row="1" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span class="_3FZukK3yuHnaZ_X3yujMNS">}</span><span>]</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="\" data-key-row="1" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span class="_3FZukK3yuHnaZ_X3yujMNS">|</span><span>\</span></div></div></div>
+<div class="mk-preview-row Row_2"><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="CapsLock" data-key-row="2" style="--mk-preview-weight:1.42"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW NGv5FNsp6c4OnD0_KOiDl"><span>Caps</span><div class="mk-preview-profile-badge _3VtXfHDGV1q2LCVruVnHed" data-profile-glyph="L3" aria-hidden="true"></div></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="a" data-key-row="2" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>a</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="s" data-key-row="2" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>s</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="d" data-key-row="2" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>d</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="f" data-key-row="2" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>f</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="g" data-key-row="2" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>g</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX__MASTERKEYBOARD_PREVIEW_FOCUS__" data-key="h" data-key-row="2" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>h</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="j" data-key-row="2" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>j</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="k" data-key-row="2" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>k</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="l" data-key-row="2" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>l</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key=";" data-key-row="2" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span class="_3FZukK3yuHnaZ_X3yujMNS">:</span><span>;</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="&#x27;" data-key-row="2" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span class="_3FZukK3yuHnaZ_X3yujMNS">&quot;</span><span>&#x27;</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="Enter" data-key-row="2" style="--mk-preview-weight:1.8"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW IunX6VHNYj-i8dv5WJzpM"><div class="mk-preview-profile-badge _3VtXfHDGV1q2LCVruVnHed" data-profile-glyph="RT" aria-hidden="true"></div><span>Enter</span></div></div></div>
+<div class="mk-preview-row Row_3"><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="Shift" data-key-row="3" style="--mk-preview-weight:2.1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW _2ye7YjL-n6ql_6UPyf5ptv"><span>Shift</span><div class="mk-preview-profile-badge _3VtXfHDGV1q2LCVruVnHed" data-profile-glyph="LT" aria-hidden="true"></div></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="z" data-key-row="3" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>z</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="x" data-key-row="3" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>x</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="c" data-key-row="3" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>c</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="v" data-key-row="3" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>v</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="b" data-key-row="3" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>b</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="n" data-key-row="3" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>n</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="m" data-key-row="3" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>m</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="," data-key-row="3" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span class="_3FZukK3yuHnaZ_X3yujMNS">&lt;</span><span>,</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="." data-key-row="3" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span class="_3FZukK3yuHnaZ_X3yujMNS">&gt;</span><span>.</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="/" data-key-row="3" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span class="_3FZukK3yuHnaZ_X3yujMNS">?</span><span>/</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="MasterkeyboardCopy" data-key-row="3" style="--mk-preview-weight:.972"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>Copy</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="MasterkeyboardPaste" data-key-row="3" style="--mk-preview-weight:.972"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>Paste</span></div></div></div>
+<div class="mk-preview-row Row_4"><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="SwitchKeys_Steam" data-key-row="4" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>☺</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="SwitchKeys_Layout" data-key-row="4" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>🌐&#xFE0E;</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key=" " data-key-row="4" style="--mk-preview-weight:5.5"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span></span><div class="mk-preview-space-badge _3VtXfHDGV1q2LCVruVnHed _2bothi051q1YZqD6NGaoDB" aria-hidden="true"></div></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="ArrowLeft" data-key-row="4" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>◀</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="ArrowRight" data-key-row="4" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span class="_3fZNQf5I86n9dNcVTEpSa0">▶</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="MasterkeyboardSelectAll" data-key-row="4" style="--mk-preview-weight:1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span>Select All</span></div></div><div class="mk-preview-hit _1YqjVUO3KYLRq_mer-HsUX" data-key="VKClose" data-key-row="4" aria-label="Hide keyboard" style="--mk-preview-weight:2.1"><div class="mk-preview-cap _2KhPXikozxMpbIRo_6jPxW"><span class="mk-preview-keyboard-icon" aria-hidden="true"></span></div></div></div>
+    </div>
+  </div>
+</body>
+</html>

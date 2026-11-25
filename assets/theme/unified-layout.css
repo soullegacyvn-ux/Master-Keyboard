@@ -1,0 +1,347 @@
+/* Keep the socket treatment behind the cap until it finishes returning. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 [data-key][data-key-row] {
+  --mk-key-press-travel: var(--mk-wukong-key-travel, clamp(2px, calc(var(--retro-row-height) * .045), 3px));
+  transition: background-color 0s 75ms, overflow 0s 75ms allow-discrete;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .DefaultTheme.virtualkeyboard_Keyboard_45rH7 [data-key][data-key-row] {
+    transition: none;
+  }
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 [data-key][data-key-row]:is(
+  :active, [data-masterkeyboard-held],
+  :has(> .virtualkeyboard_KeyboardKey_2KhPX:is(
+    .virtualkeyboard_Touched_3UFQq, .virtualkeyboard_ToggleOn_3Qrs-, .virtualkeyboard_ToggleOneShot_2Vf7I
+  ))
+) {
+  overflow: clip;
+  background-color: var(--mk-custom-pressed-well, var(--mk-key-well-color, #0d0f14));
+  transition-delay: 0s;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 [data-key][data-key-row]:is(
+  :active, [data-masterkeyboard-held],
+  :has(> .virtualkeyboard_KeyboardKey_2KhPX:is(
+    .virtualkeyboard_Touched_3UFQq, .virtualkeyboard_ToggleOn_3Qrs-, .virtualkeyboard_ToggleOneShot_2Vf7I
+  ))
+) > .virtualkeyboard_KeyboardKey_2KhPX {
+  transform: translateY(var(--mk-held-travel, var(--mk-key-press-travel)));
+  transition-duration: 0s;
+}
+
+/* Held modifiers stay visibly dimmed until released. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 [data-key][data-key-row]:is(
+  [data-masterkeyboard-held],
+  :has(> .virtualkeyboard_KeyboardKey_2KhPX:is(.virtualkeyboard_ToggleOn_3Qrs-, .virtualkeyboard_ToggleOneShot_2Vf7I))
+) {
+  --mk-held-travel: clamp(2px, calc(var(--retro-row-height) * .075), 4px);
+  filter: brightness(.84);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 [data-key][data-key-row]:is(
+  [data-masterkeyboard-held],
+  :has(> .virtualkeyboard_KeyboardKey_2KhPX:is(.virtualkeyboard_ToggleOn_3Qrs-, .virtualkeyboard_ToggleOneShot_2Vf7I))
+) > .virtualkeyboard_KeyboardKey_2KhPX {
+  outline: none;
+  box-shadow: none;
+}
+
+/* The gridcell wrappers use display: contents. Size the navigable hit areas. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7:not(.mk-preview-keyboard):has(
+  :is([data-key="MasterkeyboardFn"], [data-key="MasterkeyboardABC"])
+) {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7:has(:is([data-key="MasterkeyboardFn"], [data-key="MasterkeyboardABC"]))
+> :is(.Row_0, .Row_1, .Row_2, .Row_3, .Row_4) > [role="gridcell"]
+> .virtualkeyboard_KeyboardKeyHitArea_1YqjV[data-key-row] {
+  box-sizing: border-box;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7:has([data-key="MasterkeyboardFn"])
+> :is(.Row_3, .Row_4) > [role="gridcell"] > .virtualkeyboard_KeyboardKeyHitArea_1YqjV[data-key-row],
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7:has([data-key="MasterkeyboardABC"])
+> :is(.Row_0, .Row_1, .Row_2, .Row_3, .Row_4)
+> [role="gridcell"] > .virtualkeyboard_KeyboardKeyHitArea_1YqjV[data-key-row] {
+  min-inline-size: 0;
+  flex: var(--mk-layout-key-weight, 1) 1 0px;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="Tab"], [data-key="Enter"], [data-key="CapsLock"]) {
+  --mk-layout-key-weight: 1.45;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 [data-key="Backspace"] {
+  --mk-layout-key-weight: 1.9;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 [data-key="Shift"] {
+  --mk-layout-key-weight: 1.8;
+}
+
+/* The two editing keys share the old right Shift's width in each layout. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7:has([data-key="MasterkeyboardFn"])
+> .Row_3 [data-key="Shift"] {
+  --mk-layout-key-weight: 1.944;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="MasterkeyboardCopy"], [data-key="MasterkeyboardPaste"]) {
+  --mk-layout-key-weight: .972;
+}
+
+/* Align the system, navigation and editing rows on the same nine columns. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7:has([data-key="MasterkeyboardABC"])
+> :is(.Row_1, .Row_2, .Row_3) [data-key-row] {
+  --mk-layout-key-weight: 1;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7:has([data-key="MasterkeyboardABC"])
+> :is(.Row_1, .Row_2, .Row_3) [data-key-row]:is([data-key-col="0"], [data-key-col="8"]) {
+  --mk-layout-key-weight: 1.35;
+}
+
+/* Center the utility labels over their face, including Esc in Wukong. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7:has([data-key="MasterkeyboardABC"])
+> :is(.Row_0, .Row_1, .Row_2, .Row_3) [data-key^="Masterkeyboard"][data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX {
+  justify-content: center;
+  align-items: center;
+  padding: 0 min(7px, 9%) calc(var(--retro-row-height) * .14);
+  text-align: center;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7:has([data-key="MasterkeyboardABC"])
+> :is(.Row_0, .Row_1, .Row_2, .Row_3)
+[data-key^="Masterkeyboard"][data-key-row]:not(
+  [data-key^="MasterkeyboardArrow"], [data-key="MasterkeyboardCut"], [data-key="MasterkeyboardCopy"], [data-key="MasterkeyboardPaste"]
+)
+> .virtualkeyboard_KeyboardKey_2KhPX > span:not(.virtualkeyboard_AltGrLabel_21WhT) {
+  inset: auto;
+  margin: 0;
+  font-size: clamp(10px, calc(var(--retro-row-height) * .24), 14px);
+  line-height: 1.15;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: normal;
+}
+
+/* Draw the four Fn directions with thick shafts independent of the theme font. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="ArrowLeft"], [data-key="MasterkeyboardArrowLeft"]) {
+  --mk-direction-arrow-angle: 180deg;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="ArrowUp"], [data-key="MasterkeyboardArrowUp"]) {
+  --mk-direction-arrow-angle: -90deg;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="ArrowDown"], [data-key="MasterkeyboardArrowDown"]) {
+  --mk-direction-arrow-angle: 90deg;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7:has([data-key="MasterkeyboardABC"])
+> .Row_2 [data-key^="MasterkeyboardArrow"][data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX > span:not(.virtualkeyboard_AltGrLabel_21WhT, .virtualkeyboard_InactiveLabel_1lPIY) {
+  --mk-fn-arrow-size: clamp(18px, calc(var(--retro-row-height) * .43), 25px);
+  position: absolute;
+  inset: var(--mk-fn-arrow-y, 43%) auto auto var(--mk-fn-arrow-x, 50%);
+  inline-size: min(100%, var(--mk-fn-arrow-size));
+  block-size: var(--mk-fn-arrow-size);
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  text-indent: -1000px;
+  transform: none;
+  translate: -50% -50%;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7:has([data-key="MasterkeyboardABC"])
+> .Row_2 [data-key^="MasterkeyboardArrow"][data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX > span:not(.virtualkeyboard_AltGrLabel_21WhT, .virtualkeyboard_InactiveLabel_1lPIY)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  clip-path: polygon(8% 36%, 48% 36%, 48% 9%, 92% 50%, 48% 91%, 48% 64%, 8% 64%);
+  transform: rotate(var(--mk-direction-arrow-angle, 0deg));
+}
+
+/* Use the same bottom-row weights on both layers. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7:has(:is([data-key="MasterkeyboardFn"], [data-key="MasterkeyboardABC"]))
+[data-key=" "] {
+  --mk-layout-key-weight: 4.4;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="MasterkeyboardABC"], [data-key="MasterkeyboardEscape"])
+> .virtualkeyboard_KeyboardKey_2KhPX {
+  border-color: color-mix(in srgb, var(--retro-ink) 32%, var(--mk-profile-edge));
+}
+
+.mk-preview-keyboard > :is(.Row_3, .Row_4) .mk-preview-hit {
+  flex: var(--mk-layout-key-weight, 1) 1 0;
+}
+
+/* The bottom arrow slot always shows the current direction at the same position. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 .Row_4 [data-key^="Arrow"][data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX > span:is(
+  .virtualkeyboard_ShiftedLabel_3FZuk:not(.virtualkeyboard_ShiftActive_3fZNQ),
+  .virtualkeyboard_InactiveLabel_1lPIY
+),
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 .Row_4 [data-key^="Arrow"][data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX:has(> .virtualkeyboard_ShiftedLabel_3FZuk.virtualkeyboard_ShiftActive_3fZNQ)
+> span:not(.virtualkeyboard_ShiftedLabel_3FZuk) {
+  display: none;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 .Row_4 [data-key^="Arrow"][data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX > span:not(.virtualkeyboard_AltGrLabel_21WhT, .virtualkeyboard_InactiveLabel_1lPIY) {
+  position: absolute;
+  inset: var(--mk-bottom-arrow-y, calc(50% - clamp(2px, var(--mk-profile-label-rise, 3px), 5px))) auto auto 50%;
+  margin: 0;
+  line-height: 1;
+  transform: none;
+  translate: -50% -50%;
+  transition: none;
+}
+
+/* Steam renders Close and Shift+Move in the same slot, with the other legend inactive. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key="VKClose"][data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX:has(> span > svg)
+> span:not(:has(> svg)) {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  pointer-events: none;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key="VKClose"][data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX > span:is(:has(> svg), .mk-preview-keyboard-icon) {
+  --mk-key-glyph-size: clamp(17px, calc(var(--retro-row-height) * .43), 22px);
+  display: block;
+  position: absolute;
+  inset: calc(50% - 4px + var(--mk-bottom-icon-offset, 0px)) auto auto 50%;
+  inline-size: var(--mk-key-glyph-size);
+  block-size: var(--mk-key-glyph-size);
+  margin: 0;
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key="VKClose"][data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX > span > svg {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  opacity: 0;
+}
+
+/* Show Steam's translated Move label when Shift selects the alternate action. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 .Row_4
+[data-key="VKMove"][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX
+> span.virtualkeyboard_ShiftActive_3fZNQ {
+  position: absolute;
+  inset: calc(50% - 4px + var(--mk-bottom-icon-offset, 0px)) auto auto 50%;
+  margin: 0;
+  transform: translate(-50%, -50%);
+  font-size: clamp(11px, calc(var(--retro-row-height) * .27), 15px);
+  line-height: 1;
+  opacity: 1;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key="VKMove"][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX
+> .virtualkeyboard_InactiveLabel_1lPIY {
+  display: none;
+}
+
+/* Keep long utility labels and gamepad badges inside their cap at smaller heights. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX
+> span:not(.virtualkeyboard_AltGrLabel_21WhT) {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key^="Masterkeyboard"], [data-key="VKPaste"])
+> .virtualkeyboard_KeyboardKey_2KhPX
+> span:not(.virtualkeyboard_AltGrLabel_21WhT) {
+  font-size: clamp(10px, calc(var(--retro-row-height) * .25), 13px);
+  line-height: 1.1;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="MasterkeyboardCut"], [data-key="MasterkeyboardCopy"], [data-key="MasterkeyboardPaste"], [data-key="MasterkeyboardSelectAll"])[data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX {
+  justify-content: center;
+  align-items: center;
+  padding-inline: min(5px, 9%);
+  text-align: center;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="MasterkeyboardCut"], [data-key="MasterkeyboardCopy"], [data-key="MasterkeyboardPaste"], [data-key="MasterkeyboardSelectAll"])[data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX > span:not(.virtualkeyboard_AltGrLabel_21WhT) {
+  --mk-key-glyph-size: clamp(17px, calc(var(--retro-row-height) * .43), 22px);
+  position: absolute;
+  inset: calc(50% - clamp(2px, var(--mk-profile-label-rise, 3px), 5px)) auto auto 50%;
+  inline-size: min(100%, var(--mk-key-glyph-size));
+  block-size: var(--mk-key-glyph-size);
+  margin: 0;
+  overflow: hidden;
+  text-indent: -1000px;
+  transform: translate(-50%, -50%);
+}
+
+/* Share the same ink and icon artwork in Steam and the Decky preview. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key="VKClose"][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX
+> span:is(:has(> svg), .mk-preview-keyboard-icon)::before,
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="MasterkeyboardCut"], [data-key="MasterkeyboardCopy"], [data-key="MasterkeyboardPaste"], [data-key="MasterkeyboardSelectAll"])[data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX > span:not(.virtualkeyboard_AltGrLabel_21WhT)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: currentColor;
+  mask: var(--mk-key-glyph) center / contain no-repeat;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 [data-key="MasterkeyboardCut"] {
+  --mk-key-glyph: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M236.52,187.09l-143-97.87a36,36,0,1,0-14.38,17.27l21.39,21.69L79.15,149.54l0,0a35.91,35.91,0,1,0,14.38,17.27l26.91-18.41L170,198.64a32.26,32.26,0,0,0,22.7,9.37,31.52,31.52,0,0,0,4.11-.27l.28,0,36.27-6.11a8,8,0,0,0,3.19-14.5Zm-162.38-97A20,20,0,1,1,80,76,20,20,0,0,1,74.14,90.13Zm0,104A20,20,0,1,1,80,180,20,20,0,0,1,74.14,194.15Zm61-101.5L169.94,57.4a32.19,32.19,0,0,1,26.84-9.14l.28,0,36,6.07a8.21,8.21,0,0,1,6.09,4.42,8,8,0,0,1-2.67,10.12l-69.93,47.85a4,4,0,0,1-4.51,0l-26.31-18A4,4,0,0,1,135.18,92.65Z' /%3E%3C/svg%3E");
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 [data-key="MasterkeyboardCopy"] {
+  --mk-key-glyph: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M216,32H88a8,8,0,0,0-8,8V80H40a8,8,0,0,0-8,8V216a8,8,0,0,0,8,8H168a8,8,0,0,0,8-8V176h40a8,8,0,0,0,8-8V40A8,8,0,0,0,216,32ZM160,208H48V96H160Zm48-48H176V88a8,8,0,0,0-8-8H96V48H208Z' /%3E%3C/svg%3E");
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 [data-key="MasterkeyboardPaste"] {
+  --mk-key-glyph: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M200,32H163.74a47.92,47.92,0,0,0-71.48,0H56A16,16,0,0,0,40,48V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V48A16,16,0,0,0,200,32Zm-72,0a32,32,0,0,1,32,32H96A32,32,0,0,1,128,32Zm32,128H96a8,8,0,0,1,0-16h64a8,8,0,0,1,0,16Zm0-32H96a8,8,0,0,1,0-16h64a8,8,0,0,1,0,16Z' /%3E%3C/svg%3E");
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 [data-key="MasterkeyboardSelectAll"] {
+  --mk-key-glyph: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='currentColor'%3E%3Cpath d='M104,40a8,8,0,0,1,8-8h32a8,8,0,0,1,0,16H112A8,8,0,0,1,104,40Zm40,168H112a8,8,0,0,0,0,16h32a8,8,0,0,0,0-16ZM208,32H184a8,8,0,0,0,0,16h24V72a8,8,0,0,0,16,0V48A16,16,0,0,0,208,32Zm8,72a8,8,0,0,0-8,8v32a8,8,0,0,0,16,0V112A8,8,0,0,0,216,104Zm0,72a8,8,0,0,0-8,8v24H184a8,8,0,0,0,0,16h24a16,16,0,0,0,16-16V184A8,8,0,0,0,216,176ZM40,152a8,8,0,0,0,8-8V112a8,8,0,0,0-16,0v32A8,8,0,0,0,40,152Zm32,56H48V184a8,8,0,0,0-16,0v24a16,16,0,0,0,16,16H72a8,8,0,0,0,0-16ZM40,80a8,8,0,0,0,8-8V48H72a8,8,0,0,0,0-16H48A16,16,0,0,0,32,48V72A8,8,0,0,0,40,80ZM176,184H80a8,8,0,0,1-8-8V80a8,8,0,0,1,8-8h96a8,8,0,0,1,8,8v96A8,8,0,0,1,176,184Zm-8-96H88v80h80Z' /%3E%3C/svg%3E");
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 [data-key="VKClose"] {
+  --mk-key-glyph: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'%3E%3Csvg viewBox='0 38 256 180' fill='currentColor' x='1' y='0' width='22' height='17'%3E%3Cpath d='M224,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48ZM64,168H48a8,8,0,0,1,0-16H64a8,8,0,0,1,0,16Zm96,0H96a8,8,0,0,1,0-16h64a8,8,0,0,1,0,16Zm48,0H192a8,8,0,0,1,0-16h16a8,8,0,0,1,0,16Zm0-32H48a8,8,0,0,1,0-16H208a8,8,0,0,1,0,16Zm0-32H48a8,8,0,0,1,0-16H208a8,8,0,0,1,0,16Z' /%3E%3C/svg%3E%3Cpath d='M8 18h8l-4 4Z' /%3E%3C/svg%3E");
+}

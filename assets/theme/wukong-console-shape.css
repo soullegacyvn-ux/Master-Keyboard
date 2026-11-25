@@ -1,0 +1,275 @@
+/* Align the regular keycap projection with the engraved brass keys. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is(.virtualkeyboard_KeyboardKeyHitArea_1YqjV, .mk-preview-hit)[data-key-row] {
+  --mk-wukong-key-travel: clamp(5px, calc(var(--retro-row-height) * .145), 8px);
+  --mk-wukong-key-return: 52ms;
+  --mk-wukong-wide-side: min(22px, calc(var(--retro-row-height) * .30));
+  --mk-wukong-wide-front: calc(var(--retro-row-height) * .33);
+  --mk-wukong-cap-overhang: .5px;
+  --mk-wukong-cap-expansion: calc(var(--mk-panel-cap-inset, 0px) + var(--mk-wukong-cap-overhang));
+  box-sizing: border-box;
+  padding: var(--mk-panel-cap-inset, 0px);
+  overflow: visible;
+  contain: layout;
+}
+
+/* A Shift tap and its locked state use the same shallow travel. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key="Shift"][data-key-row] {
+  --mk-wukong-key-travel: clamp(2px, calc(var(--retro-row-height) * .075), 4px);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is(.Row_0, .Row_1, .Row_2, .Row_3, .Row_4)
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+  min-height: calc(var(--retro-row-height) + 2 * var(--mk-wukong-cap-overhang));
+  max-height: calc(var(--retro-row-height) + 2 * var(--mk-wukong-cap-overhang));
+  inline-size: calc(100% + 2 * var(--mk-wukong-cap-expansion));
+  margin: calc(-1 * var(--mk-wukong-cap-expansion));
+  pointer-events: none;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-wukong-atlas-height: clamp(390px, 43cqi, 820px);
+  --mk-wukong-atlas-x: calc(-.092 * var(--mk-wukong-atlas-height) * var(--mk-wukong-texture-column, 0));
+  --mk-wukong-atlas-y: calc(-.2 * var(--mk-wukong-atlas-height) * var(--mk-wukong-atlas-row, 0));
+  --mk-wukong-metal: var(--mk-profile-face);
+  --mk-wukong-tone: color-mix(in srgb, var(--mk-wukong-metal) 86%, #a29a8c);
+  border: 1px solid transparent;
+  background: var(--mk-key-shell-color);
+  box-shadow: none;
+  clip-path: var(--mk-wukong-cap-contour);
+  filter: none;
+  transition: transform var(--mk-wukong-key-return) ease-out;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 :is(
+  [data-key][data-key-row].gpfocus > .virtualkeyboard_KeyboardKey_2KhPX,
+  :where(.virtualkeyboard_Keyboard_45rH7:not(:has([data-key-row].gpfocus)))
+    [data-key][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX.virtualkeyboard_Focused_21EoN
+) {
+  box-shadow: none;
+}
+
+/* Drop the cap immediately and clip its front at the edge of the hit area. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row]:active > .virtualkeyboard_KeyboardKey_2KhPX,
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX.virtualkeyboard_Touched_3UFQq {
+  transform: translateY(var(--mk-wukong-key-travel));
+  transition-duration: 0s;
+}
+
+/* Release Steam's shine geometry so the key keeps its own bevel and engraving. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX.virtualkeyboard_Touched_3UFQq::after {
+  inline-size: auto;
+  block-size: auto;
+  z-index: 0;
+  transform: none;
+  opacity: 1;
+  pointer-events: none;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row]:active > .virtualkeyboard_KeyboardKey_2KhPX::before,
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX.virtualkeyboard_Touched_3UFQq::before {
+  transform: none;
+  filter: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .DefaultTheme.virtualkeyboard_Keyboard_45rH7
+  :is(.virtualkeyboard_KeyboardKeyHitArea_1YqjV, .mk-preview-hit)[data-key-row] {
+    --mk-wukong-key-return: 0ms;
+  }
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX {
+  border-radius: 2px;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="MasterkeyboardFn"], [data-key="MasterkeyboardABC"])[data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-wukong-metal: var(--mk-wukong-modifier-color, var(--mk-wukong-jade));
+}
+
+/* Keep the red accents with the default palette, or use the chosen modifier color. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="CapsLock"], [data-key="MasterkeyboardAlt"])[data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-control-caps: var(--mk-wukong-modifier-color, var(--mk-style-red));
+  --mk-control-caps-ink: var(--mk-wukong-modifier-ink, var(--mk-style-red-ink));
+  --mk-control-caps-tint: var(--mk-wukong-modifier-tint, var(--mk-style-red-art-tint));
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key="MasterkeyboardAlt"][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-wukong-metal: var(--mk-control-caps);
+  --mk-style-art-tint: var(--mk-control-caps-tint);
+  --retro-ink: var(--mk-control-caps-ink);
+}
+
+/* Sample the same part of the original wave sheet at every key height. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 [data-key-row="1"] { --mk-wukong-atlas-row: 1; }
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 [data-key-row="2"] { --mk-wukong-atlas-row: 2; }
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 [data-key-row="3"] { --mk-wukong-atlas-row: 3; }
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 [data-key-row="4"] { --mk-wukong-atlas-row: 4; }
+
+/* Give Copy the same metal lighting as the number keys in its color group. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key="MasterkeyboardCopy"][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-wukong-atlas-row: 0;
+  --mk-wukong-texture-column: 6;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX::before {
+  inset: 1px;
+  clip-path: var(--mk-wukong-cap-contour);
+  border-radius: 0;
+  background-color: var(--mk-wukong-tone);
+  background-color: rgb(from color-mix(in srgb, var(--mk-wukong-tint) 82%, var(--mk-wukong-tone)) r g b / 1);
+  background-position: center, var(--mk-wukong-atlas-x) var(--mk-wukong-atlas-y);
+  background-size: 0 0, auto var(--mk-wukong-atlas-height);
+  background-repeat: no-repeat;
+  background-blend-mode: screen, soft-light;
+  box-shadow: none;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="f" i], [data-key="j" i])[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-wukong-home-bar: linear-gradient(
+    color-mix(in srgb, var(--mk-profile-face) 62%, #a89a83) 50%, #0b0907a6 50%
+  );
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key][data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  clip-path: var(--mk-wukong-cap-contour);
+  border-radius: 0;
+  background:
+    var(--mk-wukong-home-bar, none) center 75% / 8px 2px no-repeat,
+    var(--mk-wukong-cap-shade) center / 100% 100% no-repeat;
+  mix-blend-mode: normal;
+  pointer-events: none;
+}
+
+/* Preserve the shoulders of the wide keys without stretching the bevel. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="Tab"], [data-key="Backspace"], [data-key="CapsLock"], [data-key="Enter"],
+    [data-key="Shift"], [data-key="MasterkeyboardEscape"], [data-key=" "])[data-key][data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX::after {
+  background: none;
+  border-image-source: var(--mk-wukong-cap-shade);
+  border-image-slice: 16 48 53 fill;
+  border-image-width: calc(var(--retro-row-height) * .10) var(--mk-wukong-wide-side) var(--mk-wukong-wide-front);
+  border-image-repeat: stretch;
+}
+
+/* Trim the opaque corners of the shading. The dark cap shell is the stroke. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key][data-key-row] {
+  --mk-wukong-contour-width: 21.82%;
+  --mk-wukong-contour-shoulder: calc(var(--mk-wukong-contour-width) * .64);
+  --mk-wukong-contour-upper: calc(var(--mk-wukong-contour-width) * .34);
+  --mk-wukong-contour-side: calc(var(--mk-wukong-contour-width) * .16);
+  --mk-wukong-contour-base: calc(var(--mk-wukong-contour-width) * .21);
+  --mk-wukong-cap-contour: polygon(
+    var(--mk-wukong-contour-shoulder) 0, calc(100% - var(--mk-wukong-contour-shoulder)) 0,
+    calc(100% - var(--mk-wukong-contour-upper)) 9%, calc(100% - var(--mk-wukong-contour-side)) 19%,
+    100% 84%, 100% 92%, calc(100% - var(--mk-wukong-contour-base)) 100%,
+    var(--mk-wukong-contour-base) 100%, 0 92%, 0 84%,
+    var(--mk-wukong-contour-side) 19%, var(--mk-wukong-contour-upper) 9%
+  );
+  --mk-key-well-color: transparent;
+  --mk-key-shell-color: #170f0a;
+  --mk-focus-ring-width: 0px;
+  background: transparent;
+}
+
+/* The wide shading keeps its shoulders at a fixed width rather than stretching them. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="Tab"], [data-key="Backspace"], [data-key="CapsLock"], [data-key="Enter"],
+    [data-key="Shift"], [data-key="MasterkeyboardEscape"], [data-key=" "])[data-key-row] {
+  --mk-wukong-contour-width: var(--mk-wukong-wide-side);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="`"], [data-key="~"])[data-key-row="0"] {
+  --mk-wukong-contour-width: 42.86%;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="`"], [data-key="~"])[data-key-row="0"]
+> .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-wukong-cap-shade: var(--mk-wukong-narrow-shade);
+}
+
+/* The preview uses a child element for the X legend, leaving this layer for the cap. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key="Backspace"][data-key-row] > .mk-preview-cap[data-preview-glyph]::after {
+  display: block;
+  width: auto;
+  height: auto;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key="Shift"][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-control-shift: var(--mk-style-amber);
+  --mk-control-shift-ink: var(--mk-style-amber-ink);
+  --mk-control-shift-tint: var(--mk-style-amber-art-tint);
+}
+
+/* Give the gold caps a broad reflection across the face. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="Shift"], [data-key="Enter"], [data-key="MasterkeyboardEscape"], [data-key=" "])[data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX::before {
+  background-size: 100% 100%, auto var(--mk-wukong-atlas-height);
+}
+
+/* Put a neutral wave pattern over the shared brass face. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key=" "][data-key-row] {
+  position: relative;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key=" "][data-key-row]::before {
+  --mk-space-wave-tile: calc(100% / 26) clamp(4.5px, calc(var(--retro-row-height) * .152), 9px);
+  --mk-space-wave-rings:
+    #fff 0 9%, #aaa 12% 17%, #fff 22% 29%, #aaa 32% 37%, #fff 42% 49%,
+    #aaa 52% 57%, #fff 62% 69%, #aaa 72% 77%, #fff 82% 89%, #aaa 92% 97%, transparent 100%;
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 3px calc(var(--mk-wukong-wide-side) * .7 + 1px) calc(var(--mk-wukong-wide-front) * .82);
+  border-radius: 4px;
+  background:
+    radial-gradient(ellipse 50% 100% at 0 150%, var(--mk-space-wave-rings)) left top / var(--mk-space-wave-tile) repeat,
+    radial-gradient(ellipse 50% 100% at 100% 150%, var(--mk-space-wave-rings)) left top / var(--mk-space-wave-tile) repeat,
+    radial-gradient(ellipse 50% 100% at 50% 100%, var(--mk-space-wave-rings)) left top / var(--mk-space-wave-tile) repeat,
+    radial-gradient(ellipse 50% 100% at 0 50%, var(--mk-space-wave-rings)) left top / var(--mk-space-wave-tile) repeat,
+    radial-gradient(ellipse 50% 100% at 100% 50%, var(--mk-space-wave-rings)) left top / var(--mk-space-wave-tile) repeat,
+    radial-gradient(ellipse 50% 100% at 50% 0, var(--mk-space-wave-rings)) left top / var(--mk-space-wave-tile) repeat,
+    #fff;
+  mix-blend-mode: multiply;
+  opacity: .74;
+  transition: transform var(--mk-wukong-key-return) ease-out;
+  pointer-events: none;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key=" "][data-key-row]:is(:active, :has(> .virtualkeyboard_KeyboardKey_2KhPX.virtualkeyboard_Touched_3UFQq))::before {
+  transform: translateY(var(--mk-wukong-key-travel));
+  transition-duration: 0s;
+}

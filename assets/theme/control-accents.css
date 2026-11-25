@@ -1,0 +1,25 @@
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key="CapsLock"][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-control-face: var(--mk-control-caps);
+  --mk-control-ink: var(--mk-control-caps-ink);
+  --mk-style-art-tint: var(--mk-control-caps-tint, transparent);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key="Shift"][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-control-face: var(--mk-control-shift);
+  --mk-control-ink: var(--mk-control-shift-ink);
+  --mk-style-art-tint: var(--mk-control-shift-tint, transparent);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="CapsLock"], [data-key="Shift"])[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-style-color: var(--mk-control-face);
+  --mk-custom-block: var(--mk-control-face);
+  --mk-custom-ink: var(--mk-control-ink);
+  --retro-face-light: var(--mk-control-face);
+  --retro-face-dark: color-mix(in srgb, var(--mk-control-face), #201a16 24%);
+  --retro-rim-light: color-mix(in srgb, var(--mk-control-face), #33271b 18%);
+  --retro-rim-dark: color-mix(in srgb, var(--mk-control-face), #1d1712 45%);
+  --retro-ink: var(--mk-control-ink);
+}

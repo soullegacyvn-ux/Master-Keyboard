@@ -1,0 +1,94 @@
+/* Draw the cap silhouette and lighting from the same texture. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-cap-image: var(--mk-reference-cap);
+  --mk-profile-label-rise: var(--mk-cap-legend-lift, clamp(2px,
+    calc(var(--retro-row-height) * (var(--mk-cap-slope-bottom, .24) - .10) * .73), 8px));
+  --mk-reference-cap-base: var(--mk-focus-fill-light,
+    color-mix(in srgb, var(--mk-style-color, var(--mk-custom-block, var(--retro-face-light)))
+      var(--mk-cap-color-strength, 92%), #11131a));
+  isolation: isolate;
+  overflow: hidden;
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  clip-path: none;
+}
+
+/* The wider assets stretch only their centers. Rendering each in one pass avoids seams. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="Tab"], [data-key="CapsLock"], [data-key="Shift"], [data-key="Backspace"], [data-key="Enter"])
+> .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-cap-image: var(--mk-reference-wide-cap);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 [data-key=" "]
+> .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-cap-image: var(--mk-reference-space-cap);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX::before {
+  inset: 0;
+  background: var(--mk-cap-underpaint, var(--mk-reference-cap-base));
+  border-radius: 0;
+  box-shadow: none;
+  clip-path: none;
+  transform: none;
+  mask: var(--mk-cap-image) center / 100% 100% no-repeat;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX::after {
+  content: "";
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  z-index: 0;
+  background: var(--mk-cap-image) center / 100% 100% no-repeat;
+  mix-blend-mode: overlay;
+  transform: none;
+  filter: brightness(var(--mk-cap-brightness, .79)) contrast(var(--mk-cap-contrast, 1.16));
+  pointer-events: none;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX:is(
+  .virtualkeyboard_Touched_3UFQq, .virtualkeyboard_ToggleOn_3Qrs-, .virtualkeyboard_ToggleOneShot_2Vf7I
+)::after {
+  opacity: .84;
+}
+
+
+/* Keep the molded base and lighting layer aligned on a pressed controller key. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX.virtualkeyboard_Touched_3UFQq::before,
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row]:active > .virtualkeyboard_KeyboardKey_2KhPX::before {
+  transform: none;
+}
+
+
+/* Center legends over the top face, above the molded front wall. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row]:not([data-key=" "], [data-key="VKClose"])
+> .virtualkeyboard_KeyboardKey_2KhPX:has(
+  > .virtualkeyboard_ShiftedLabel_3FZuk:not(.virtualkeyboard_AltGrLabel_21WhT, .virtualkeyboard_InactiveLabel_1lPIY)
+)
+> span:not(.virtualkeyboard_AltGrLabel_21WhT, .virtualkeyboard_InactiveLabel_1lPIY) {
+  inset-block-start: calc(-1 * var(--mk-profile-label-rise));
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="ArrowLeft"], [data-key="ArrowRight"], [data-key="ArrowUp"], [data-key="ArrowDown"])
+> .virtualkeyboard_KeyboardKey_2KhPX > span {
+  align-self: center;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key="VKClose"] > .virtualkeyboard_KeyboardKey_2KhPX > span {
+  inset-block-start: calc(-1 * var(--mk-profile-label-rise));
+}

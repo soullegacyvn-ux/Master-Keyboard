@@ -1,0 +1,57 @@
+{
+  "store": "https://master-keyboard.soullegacyvn.workers.dev",
+  "public_key": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEApaB6CX1bUkz5ufOP571Gu9KQcqwUYptvpMxXBhHkN5Q=\n-----END PUBLIC KEY-----\n",
+  "bundle_client": "decky-v2",
+  "legacy_bundle": {
+    "profiles": [
+      "Ceramic",
+      "Console",
+      "Control",
+      "Cyber",
+      "FieldAtlas",
+      "JadeEnamel",
+      "MT3",
+      "Modular",
+      "RTC",
+      "Sculpted",
+      "Square",
+      "Terminal",
+      "Walnut",
+      "Wukong"
+    ],
+    "sheets": [
+      "ceramic-glaze.css",
+      "concept-type-plex-sans.css",
+      "cyber-alloy.css",
+      "field-atlas-art.css",
+      "field-atlas.css",
+      "jade-enamel.css",
+      "jade-keycap-art.css",
+      "modular-grid.css",
+      "mt3-sculpted.css",
+      "reference-cap-ceramic-glaze.css",
+      "reference-cap-cyber-alloy.css",
+      "reference-cap-legend-fit.css",
+      "reference-cap-modular-grid.css",
+      "reference-cap-mt3-sculpted.css",
+      "reference-cap-studio-control.css",
+      "reference-cap-walnut-bronze.css",
+      "retro-console.css",
+      "rtc-keycap-art.css",
+      "rtr-keycap-rounded.css",
+      "sculpted.css",
+      "square.css",
+      "studio-control.css",
+      "terminal.css",
+      "walnut-bronze.css",
+      "wukong-cap-shade.css",
+      "wukong-console-shape.css",
+      "wukong-keycap-art.css",
+      "wukong.css"
+    ]
+  },
+  "plasma": {
+    "version": "1.0.2",
+    "sha256": "02695cb1ccf4f0bb07d895c85f4c45f1bfcb395b351817ef35bafe2361313adc"
+  }
+}

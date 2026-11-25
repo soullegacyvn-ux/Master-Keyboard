@@ -1,0 +1,26 @@
+/* Stagger paired punctuation around the center of the key face. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key-row="1"], [data-key-row="2"], [data-key-row="3"])
+> .virtualkeyboard_KeyboardKey_2KhPX:has(
+  > .virtualkeyboard_ShiftedLabel_3FZuk:not(.virtualkeyboard_AltGrLabel_21WhT)
+) {
+  --mk-staggered-legend-offset: clamp(5px, calc(var(--retro-row-height) * .135), 8px);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key-row="1"], [data-key-row="2"], [data-key-row="3"])
+> .virtualkeyboard_KeyboardKey_2KhPX
+> .virtualkeyboard_ShiftedLabel_3FZuk:not(.virtualkeyboard_AltGrLabel_21WhT, .virtualkeyboard_InactiveLabel_1lPIY) {
+  inset-inline-start: var(--mk-staggered-legend-offset);
+  top: 3px;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key-row="1"], [data-key-row="2"], [data-key-row="3"])
+> .virtualkeyboard_KeyboardKey_2KhPX:has(
+  > .virtualkeyboard_ShiftedLabel_3FZuk:not(.virtualkeyboard_AltGrLabel_21WhT)
+)
+> span:not(.virtualkeyboard_ShiftedLabel_3FZuk, .virtualkeyboard_AltGrLabel_21WhT, .virtualkeyboard_InactiveLabel_1lPIY) {
+  inset-inline-start: calc(-1 * var(--mk-staggered-legend-offset));
+  top: -1px;
+}

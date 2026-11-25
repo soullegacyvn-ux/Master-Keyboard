@@ -1,0 +1,49 @@
+/* Engrave the public brass faces beside their legends. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="Shift"], [data-key="Enter"])[data-key][data-key-row] {
+  position: relative;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="Shift"], [data-key="Enter"])[data-key][data-key-row]::after {
+  content: "";
+  position: absolute;
+  inset-block: 17% 35%;
+  z-index: 1;
+  opacity: .64;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  transition: transform var(--mk-wukong-key-return) ease-out;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key="Shift"][data-key-row]::after {
+  inset-inline: 54% 12%;
+  background: repeating-linear-gradient(161deg, #4d300d 0 1px,
+    #ead093 1px 2px, #8b5d27 2px 3px, #dbad62 3px 5px);
+  clip-path: polygon(0 91%, 16% 70%, 25% 73%, 42% 24%, 49% 39%, 58% 7%,
+    74% 63%, 81% 50%, 100% 90%, 100% 94%, 78% 73%, 70% 80%, 58% 49%,
+    50% 64%, 42% 48%, 29% 89%, 17% 84%, 0 98%);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key="Enter"][data-key-row]::after {
+  inset-inline: 13% 55%;
+  background:
+    radial-gradient(ellipse at 48% 49%, transparent 25%, #5d3b14 26% 32%, transparent 34% 46%,
+      #664414 47% 53%, transparent 55%) 97% 18% / 70% 75% no-repeat,
+    radial-gradient(ellipse at 48% 49%, transparent 30%, #614217 31% 37%, transparent 39% 50%,
+      #705124 51% 59%, transparent 61%) 0 80% / 66% 59% no-repeat,
+    linear-gradient(90deg, transparent, #684513 20% 77%, transparent) center 82% / 92% 1px no-repeat,
+    linear-gradient(90deg, transparent, #684513 23% 69%, transparent) center 92% / 76% 1px no-repeat;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="Shift"], [data-key="Enter"])[data-key][data-key-row]:is(
+  :active, [data-masterkeyboard-held], :has(> .virtualkeyboard_KeyboardKey_2KhPX:is(
+    .virtualkeyboard_Touched_3UFQq, .virtualkeyboard_ToggleOn_3Qrs-, .virtualkeyboard_ToggleOneShot_2Vf7I
+  ))
+)::after {
+  transform: translateY(var(--mk-held-travel, var(--mk-wukong-key-travel)));
+  transition-duration: 0s;
+}

@@ -1,0 +1,130 @@
+/* Keep the two outside columns within the raised faces of their keycaps. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 {
+  container: mk-outer-keys / inline-size;
+  --mk-outer-legend-inset: min(var(--mk-outer-legend-max, 18px), var(--mk-outer-legend-relative, 27%));
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="Tab"], [data-key="MasterkeyboardCtrl"])[data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX {
+  align-items: stretch;
+  padding-inline: var(--mk-outer-legend-inset);
+  text-align: start;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="Tab"], [data-key="MasterkeyboardCtrl"])[data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX > span {
+  margin-inline: 0;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="Backspace"], [data-key="Enter"], [data-key="Shift"])[data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX {
+  justify-content: flex-end;
+  padding-inline: min(9px, 12%) var(--mk-outer-legend-inset);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX:is(
+  .virtualkeyboard_KeyboardCapsKey_NGv5F, .virtualkeyboard_KeyboardLeftShift_2ye7Y
+) {
+  justify-content: flex-start;
+  padding-inline: var(--mk-outer-legend-inset) min(9px, 12%);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="Tab"], [data-key="CapsLock"], [data-key="Shift"], [data-key="Backspace"], [data-key="Enter"],
+    [data-key^="Masterkeyboard"], [data-key="VKPaste"])[data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX > span:not(.virtualkeyboard_AltGrLabel_21WhT) {
+  line-height: 1.25;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7:not(:has([data-key="MasterkeyboardABC"]))
+[data-key="Backspace"][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+  padding-inline-start: min(7px, 10%);
+  gap: 3px;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7:not(:has([data-key="MasterkeyboardABC"]))
+[data-key="Backspace"][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX
+> span:not(.virtualkeyboard_AltGrLabel_21WhT) {
+  font-size: clamp(9px, calc(var(--retro-row-height) * .23), 11px);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row]:not([data-key=" "], [data-key="VKClose"])
+> .virtualkeyboard_KeyboardKey_2KhPX:has(
+  > .virtualkeyboard_ShiftedLabel_3FZuk:not(.virtualkeyboard_AltGrLabel_21WhT, .virtualkeyboard_InactiveLabel_1lPIY)
+) {
+  --mk-face-legend-y: calc(1px - var(--mk-profile-label-rise));
+  --mk-number-gap: 1px;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row]:not([data-key=" "], [data-key="VKClose"])
+> .virtualkeyboard_KeyboardKey_2KhPX:has(
+  > .virtualkeyboard_ShiftedLabel_3FZuk:not(.virtualkeyboard_AltGrLabel_21WhT, .virtualkeyboard_InactiveLabel_1lPIY)
+)
+> span:not(.virtualkeyboard_AltGrLabel_21WhT, .virtualkeyboard_InactiveLabel_1lPIY) {
+  line-height: 1.2;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7:has([data-key="MasterkeyboardABC"])
+:is([data-key^="Masterkeyboard"], [data-key="VKPaste"])[data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX > span:not(.virtualkeyboard_AltGrLabel_21WhT) {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 .Row_4
+:is([data-key="SwitchKeys_Steam"], [data-key="SwitchKeys_Layout"])[data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX > span:has(> svg) {
+  inset-block: 0;
+  block-size: auto;
+  transform: none;
+}
+
+/* Keep both the word and controller badge visible on compact boards. */
+@container mk-outer-keys (max-width: 800px) {
+  .DefaultTheme.virtualkeyboard_Keyboard_45rH7
+  :is([data-key="Tab"], [data-key="CapsLock"], [data-key="Shift"], [data-key="Backspace"], [data-key="Enter"],
+      [data-key="MasterkeyboardCtrl"])[data-key-row]
+  > .virtualkeyboard_KeyboardKey_2KhPX {
+    --mk-outer-legend-inset: min(10px, 18%);
+    gap: 2px;
+  }
+
+  .DefaultTheme.virtualkeyboard_Keyboard_45rH7
+  :is([data-key="Tab"], [data-key="CapsLock"], [data-key="MasterkeyboardCtrl"])[data-key-row]
+  > .virtualkeyboard_KeyboardKey_2KhPX {
+    padding-inline-end: min(4px, 8%);
+  }
+
+  .DefaultTheme.virtualkeyboard_Keyboard_45rH7:not(:has([data-key="MasterkeyboardABC"]))
+  [data-key="Backspace"][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+    --mk-outer-legend-inset: min(8px, 14%);
+    padding-inline-start: 4px;
+    gap: 2px;
+  }
+
+  .DefaultTheme.virtualkeyboard_Keyboard_45rH7:not(:has([data-key="MasterkeyboardABC"]))
+  [data-key="Backspace"][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX
+  > span:not(.virtualkeyboard_AltGrLabel_21WhT) {
+    font-size: clamp(8px, 1.15cqi, 9px);
+    line-height: 1.35;
+  }
+
+  .DefaultTheme.virtualkeyboard_Keyboard_45rH7
+  :is([data-key="Tab"], [data-key="CapsLock"], [data-key="Shift"], [data-key="Enter"])[data-key-row]
+  > .virtualkeyboard_KeyboardKey_2KhPX > span:not(.virtualkeyboard_AltGrLabel_21WhT) {
+    font-size: clamp(9px, calc(var(--retro-row-height) * .27), 12px);
+  }
+
+  .DefaultTheme.virtualkeyboard_Keyboard_45rH7
+  :is([data-key="CapsLock"], [data-key="Shift"], [data-key="Backspace"], [data-key="Enter"])[data-key-row]
+  > .virtualkeyboard_KeyboardKey_2KhPX > .virtualkeyboard_ActionButtonGlyph_3VtXf {
+    width: 14px;
+    height: 14px;
+  }
+}

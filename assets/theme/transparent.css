@@ -1,0 +1,17 @@
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7,
+.DefaultTheme.virtualkeyboard_EmojiKeyboard_icETE,
+.DefaultTheme :is(.virtualkeyboard_Keyboard_45rH7, .virtualkeyboard_EmojiKeyboard_icETE) {
+  --background-color: rgb(var(--mk-panel-rgb, 0 0 0) / var(--mk-background-opacity));
+  background: var(--background-color);
+  border-color: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+
+/* Steam's inline keyboard has two backing layers outside the key panel. */
+.DefaultTheme.virtualkeyboardcontainer_VirtualKeyboardContainer,
+._ZWH4hTDs_Positioner:has(> .DefaultTheme.virtualkeyboardcontainer_VirtualKeyboardContainer)
+> .backgroundglass_BackgroundGlass {
+  background: transparent;
+  backdrop-filter: none;
+}

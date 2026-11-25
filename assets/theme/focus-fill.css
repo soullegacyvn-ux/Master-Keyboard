@@ -1,0 +1,31 @@
+/* Use the focus palette for both surfaces of the molded keycap. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 :is(
+  [data-key-row].gpfocus > .virtualkeyboard_KeyboardKey_2KhPX,
+  :where(.virtualkeyboard_Keyboard_45rH7:not(:has([data-key-row].gpfocus)))
+    [data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX.virtualkeyboard_Focused_21EoN
+) {
+  --mk-focus-fill-light: color-mix(in srgb, var(--mk-focus-face) 78%, #fff8e8);
+  --mk-focus-fill-dark: color-mix(in srgb, var(--mk-focus-dark) 82%, #fff8e8);
+  --mk-focus-fill-rim-light: var(--mk-focus-rim-light);
+  --mk-focus-fill-rim-dark: var(--mk-focus-rim-dark);
+  --retro-face-light: var(--mk-focus-fill-light);
+  --retro-face-dark: var(--mk-focus-fill-dark);
+  --retro-highlight: var(--mk-focus-highlight, #f2b6e887);
+  --mk-square-focus-ink: var(--mk-custom-focus-ink, initial);
+  --retro-ink: var(--mk-focus-ink, #21151e);
+  --retro-square-photo: var(--retro-square-photo-dark);
+  --retro-square-photo-lightness: 2.7;
+  outline: var(--mk-focus-ring-width, 1px) solid var(--mk-focus-outline, #e0a9f0);
+  outline-offset: var(--mk-focus-outline-offset, -2px);
+  box-shadow: var(--mk-rtr-shell-shadow, var(--mk-profile-shadow, 0 1px 4px #081415a0)),
+    inset 0 0 4px var(--mk-focus-ring-color, var(--mk-focus-outline, #e0a9f0));
+}
+
+/* Obscure the focus ring only while the cap is down. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 :is(
+  [data-key][data-key-row]:active > .virtualkeyboard_KeyboardKey_2KhPX,
+  [data-key][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX.virtualkeyboard_Touched_3UFQq
+) {
+  --mk-focus-ring-width: 0px;
+  --mk-focus-ring-color: transparent;
+}

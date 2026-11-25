@@ -1,0 +1,110 @@
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 {
+  --mk-profile-label-rise: calc(var(--mk-profile-depth) * .42);
+  --mk-profile-control-inset: 5px;
+  --mk-profile-legend-weight: var(--mk-concept-weight, 700);
+  --mk-profile-legend-size: var(--mk-concept-size, 15px);
+  --mk-profile-depth: clamp(3px, calc(var(--retro-row-height) * var(--mk-concept-depth, .12)), 10px);
+  --mk-profile-edge-width: var(--mk-concept-wall, 4px);
+  --mk-profile-edge-radius: var(--mk-concept-corner, 6px);
+  --mk-profile-face-radius: max(2px, calc(var(--mk-profile-edge-radius) - 1px));
+  --mk-profile-shadow: 0 2px 2px #090a0bb0, inset 0 1px 0 #fff3;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+  margin: 0;
+  min-inline-size: 0;
+  overflow: hidden;
+  background: linear-gradient(180deg, #fff2 0%, transparent 33%, #0002 64%, #0007 100%),
+    var(--mk-profile-edge);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX::before {
+  background:
+    var(--mk-concept-grain, linear-gradient(transparent, transparent)),
+    linear-gradient(150deg, var(--mk-profile-face), var(--mk-profile-shade));
+  box-shadow: var(--mk-concept-face-shadow, inset 0 1px 1px #fff5, inset 0 -1px 1px #0005, 0 1px 1px #0008);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX > span:not(.virtualkeyboard_AltGrLabel_21WhT) {
+  font-family: var(--mk-concept-font, system-ui, sans-serif);
+  font-variant-ligatures: none;
+  font-weight: var(--mk-concept-weight, 700);
+  font-style: var(--mk-concept-font-style, normal);
+  letter-spacing: var(--mk-concept-tracking, 0);
+  color: color-mix(in srgb, var(--retro-ink), var(--mk-concept-ink-tint, var(--retro-ink)) 16%);
+  font-variant-numeric: tabular-nums;
+  max-inline-size: 100%;
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row="0"] > .virtualkeyboard_KeyboardKey_2KhPX > span:not(.virtualkeyboard_AltGrLabel_21WhT) {
+  line-height: 1;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX > .virtualkeyboard_ActionButtonGlyph_3VtXf::after {
+  color: var(--retro-ink);
+  background: color-mix(in srgb, var(--mk-profile-face) 91%, var(--retro-ink));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--retro-ink) 40%, transparent);
+}
+
+
+/* Put the Space badge beyond the beveled corner on both keyboard layers. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key=" "][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX > .virtualkeyboard_ActionButtonGlyph_3VtXf {
+  inset-inline-start: clamp(18px, 8%, 30px);
+}
+
+/* Position the two legends as a unit, including on the shallower keycaps. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row]:not([data-key=" "], [data-key="VKClose"])
+> .virtualkeyboard_KeyboardKey_2KhPX:has(
+  > .virtualkeyboard_ShiftedLabel_3FZuk:not(.virtualkeyboard_AltGrLabel_21WhT, .virtualkeyboard_InactiveLabel_1lPIY)
+) {
+  row-gap: clamp(1px, calc(var(--retro-row-height) * .05), 3px);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row]:not([data-key=" "], [data-key="VKClose"])
+> .virtualkeyboard_KeyboardKey_2KhPX:has(
+  > .virtualkeyboard_ShiftedLabel_3FZuk:not(.virtualkeyboard_AltGrLabel_21WhT, .virtualkeyboard_InactiveLabel_1lPIY)
+)
+> span:not(.virtualkeyboard_AltGrLabel_21WhT, .virtualkeyboard_InactiveLabel_1lPIY) {
+  position: relative;
+  inset: calc(var(--mk-profile-depth) * -.32) auto auto;
+  line-height: 1;
+  margin: 0;
+  transform: none;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="VKPaste"], [data-key^="Masterkeyboard"])
+> .virtualkeyboard_KeyboardKey_2KhPX > span:not(.virtualkeyboard_AltGrLabel_21WhT) {
+  font-size: clamp(10px, calc(var(--retro-row-height) * .25), 13px);
+  line-height: 1.1;
+}
+
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX
+> .virtualkeyboard_ShiftedLabel_3FZuk:not(.virtualkeyboard_AltGrLabel_21WhT) {
+  letter-spacing: 0;
+  opacity: .76;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="Tab"], [data-key="CapsLock"], [data-key="Shift"], [data-key="Enter"],
+    [data-key="Backspace"], [data-key="VKPaste"], [data-key^="Masterkeyboard"])
+> .virtualkeyboard_KeyboardKey_2KhPX > span:not(.virtualkeyboard_AltGrLabel_21WhT) {
+  font-family: var(--mk-concept-control-font, var(--mk-concept-font, system-ui, sans-serif));
+  font-size: clamp(10px, calc(var(--retro-row-height) * .245), 13px);
+  font-style: var(--mk-concept-control-style, var(--mk-concept-font-style, normal));
+  letter-spacing: var(--mk-concept-control-tracking, 0);
+}

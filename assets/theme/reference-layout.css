@@ -1,0 +1,44 @@
+/* Keep the reference caps edge-to-edge in Steam's normal keyboard. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 {
+  --mk-reference-cap-glint: #ffffff30;
+  --mk-profile-label-rise: calc(var(--mk-profile-depth) * .46);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+.virtualkeyboard_KeyboardKeyHitArea_1YqjV[data-key-row] {
+  box-sizing: border-box;
+  min-width: 0;
+  padding: 1px;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+  box-sizing: border-box;
+  background:
+    linear-gradient(90deg, #06050952, transparent 12%, transparent 86%, #fff1),
+    linear-gradient(180deg, var(--mk-reference-cap-glint), transparent 22%, #0002 64%, #0008),
+    var(--mk-profile-edge);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX::before {
+  inset: 2px var(--mk-profile-edge-width) var(--mk-profile-depth);
+  background:
+    var(--mk-concept-grain, linear-gradient(transparent, transparent)),
+    linear-gradient(176deg, var(--mk-profile-face) 14%, var(--mk-profile-shade));
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="Tab"], [data-key="CapsLock"], [data-key="Shift"], [data-key="Enter"], [data-key="Backspace"])
+> .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-profile-control-inset: 7px;
+  gap: 4px;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key-row="1"], [data-key-row="2"], [data-key-row="3"]):not(
+  [data-key="Tab"], [data-key="CapsLock"], [data-key="Shift"], [data-key="Enter"], [data-key="Backspace"], [data-key^="Masterkeyboard"])
+> .virtualkeyboard_KeyboardKey_2KhPX
+> span:not(.virtualkeyboard_AltGrLabel_21WhT, .virtualkeyboard_ShiftedLabel_3FZuk) {
+  text-transform: uppercase;
+}

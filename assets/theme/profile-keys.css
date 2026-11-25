@@ -1,0 +1,140 @@
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 {
+  --retro-row-height: calc(var(--mk-profile-height) + var(--retro-height-offset, 0px));
+  --mk-profile-label-rise: 2px;
+  --mk-profile-legend-size: 14px;
+  --mk-profile-legend-weight: 600;
+  --mk-profile-preview-badge-display: block;
+  --mk-profile-control-inset: max(8px, calc(var(--mk-profile-edge-width) + 5px));
+  --mk-profile-depth: 6px;
+  --mk-profile-edge-width: 4px;
+  --mk-profile-edge-radius: 6px;
+  --mk-profile-face-radius: 5px;
+  --mk-profile-shadow: 0 2px 2px #0a0c12a0, inset 0 1px 0 #fff4;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+.virtualkeyboard_KeyboardKeyHitArea_1YqjV[data-key-row] {
+  padding: 1px;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-profile-face: var(--mk-focus-fill-light, var(--mk-style-color));
+  --mk-profile-edge: var(--mk-focus-fill-rim-dark, color-mix(in srgb, var(--mk-style-color), #10121b 36%));
+  --mk-profile-shade: var(--mk-focus-fill-dark, color-mix(in srgb, var(--mk-style-color), #10121b 18%));
+  border-color: color-mix(in srgb, var(--mk-profile-edge), #0a0b10 40%);
+  border-radius: var(--mk-profile-edge-radius);
+  background: linear-gradient(#fff2, #0004), var(--mk-profile-edge);
+  box-shadow: var(--mk-profile-shadow);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX::before {
+  inset: 2px var(--mk-profile-edge-width) var(--mk-profile-depth);
+  border-radius: var(--mk-profile-face-radius);
+  background: linear-gradient(155deg, var(--mk-profile-face), var(--mk-profile-shade));
+  box-shadow: inset 0 1px 0 #fff5, inset 0 -1px 1px #0004, 0 1px 2px #0007;
+  transition: filter 75ms ease-out;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row]:not([data-key=" "], [data-key="SwitchKeys_Steam"], [data-key="SwitchKeys_Layout"])
+> .virtualkeyboard_KeyboardKey_2KhPX > span:not(.virtualkeyboard_AltGrLabel_21WhT, .virtualkeyboard_ShiftedLabel_3FZuk) {
+  top: calc(-1 * var(--mk-profile-label-rise));
+  font-size: min(var(--mk-profile-legend-size), calc(15px - var(--mk-compact-shrink) * .22));
+  font-weight: var(--mk-profile-legend-weight);
+  line-height: max(11px, calc(16px - var(--mk-compact-shrink) * 0.4));
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX > .virtualkeyboard_ShiftedLabel_3FZuk:not(.virtualkeyboard_AltGrLabel_21WhT) {
+  font-size: max(9px, calc(11px - var(--mk-compact-shrink) * .18));
+  line-height: max(8px, calc(11px - var(--mk-compact-shrink) * .25));
+  font-weight: 500;
+  opacity: 0.68;
+}
+
+/* Keep the number and Shift symbol on separate lines in compact profiles. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row="0"] > .virtualkeyboard_KeyboardKey_2KhPX:has(
+  > .virtualkeyboard_ShiftedLabel_3FZuk:not(.virtualkeyboard_AltGrLabel_21WhT)
+) {
+  row-gap: clamp(2px, calc(var(--retro-row-height) * .08), 5px);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row="0"] > .virtualkeyboard_KeyboardKey_2KhPX
+> .virtualkeyboard_ShiftedLabel_3FZuk:not(.virtualkeyboard_AltGrLabel_21WhT) {
+  top: calc(-1 * var(--mk-profile-label-rise));
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="Tab"], [data-key="CapsLock"], [data-key="Shift"], [data-key="Backspace"], [data-key="Enter"])
+> .virtualkeyboard_KeyboardKey_2KhPX {
+  padding-inline: var(--mk-profile-control-inset);
+  gap: 5px;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="Tab"], [data-key="CapsLock"], [data-key="Shift"], [data-key="Backspace"], [data-key="Enter"])
+> .virtualkeyboard_KeyboardKey_2KhPX > span:not(.virtualkeyboard_AltGrLabel_21WhT) {
+  min-width: 0;
+  margin-inline: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: min(12px, calc(13px - var(--mk-compact-shrink) * .2));
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX > .virtualkeyboard_ActionButtonGlyph_3VtXf:is(
+  :has(> img:is([src$="/xbox_lt.svg"], [src$="/xbox_rt.svg"], [src$="/shared_lstick_click.svg"],
+                [src$="/shared_color_button_x.svg"], [src$="/shared_color_button_y.svg"])),
+  .mk-preview-space-badge, .mk-preview-profile-badge
+) {
+  --retro-badge-radius: 3px;
+  width: clamp(17px, calc(var(--retro-row-height) * .42), 22px);
+  height: clamp(14px, calc(var(--retro-row-height) * .35), 18px);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row]:not([data-key=" "]) > .virtualkeyboard_KeyboardKey_2KhPX > .virtualkeyboard_ActionButtonGlyph_3VtXf {
+  top: calc(-1 * var(--mk-profile-label-rise));
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+.virtualkeyboard_ActionButtonGlyph_3VtXf:has(> img[src$="/shared_lstick_click.svg"]) {
+  --retro-badge-label: "L3";
+}
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+.virtualkeyboard_ActionButtonGlyph_3VtXf > img[src$="/shared_lstick_click.svg"] {
+  opacity: 0;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX > .virtualkeyboard_ActionButtonGlyph_3VtXf::after {
+  background: #161a20;
+  color: #f2f2f1;
+  box-shadow: inset 0 1px 0 #fff3, 0 1px 1px #0005;
+  font-size: 10px;
+}
+
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX.virtualkeyboard_Touched_3UFQq::before,
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row]:active > .virtualkeyboard_KeyboardKey_2KhPX::before {
+  filter: brightness(.93);
+}
+
+/* These samples use the same glyph layout as the live action keys. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 .mk-preview-cap[data-preview-glyph="X"]::after {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .DefaultTheme.virtualkeyboard_Keyboard_45rH7
+  [data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX::before {
+    transition: none;
+  }
+}

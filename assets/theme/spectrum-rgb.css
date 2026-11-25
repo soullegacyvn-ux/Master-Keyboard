@@ -1,0 +1,202 @@
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 {
+  --mk-panel-rgb: 8 9 12;
+  --background-color: rgb(var(--mk-panel-rgb));
+  --mk-concept-font: "Rajdhani", system-ui, sans-serif;
+  --mk-concept-weight: 700;
+  --mk-concept-size: 16px;
+  --mk-concept-tracking: .035em;
+  --mk-concept-control-tracking: .02em;
+  --mk-concept-corner: 5px;
+  --mk-outer-legend-max: 14px;
+  --mk-outer-legend-relative: 21%;
+}
+
+/* The rainbow follows the horizontal key position on both keyboard layers. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 .Row_2 { --mk-spectrum-steps: 12; }
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 .Row_3 { --mk-spectrum-steps: 11; }
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 .Row_4 { --mk-spectrum-steps: 10.4; }
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7:has([data-key="MasterkeyboardABC"]) .Row_0 { --mk-spectrum-steps: 11; }
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7:has([data-key="MasterkeyboardABC"]) :is(.Row_1, .Row_2, .Row_3) { --mk-spectrum-steps: 8; }
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 .Row_4 :is(.mk-preview-hit, [role="gridcell"]):nth-child(n+5) {
+  --mk-spectrum-space-weight: 3.4;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 .Row_4 :is(.mk-preview-hit, [role="gridcell"]):nth-child(4) {
+  --mk-spectrum-space-weight: 1.7;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 :is(.mk-preview-hit, [role="gridcell"]):nth-child(2) { --mk-spectrum-index: 1; }
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 :is(.mk-preview-hit, [role="gridcell"]):nth-child(3) { --mk-spectrum-index: 2; }
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 :is(.mk-preview-hit, [role="gridcell"]):nth-child(4) { --mk-spectrum-index: 3; }
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 :is(.mk-preview-hit, [role="gridcell"]):nth-child(5) { --mk-spectrum-index: 4; }
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 :is(.mk-preview-hit, [role="gridcell"]):nth-child(6) { --mk-spectrum-index: 5; }
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 :is(.mk-preview-hit, [role="gridcell"]):nth-child(7) { --mk-spectrum-index: 6; }
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 :is(.mk-preview-hit, [role="gridcell"]):nth-child(8) { --mk-spectrum-index: 7; }
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 :is(.mk-preview-hit, [role="gridcell"]):nth-child(9) { --mk-spectrum-index: 8; }
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 :is(.mk-preview-hit, [role="gridcell"]):nth-child(10) { --mk-spectrum-index: 9; }
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 :is(.mk-preview-hit, [role="gridcell"]):nth-child(11) { --mk-spectrum-index: 10; }
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 :is(.mk-preview-hit, [role="gridcell"]):nth-child(12) { --mk-spectrum-index: 11; }
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 :is(.mk-preview-hit, [role="gridcell"]):nth-child(13) { --mk-spectrum-index: 12; }
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 :is(.mk-preview-hit, [role="gridcell"]):nth-child(14) { --mk-spectrum-index: 13; }
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+.virtualkeyboard_KeyboardKeyHitArea_1YqjV[data-key-row] {
+  padding: 2px 1.75px;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is(.Row_0, .Row_1, .Row_2, .Row_3, .Row_4)
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+  min-height: calc(var(--retro-row-height) - 4px);
+  max-height: calc(var(--retro-row-height) - 4px);
+}
+
+/* Light strikes the edges of the housing while the upper seat stays matte. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-spectrum-position: calc((var(--mk-spectrum-index, 0) + var(--mk-spectrum-space-weight, 0))
+    / var(--mk-spectrum-steps, 13));
+  --mk-spectrum-hue: calc(313 * var(--mk-spectrum-position)
+    - clamp(0, (var(--mk-spectrum-position) - .2) * 63, 16)
+    + clamp(0, (var(--mk-spectrum-position) - .64) * 62, 16));
+  --mk-spectrum-led: var(--mk-focus-fill-rim-light, hsl(var(--mk-spectrum-hue) 96% 57%));
+  --mk-spectrum-hot: color-mix(in srgb, var(--mk-spectrum-led) 82%, white);
+  --mk-spectrum-spill: color-mix(in srgb, var(--mk-spectrum-led) 53%, #030407);
+  --mk-spectrum-low: color-mix(in srgb, var(--mk-spectrum-led) 19%, #030407);
+  --mk-spectrum-ink: color-mix(in oklab, var(--mk-spectrum-led) 56%, #e9eff7);
+  --mk-spectrum-legend-glow: 0 0 3px color-mix(in srgb, var(--mk-spectrum-led) 23%, transparent);
+  --mk-spectrum-face: var(--mk-focus-fill-light, color-mix(in oklab, var(--mk-profile-face) 63%, #08090d));
+  --mk-spectrum-rail-width: calc(var(--mk-profile-edge-width) + 3px);
+  --mk-profile-edge-width: clamp(3px, calc(var(--retro-row-height) * .09), 5px);
+  --mk-profile-depth: clamp(3px, calc(var(--retro-row-height) * .13), 7px);
+  --mk-profile-shadow: 0 1px 2px #000d;
+  --mk-spectrum-top: 2px;
+  --mk-spectrum-bevel: 3px 3px 4px 4px;
+  --key-action-button-glyph-color: var(--mk-spectrum-ink);
+  --key-enter-action-button-glyph-color: var(--mk-spectrum-ink);
+  --key-focused-action-button-left-color: var(--mk-spectrum-ink);
+  --mk-key-shell-color: var(--mk-spectrum-low);
+  border-color: var(--mk-spectrum-low);
+  background:
+    linear-gradient(0deg, #020309 0%, transparent 25% 58%, #01020599 100%),
+    linear-gradient(14deg, var(--mk-spectrum-low), var(--mk-spectrum-spill) 36%,
+      var(--mk-spectrum-led) 63%, var(--mk-spectrum-low) 96%) bottom / 100% 9px no-repeat,
+    linear-gradient(110deg, var(--mk-spectrum-low), var(--mk-spectrum-hot) 45%,
+      var(--mk-spectrum-spill) 76%, var(--mk-spectrum-low)) left / var(--mk-spectrum-rail-width) 100% no-repeat,
+    linear-gradient(252deg, var(--mk-spectrum-low), var(--mk-spectrum-led) 48%,
+      var(--mk-spectrum-spill) 78%, var(--mk-spectrum-low)) right / var(--mk-spectrum-rail-width) 100% no-repeat,
+    var(--mk-key-shell-color);
+  box-shadow: var(--mk-profile-shadow);
+  color: var(--mk-spectrum-ink);
+}
+
+/* Give each row and the wider control keys their own top and front geometry. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row="0"] > .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-profile-depth: clamp(4px, calc(var(--retro-row-height) * .17), 9px);
+  --mk-spectrum-top: 1px;
+  --mk-spectrum-bevel: 2px 2px 4px 4px;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="`"], [data-key="~"]) > .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-profile-edge-width: 2px;
+  --mk-spectrum-bevel: 2px 3px 3px 2px;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row="2"] > .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-profile-depth: clamp(3px, calc(var(--retro-row-height) * .105), 6px);
+  --mk-spectrum-bevel: 4px 4px 5px 5px;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row="3"] > .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-spectrum-top: 3px;
+  --mk-spectrum-bevel: 4px 4px 3px 3px;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="Tab"], [data-key="CapsLock"], [data-key="Backspace"], [data-key="Enter"], [data-key="Shift"])
+> .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-profile-edge-width: clamp(3px, calc(var(--retro-row-height) * .12), 7px);
+  --mk-spectrum-bevel: 5px 5px 3px 3px;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key="Backspace"] > .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-spectrum-bevel: 3px 5px 5px 3px;
+}
+
+/* Shift uses the same matte face as the other Spectrum modifiers. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key="Shift"][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-spectrum-face: var(--mk-focus-fill-light, color-mix(in oklab, var(--mk-style-blue) 63%, #08090d));
+  --mk-spectrum-badge-face: var(--mk-spectrum-face);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 .Row_4
+[data-key^="Arrow"][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-bottom-arrow-y: calc(50% + (var(--mk-spectrum-top) - var(--mk-profile-depth)) / 2);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key="Enter"] > .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-spectrum-bevel: 3px 6px 6px 3px;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key=" "] > .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-spectrum-space-warm: var(--mk-focus-fill-rim-light, #cde72e);
+  --mk-spectrum-space-center: var(--mk-focus-fill-rim-light, #61f679);
+  --mk-spectrum-space-cool: var(--mk-focus-fill-rim-light, #36daf5);
+  --mk-spectrum-ink: color-mix(in oklab, var(--mk-spectrum-space-warm) 40%, var(--retro-ink));
+  --mk-spectrum-top: 3px;
+  --mk-spectrum-bevel: 4px 4px 3px 3px;
+  --mk-spectrum-marker: linear-gradient(90deg, var(--mk-spectrum-space-warm),
+    var(--mk-spectrum-space-center), var(--mk-spectrum-space-cool)) center 28% / min(48px, 22%) 2px no-repeat;
+  background:
+    linear-gradient(180deg, #030407ea, #03040746 12%, #030407ad 26% 70%, #03040710 87%, #030407e0),
+    linear-gradient(90deg, var(--mk-spectrum-space-warm), var(--mk-spectrum-space-center) 51%, var(--mk-spectrum-space-cool));
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX::before {
+  inset: var(--mk-spectrum-top) var(--mk-profile-edge-width) var(--mk-profile-depth);
+  border-radius: var(--mk-spectrum-bevel);
+  background:
+    var(--mk-spectrum-marker, linear-gradient(transparent, transparent)),
+    radial-gradient(ellipse at 25% 0%, #ffffff16, transparent 59%),
+    linear-gradient(168deg, var(--mk-spectrum-face), color-mix(in oklab, var(--mk-spectrum-face) 68%, #05060a));
+  box-shadow: inset 0 1px 0 #fff2, inset -1px 0 1px #fff1, inset 0 -1px 1px #000b, 0 2px 1px #000c;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="f" i], [data-key="j" i])[data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX::before {
+  --mk-spectrum-marker: linear-gradient(#fff2, #0006) center calc(100% - 3px) / 10px 2px no-repeat;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX > span:not(.virtualkeyboard_AltGrLabel_21WhT) {
+  color: var(--mk-spectrum-ink);
+  text-shadow: var(--mk-spectrum-legend-glow);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX > .virtualkeyboard_ActionButtonGlyph_3VtXf::after {
+  color: var(--mk-spectrum-ink);
+  background: color-mix(in srgb, var(--mk-spectrum-badge-face, var(--mk-profile-face)) 91%, var(--mk-spectrum-ink));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--mk-spectrum-ink) 54%, transparent);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 :is(
+  [data-key-row].gpfocus > .virtualkeyboard_KeyboardKey_2KhPX,
+  :where(.virtualkeyboard_Keyboard_45rH7:not(:has([data-key-row].gpfocus)))
+    [data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX.virtualkeyboard_Focused_21EoN
+) {
+  --mk-spectrum-ink: var(--mk-focus-ink, #21151e);
+  --mk-spectrum-legend-glow: none;
+}

@@ -1,0 +1,77 @@
+/* Keep the staggered legends in the same slots as Steam swaps their active state. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is(.Row_0, .Row_1, .Row_2, .Row_3) [data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX:where(:has(
+  > span:not(.virtualkeyboard_AltGrLabel_21WhT):is(
+    .virtualkeyboard_ShiftedLabel_3FZuk, .virtualkeyboard_InactiveLabel_1lPIY
+  )
+))
+> span:not(.virtualkeyboard_AltGrLabel_21WhT, :has(svg, img)) {
+  position: relative;
+  inset-block: var(--mk-paired-legend-top, -1px) auto;
+  inset-inline: var(--mk-paired-legend-start, calc(-1 * min(7px, 12%))) auto;
+  margin-block: 0;
+  transform: none;
+  transition: none;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is(.Row_0, .Row_1, .Row_2, .Row_3) [data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX:where(:has(
+  > span:not(.virtualkeyboard_AltGrLabel_21WhT):is(
+    .virtualkeyboard_ShiftedLabel_3FZuk, .virtualkeyboard_InactiveLabel_1lPIY
+  )
+))
+> span:is(.virtualkeyboard_ShiftedLabel_3FZuk, .virtualkeyboard_ShiftActive_3fZNQ):not(.virtualkeyboard_AltGrLabel_21WhT, :has(svg, img)) {
+  inset-inline-start: var(--mk-paired-legend-end, min(7px, 12%));
+  order: -1;
+  font-size: var(--mk-paired-alt-size, 11px);
+  line-height: var(--mk-paired-alt-line-height, calc(12px - var(--mk-compact-shrink) * 0.08));
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is(.Row_0, .Row_1, .Row_2, .Row_3) [data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX
+> span.virtualkeyboard_InactiveLabel_1lPIY:not(.virtualkeyboard_AltGrLabel_21WhT, :has(svg, img)) {
+  opacity: 0.65;
+}
+
+/* Give a touch press and a latched Shift the same shallow cap position. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+.Row_3 [data-key="Shift"][data-key-row]:is(
+  :active,
+  :has(> .virtualkeyboard_KeyboardKey_2KhPX:is(
+    .virtualkeyboard_Touched_3UFQq, .virtualkeyboard_ToggleOn_3Qrs-, .virtualkeyboard_ToggleOneShot_2Vf7I
+  ))
+) {
+  --mk-held-travel: clamp(1.5px, calc(var(--retro-row-height) * .032), 2.25px);
+  filter: brightness(.93);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+.Row_3 [data-key="Shift"][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+  filter: var(--mk-rtr-edge-shadow, none);
+  transition: transform 70ms ease-out;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+.Row_3 [data-key="Shift"][data-key-row]:is(
+  :active,
+  :has(> .virtualkeyboard_KeyboardKey_2KhPX:is(
+    .virtualkeyboard_Touched_3UFQq, .virtualkeyboard_ToggleOn_3Qrs-, .virtualkeyboard_ToggleOneShot_2Vf7I
+  ))
+) > .virtualkeyboard_KeyboardKey_2KhPX {
+  transition-duration: 55ms;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+.Row_3 [data-key="Shift"][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX::before {
+  filter: var(--mk-shift-face-filter, none);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .DefaultTheme.virtualkeyboard_Keyboard_45rH7
+  .Row_3 [data-key="Shift"][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+    transition: none !important;
+  }
+}

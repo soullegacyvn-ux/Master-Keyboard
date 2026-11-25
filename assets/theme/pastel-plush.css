@@ -1,0 +1,102 @@
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 {
+  --mk-panel-rgb: 233 213 220;
+  --background-color: rgb(var(--mk-panel-rgb));
+  --mk-concept-font: "MK Nunito", system-ui, sans-serif;
+  --mk-concept-weight: 750;
+  --mk-concept-tracking: .015em;
+  --mk-concept-corner: 11px;
+  --mk-profile-label-rise: 2px;
+  --mk-outer-legend-max: 16px;
+  --mk-outer-legend-relative: 22%;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+.virtualkeyboard_KeyboardKeyHitArea_1YqjV[data-key-row] {
+  box-sizing: border-box;
+  padding: 2px 1.75px;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is(.Row_0, .Row_1, .Row_2, .Row_3, .Row_4)
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+  min-height: calc(var(--retro-row-height) - 4px);
+  max-height: calc(var(--retro-row-height) - 4px);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-plush-cap: var(--mk-plush-regular-art, none);
+  --mk-plush-tint: color-mix(in srgb, var(--mk-profile-face) 90%, #fff7f1);
+  --mk-plush-ink: var(--retro-ink);
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  filter: drop-shadow(0 1px 0 #794d633c) drop-shadow(0 2px 2px #7b55613b);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="CapsLock"], [data-key="Shift"], [data-key="Backspace"], [data-key="Enter"])[data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX,
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7:has([data-key="MasterkeyboardABC"])
+:is(.Row_1, .Row_2, .Row_3) [data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-plush-cap: var(--mk-plush-wide-art, var(--mk-plush-regular-art, none));
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="\60"], [data-key="~"])[data-key-row="0"] > .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-plush-cap: var(--mk-plush-narrow-art, var(--mk-plush-regular-art, none));
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key=" "][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-plush-cap: var(--mk-plush-space-art, var(--mk-plush-regular-art, none));
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7:has([data-key="MasterkeyboardABC"])
+[data-key=" "][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-plush-cap: var(--mk-plush-space-short-art, var(--mk-plush-space-art, var(--mk-plush-regular-art, none)));
+}
+
+/* Use each cutout for both the pile texture and its soft silhouette. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX::before {
+  inset: -1px;
+  border-radius: var(--mk-concept-corner);
+  background:
+    radial-gradient(ellipse at 34% 0%, #fff8f22c, transparent 62%),
+    linear-gradient(180deg, transparent 68%, #4f35431d),
+    var(--mk-plush-cap) center / 100% 100% no-repeat var(--mk-plush-tint);
+  background-blend-mode: normal, normal, multiply;
+  box-shadow: none;
+  mask: var(--mk-plush-cap) center / 100% 100% no-repeat;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 :is(
+  [data-key][data-key-row].gpfocus > .virtualkeyboard_KeyboardKey_2KhPX,
+  :where(.virtualkeyboard_Keyboard_45rH7:not(:has([data-key-row].gpfocus)))
+    [data-key][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX.virtualkeyboard_Focused_21EoN
+) {
+  outline: none;
+  box-shadow: none;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX > span:not(.virtualkeyboard_AltGrLabel_21WhT) {
+  color: var(--mk-plush-ink);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX > .virtualkeyboard_ActionButtonGlyph_3VtXf::after {
+  --retro-badge-radius: 4px;
+  color: var(--mk-plush-ink);
+  background: color-mix(in srgb, var(--mk-profile-face) 90%, var(--mk-plush-ink));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--mk-plush-ink) 35%, transparent);
+}
+
+/* Steam's active arrow SVG sits in the center of the plush face. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+> .Row_4 [data-key^="Arrow"][data-key][data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX > span:not(.virtualkeyboard_AltGrLabel_21WhT, .virtualkeyboard_InactiveLabel_1lPIY) {
+  position: absolute;
+  inset: 46% auto auto 50%;
+}

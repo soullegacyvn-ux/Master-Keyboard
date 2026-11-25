@@ -1,0 +1,37 @@
+Masterkeyboard asset sources
+
+The Wukong cloud atlas and brass keycap artwork were made for Masterkeyboard.
+The optional local Wukong sheet uses artwork supplied by the user,
+including a mountain reference marked Adobe Stock #341631105.
+Wukong uses grayscale shading derived from a brass Enter cap generated with Higgsfield FLUX 3, preserving the same bevel proportions on regular, narrow and wide caps.
+The Wukong Space key shares the brass bevel and gold palette used by Shift and Enter.
+The Seigaiha motif on its face is drawn with CSS gradients.
+The public Shift and Enter engravings use original CSS artwork.
+The GTA VI theme uses Master Keyboard's sculpted cap textures and an original
+sunset panorama created for the Space key.
+The custom artwork for RTR, Jade, Pastel and other photo-style profiles was
+created for the project. Reference photographs are kept outside the package.
+
+RTS and the themes that share its texture sheets include MIT-licensed KLE
+Render GMK and SA keycap artwork. square-textures.css embeds GMK keycaps,
+including a modified wide spacebar. photo-keycaps.css embeds an SA keycap.
+See theme/KLE-Render-LICENSE.txt and https://github.com/CQCumbers/kle_render.
+
+The embedded Barlow Condensed, Barlow Semi Condensed, Nunito, IBM Plex Mono,
+IBM Plex Sans, Noto Serif, Rajdhani, Space Grotesk and Changa One fonts use the SIL Open Font License.
+Each font family has an accompanying OFL notice in assets/theme.
+
+Clicky, Thock and Soft sounds are synthesized by the plugin. Steam sounds and
+controller glyphs used by the keyboard come from the installed Steam client.
+
+Decky Loader API 1.1.3 uses LGPL 2.1. Its replaceable runtime module is
+dist/decky-api.js. See third-party/decky-api/NOTICE.md and
+third-party/decky-api/LICENSE for source and license details.
+
+QR Code Generator for JavaScript 2.0.4, copyright Kazuhiko Arase, is
+bundled under the MIT license. See third-party/qrcode-generator/LICENSE.
+
+The editing key icons use Phosphor Icons under the MIT license. Copy and
+Select All use Regular. Cut and Paste use Fill. The Hide key combines the Fill
+keyboard with a downward arrow. See https://github.com/phosphor-icons/core and
+third-party/phosphor-icons/LICENSE.

@@ -1,0 +1,1340 @@
+{
+  "Sculpted": {
+    "label": "RTR-85",
+    "height": 67,
+    "sheets": [
+      "sculpted.css",
+      "rtr-keycap-rounded.css",
+      "rt-shift-legends.css"
+    ],
+    "colors": {
+      "cream": {
+        "label": "Base keys",
+        "color": "#eae6d7"
+      },
+      "blue": {
+        "label": "Center",
+        "color": "#5892b7"
+      },
+      "gold": {
+        "label": "Left stripe",
+        "color": "#c9b45d"
+      },
+      "amber": {
+        "label": "Right stripe",
+        "color": "#bf9148"
+      },
+      "red": {
+        "label": "Punctuation",
+        "color": "#c75858"
+      }
+    },
+    "number": 1
+  },
+  "Square": {
+    "label": "RTS-85",
+    "height": 63,
+    "sheets": [
+      "square-textures.css",
+      "square.css",
+      "rt-shift-legends.css"
+    ],
+    "colors": {
+      "cream": {
+        "label": "Base keys",
+        "color": "#e9ead6"
+      },
+      "blue": {
+        "label": "Center",
+        "color": "#5695c3"
+      },
+      "gold": {
+        "label": "Left stripe",
+        "color": "#e8d669"
+      },
+      "amber": {
+        "label": "Right stripe",
+        "color": "#e1b061"
+      },
+      "red": {
+        "label": "Punctuation",
+        "color": "#df655e"
+      }
+    },
+    "number": 2
+  },
+  "RTC": {
+    "label": "RTC-86",
+    "number": 3,
+    "height": 67,
+    "sheets": [
+      "sculpted.css",
+      "rtc-keycap-art.css",
+      "rt-shift-legends.css"
+    ],
+    "legacy_color_layout": true,
+    "colors": {
+      "cream": {
+        "label": "Base keys",
+        "color": "#eae6d7"
+      },
+      "blue": {
+        "label": "Center",
+        "color": "#5892b7"
+      },
+      "gold": {
+        "label": "Left stripe",
+        "color": "#c9b45d"
+      },
+      "amber": {
+        "label": "Right stripe",
+        "color": "#bf9148"
+      },
+      "red": {
+        "label": "Punctuation",
+        "color": "#c75858"
+      }
+    }
+  },
+  "Wukong": {
+    "label": "Wukong",
+    "number": 4,
+    "height": 60,
+    "tint_artwork": true,
+    "sheets": [
+      "profile-keys.css",
+      "concept-keycaps.css",
+      "reference-layout.css",
+      "concept-type-rajdhani.css",
+      "wukong-keycap-art.css",
+      "wukong.css",
+      "wukong-cap-shade.css",
+      "wukong-console-shape.css"
+    ],
+    "colors": {
+      "cream": {
+        "label": "Charcoal typing keys",
+        "color": "#27272a",
+        "ink": "#f7dca3"
+      },
+      "blue": {
+        "label": "Modifiers",
+        "color": "#245fa5",
+        "ink": "#fff1d0",
+        "keys": [
+          "Tab",
+          "CapsLock",
+          "Backspace",
+          "MasterkeyboardCtrl",
+          "MasterkeyboardAlt",
+          "MasterkeyboardFn",
+          "MasterkeyboardABC",
+          "MasterkeyboardInsert",
+          "MasterkeyboardDelete",
+          "MasterkeyboardHome",
+          "MasterkeyboardEnd",
+          "MasterkeyboardPageUp",
+          "MasterkeyboardPageDown",
+          "MasterkeyboardPrintScreen",
+          "MasterkeyboardScrollLock",
+          "MasterkeyboardPause",
+          "MasterkeyboardNumLock",
+          "MasterkeyboardMenu",
+          "MasterkeyboardF5",
+          "MasterkeyboardF6",
+          "MasterkeyboardF7",
+          "MasterkeyboardF8",
+          "VKPaste",
+          "VKClose",
+          "VKDone",
+          "SwitchKeys_Steam",
+          "SwitchKeys_Layout"
+        ]
+      },
+      "gold": {
+        "label": "Number keys 1–0 & Copy",
+        "color": "#0d7750",
+        "ink": "#f7dca3",
+        "keys": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "0",
+          "!",
+          "@",
+          "#",
+          "$",
+          "%",
+          "^",
+          "&",
+          "*",
+          "(",
+          ")",
+          "MasterkeyboardCopy"
+        ]
+      },
+      "amber": {
+        "label": "Gold keys",
+        "color": "#d9aa50",
+        "ink": "#26170e",
+        "keys": [
+          "Shift",
+          "Enter",
+          " ",
+          "MasterkeyboardEscape"
+        ]
+      },
+      "red": {
+        "label": "Vermilion accents",
+        "color": "#ba3b27",
+        "ink": "#fff1d0",
+        "keys": [
+          "ArrowLeft",
+          "ArrowRight",
+          "ArrowUp",
+          "ArrowDown",
+          "MasterkeyboardArrowLeft",
+          "MasterkeyboardArrowRight",
+          "MasterkeyboardArrowUp",
+          "MasterkeyboardArrowDown",
+          "MasterkeyboardPaste"
+        ]
+      }
+    }
+  },
+  "MiamiAfterHours": {
+    "label": "GTA VI",
+    "number": 5,
+    "height": 60,
+    "sheets": [
+      "profile-keys.css",
+      "concept-keycaps.css",
+      "reference-layout.css",
+      "concept-type-barlow-semi.css",
+      "mt3-sculpted.css",
+      "staggered-legends.css",
+      "reference-cap-surface.css",
+      "reference-cap-mt3-sculpted.css",
+      "reference-cap-legend-fit.css",
+      "gta-keyboard.css"
+    ],
+    "colors": {
+      "cream": {
+        "label": "Lilac typing keys",
+        "color": "#c0a4df",
+        "ink": "#261b42"
+      },
+      "gold": {
+        "label": "Periwinkle number row",
+        "color": "#a8b3ed",
+        "ink": "#20234d",
+        "rows": [
+          0
+        ]
+      },
+      "amber": {
+        "label": "Sunset pink middle row",
+        "color": "#f2acc9",
+        "ink": "#45223b",
+        "rows": [
+          2
+        ]
+      },
+      "rose": {
+        "label": "Peach lower row",
+        "color": "#ffc39d",
+        "ink": "#54283a",
+        "rows": [
+          3
+        ]
+      },
+      "blue": {
+        "label": "Plum controls",
+        "color": "#745689",
+        "ink": "#fff1ff",
+        "keys": [
+          "Tab",
+          "Backspace",
+          "CapsLock",
+          "Shift",
+          "MasterkeyboardCtrl",
+          "MasterkeyboardAlt",
+          "MasterkeyboardCopy",
+          "MasterkeyboardPaste",
+          "MasterkeyboardSelectAll",
+          "VKPaste",
+          "VKClose",
+          "VKDone"
+        ]
+      },
+      "red": {
+        "label": "Apricot accents",
+        "color": "#ffc690",
+        "ink": "#50263d",
+        "keys": [
+          "Enter",
+          "MasterkeyboardFn",
+          "MasterkeyboardABC",
+          "MasterkeyboardEscape"
+        ]
+      }
+    }
+  },
+  "Terminal": {
+    "label": "Terminal SA",
+    "height": 61,
+    "sheets": [
+      "profile-keys.css",
+      "square-textures.css",
+      "photo-keycaps.css",
+      "terminal.css",
+      "staggered-legends.css"
+    ],
+    "colors": {
+      "cream": {
+        "label": "Typing keys",
+        "color": "#c7b89e"
+      },
+      "blue": {
+        "label": "Modifiers",
+        "color": "#695745",
+        "keys": [
+          "Tab",
+          "CapsLock",
+          "Shift",
+          "SwitchKeys_Steam",
+          "SwitchKeys_Layout",
+          "VKClose"
+        ]
+      },
+      "gold": {
+        "label": "Number row",
+        "color": "#a9916c",
+        "rows": [
+          0
+        ]
+      },
+      "amber": {
+        "label": "Navigation",
+        "color": "#797d56",
+        "keys": [
+          "ArrowLeft",
+          "ArrowRight",
+          "ArrowUp",
+          "ArrowDown",
+          "VKPaste"
+        ]
+      },
+      "red": {
+        "label": "Enter / Backspace",
+        "color": "#a95839",
+        "keys": [
+          "Enter",
+          "Backspace"
+        ]
+      }
+    },
+    "number": 6
+  },
+  "JadeEnamel": {
+    "label": "Jade Enamel",
+    "number": 7,
+    "height": 58,
+    "sheets": [
+      "profile-keys.css",
+      "concept-keycaps.css",
+      "reference-layout.css",
+      "concept-type-nunito.css",
+      "jade-keycap-art.css",
+      "jade-enamel.css",
+      "staggered-legends.css",
+      "outer-key-legends.css"
+    ],
+    "colors": {
+      "cream": {
+        "label": "Ivory typing keys",
+        "color": "#f3e6d3",
+        "ink": "#771521"
+      },
+      "blue": {
+        "label": "Jade modifiers",
+        "color": "#426f67",
+        "ink": "#fff1db",
+        "keys": [
+          "Tab",
+          "CapsLock",
+          "Shift",
+          "Backspace",
+          "MasterkeyboardCtrl",
+          "MasterkeyboardAlt"
+        ]
+      },
+      "gold": {
+        "label": "Ivory number row",
+        "color": "#f7ebd8",
+        "ink": "#771521",
+        "rows": [
+          0
+        ]
+      },
+      "amber": {
+        "label": "Jade utilities and Space",
+        "color": "#467a70",
+        "ink": "#fff1db",
+        "keys": [
+          " ",
+          "VKPaste",
+          "VKClose",
+          "VKDone",
+          "SwitchKeys_Steam",
+          "SwitchKeys_Layout"
+        ]
+      },
+      "red": {
+        "label": "Cinnabar accents",
+        "color": "#ab232d",
+        "ink": "#fff2dc",
+        "keys": [
+          "Enter",
+          "MasterkeyboardFn",
+          "MasterkeyboardABC",
+          "MasterkeyboardEscape",
+          "ArrowLeft",
+          "ArrowRight",
+          "ArrowUp",
+          "ArrowDown",
+          "MasterkeyboardArrowLeft",
+          "MasterkeyboardArrowRight",
+          "MasterkeyboardArrowUp",
+          "MasterkeyboardArrowDown"
+        ]
+      }
+    }
+  },
+  "Ceramic": {
+    "label": "Ceramic Glaze",
+    "height": 56,
+    "sheets": [
+      "profile-keys.css",
+      "concept-keycaps.css",
+      "reference-layout.css",
+      "concept-type-plex-sans.css",
+      "concept-type-space-grotesk.css",
+      "ceramic-glaze.css",
+      "staggered-legends.css",
+      "reference-cap-surface.css",
+      "reference-cap-ceramic-glaze.css",
+      "outer-key-legends.css"
+    ],
+    "colors": {
+      "cream": {
+        "label": "Typing keys",
+        "color": "#eee6d5"
+      },
+      "blue": {
+        "label": "Modifiers",
+        "color": "#d7dce2",
+        "keys": [
+          "Tab",
+          "CapsLock",
+          "Shift",
+          "Backspace",
+          "Enter",
+          "MasterkeyboardCtrl",
+          "MasterkeyboardFn",
+          "MasterkeyboardAlt",
+          "MasterkeyboardABC"
+        ]
+      },
+      "gold": {
+        "label": "Number row",
+        "color": "#f5eddb",
+        "rows": [
+          0
+        ]
+      },
+      "amber": {
+        "label": "Utility keys",
+        "color": "#22476c",
+        "keys": [
+          "ArrowLeft",
+          "ArrowRight",
+          "ArrowUp",
+          "ArrowDown",
+          "MasterkeyboardArrowLeft",
+          "MasterkeyboardArrowRight",
+          "MasterkeyboardArrowUp",
+          "MasterkeyboardArrowDown",
+          "VKPaste",
+          "VKClose",
+          "SwitchKeys_Steam",
+          "SwitchKeys_Layout"
+        ]
+      },
+      "red": {
+        "label": "Accents",
+        "color": "#7fbab2",
+        "keys": [
+          " ",
+          "Shift",
+          "Backspace"
+        ]
+      }
+    },
+    "number": 8
+  },
+  "Console": {
+    "label": "Retro Console",
+    "height": 57,
+    "sheets": [
+      "profile-keys.css",
+      "square-textures.css",
+      "photo-keycaps.css",
+      "retro-console.css",
+      "staggered-legends.css"
+    ],
+    "colors": {
+      "cream": {
+        "label": "Typing keys",
+        "color": "#e6e0d6"
+      },
+      "blue": {
+        "label": "Modifiers",
+        "color": "#555668",
+        "keys": [
+          "Tab",
+          "CapsLock",
+          "Shift",
+          "Backspace",
+          "Enter",
+          "SwitchKeys_Steam",
+          "SwitchKeys_Layout"
+        ]
+      },
+      "gold": {
+        "label": "Number row",
+        "color": "#d9d1c8",
+        "rows": [
+          0
+        ]
+      },
+      "amber": {
+        "label": "Navigation",
+        "color": "#3b3b46",
+        "keys": [
+          "ArrowLeft",
+          "ArrowRight",
+          "ArrowUp",
+          "ArrowDown",
+          "VKClose"
+        ]
+      },
+      "red": {
+        "label": "Accent keys",
+        "color": "#b43341",
+        "keys": [
+          "`",
+          "VKPaste"
+        ]
+      }
+    },
+    "number": 9
+  },
+  "FieldAtlas": {
+    "label": "Field Atlas",
+    "number": 10,
+    "height": 59,
+    "tint_artwork": true,
+    "sheets": [
+      "profile-keys.css",
+      "concept-keycaps.css",
+      "reference-layout.css",
+      "concept-type-barlow-semi.css",
+      "staggered-legends.css",
+      "outer-key-legends.css",
+      "field-atlas-art.css",
+      "field-atlas.css"
+    ],
+    "colors": {
+      "cream": {
+        "label": "Sand typing keys",
+        "color": "#d6c39f",
+        "ink": "#262820"
+      },
+      "blue": {
+        "label": "Olive modifiers",
+        "color": "#535b43",
+        "ink": "#f3e7cd",
+        "keys": [
+          "Tab",
+          "CapsLock",
+          "Shift",
+          "Backspace",
+          "MasterkeyboardCtrl",
+          "MasterkeyboardAlt",
+          "MasterkeyboardFn",
+          "MasterkeyboardABC",
+          " "
+        ]
+      },
+      "gold": {
+        "label": "Sand number row",
+        "color": "#d0b990",
+        "ink": "#262820",
+        "rows": [
+          0
+        ]
+      },
+      "amber": {
+        "label": "Graphite utilities",
+        "color": "#363a32",
+        "ink": "#f3e7cd",
+        "keys": [
+          "MasterkeyboardCopy",
+          "MasterkeyboardPaste",
+          "MasterkeyboardSelectAll",
+          "VKPaste",
+          "VKClose",
+          "VKDone",
+          "SwitchKeys_Steam",
+          "SwitchKeys_Layout"
+        ]
+      },
+      "red": {
+        "label": "Signal orange",
+        "color": "#dd713b",
+        "ink": "#20231f",
+        "keys": [
+          "Enter",
+          "ArrowLeft",
+          "ArrowRight",
+          "ArrowUp",
+          "ArrowDown",
+          "MasterkeyboardArrowLeft",
+          "MasterkeyboardArrowRight",
+          "MasterkeyboardArrowUp",
+          "MasterkeyboardArrowDown",
+          "MasterkeyboardEscape"
+        ]
+      }
+    }
+  },
+  "Cyber": {
+    "label": "Cyber Alloy",
+    "height": 56,
+    "sheets": [
+      "profile-keys.css",
+      "concept-type-rajdhani.css",
+      "reference-cap-cyber-alloy.css",
+      "reference-cap-legend-fit.css",
+      "cyber-alloy.css"
+    ],
+    "colors": {
+      "cream": {
+        "label": "Typing keys",
+        "color": "#75cbd9"
+      },
+      "blue": {
+        "label": "Modifiers",
+        "color": "#293547",
+        "keys": [
+          "Tab",
+          "CapsLock",
+          "Shift",
+          "Backspace",
+          "Enter",
+          "SwitchKeys_Steam",
+          "SwitchKeys_Layout",
+          "MasterkeyboardCtrl",
+          "MasterkeyboardAlt",
+          "MasterkeyboardFn",
+          "MasterkeyboardABC"
+        ]
+      },
+      "gold": {
+        "label": "Number row",
+        "color": "#ef619f",
+        "rows": [
+          0
+        ]
+      },
+      "amber": {
+        "label": "Space / utility",
+        "color": "#4c6075",
+        "keys": [
+          " ",
+          "VKPaste",
+          "VKClose"
+        ]
+      },
+      "red": {
+        "label": "Arrows",
+        "color": "#513a52",
+        "keys": [
+          "ArrowLeft",
+          "ArrowRight",
+          "ArrowUp",
+          "ArrowDown",
+          "MasterkeyboardArrowLeft",
+          "MasterkeyboardArrowRight",
+          "MasterkeyboardArrowUp",
+          "MasterkeyboardArrowDown"
+        ]
+      }
+    },
+    "number": 11
+  },
+  "Walnut": {
+    "label": "Walnut & Bronze",
+    "height": 57,
+    "sheets": [
+      "profile-keys.css",
+      "concept-keycaps.css",
+      "reference-layout.css",
+      "concept-type-space-grotesk.css",
+      "concept-type-plex-sans.css",
+      "walnut-bronze.css",
+      "staggered-legends.css",
+      "reference-cap-surface.css",
+      "reference-cap-walnut-bronze.css",
+      "reference-cap-legend-fit.css"
+    ],
+    "colors": {
+      "cream": {
+        "label": "Typing keys",
+        "color": "#f1e2c6"
+      },
+      "blue": {
+        "label": "Modifiers",
+        "color": "#514038",
+        "keys": [
+          "Tab",
+          "CapsLock",
+          "Shift",
+          "Backspace",
+          "Enter",
+          "MasterkeyboardCtrl",
+          "MasterkeyboardFn",
+          "MasterkeyboardAlt",
+          "MasterkeyboardABC"
+        ]
+      },
+      "gold": {
+        "label": "Number row",
+        "color": "#e1d0b3",
+        "rows": [
+          0
+        ]
+      },
+      "amber": {
+        "label": "Utility keys / Space",
+        "color": "#5a6141",
+        "keys": [
+          "ArrowLeft",
+          "ArrowRight",
+          "ArrowUp",
+          "ArrowDown",
+          "VKPaste",
+          "VKClose",
+          "SwitchKeys_Steam",
+          "SwitchKeys_Layout",
+          " "
+        ]
+      },
+      "red": {
+        "label": "Accents",
+        "color": "#636847",
+        "keys": [
+          "Enter"
+        ]
+      }
+    },
+    "number": 12
+  },
+  "Modular": {
+    "label": "Modular Grid",
+    "height": 57,
+    "sheets": [
+      "profile-keys.css",
+      "concept-keycaps.css",
+      "reference-layout.css",
+      "concept-type-rajdhani.css",
+      "modular-grid.css",
+      "staggered-legends.css",
+      "reference-cap-surface.css",
+      "reference-cap-modular-grid.css",
+      "reference-cap-legend-fit.css",
+      "outer-key-legends.css"
+    ],
+    "colors": {
+      "cream": {
+        "label": "Typing keys",
+        "color": "#b9bec1"
+      },
+      "blue": {
+        "label": "Modifiers",
+        "color": "#707982",
+        "keys": [
+          "Tab",
+          "CapsLock",
+          "Shift",
+          "Backspace",
+          "Enter",
+          "MasterkeyboardCtrl",
+          "MasterkeyboardFn",
+          "MasterkeyboardAlt",
+          "MasterkeyboardABC"
+        ]
+      },
+      "gold": {
+        "label": "Number row",
+        "color": "#cdd1d2",
+        "rows": [
+          0
+        ]
+      },
+      "amber": {
+        "label": "Utility keys",
+        "color": "#3d4349",
+        "keys": [
+          "ArrowLeft",
+          "ArrowRight",
+          "ArrowUp",
+          "ArrowDown",
+          "VKPaste",
+          "VKClose",
+          "SwitchKeys_Steam",
+          "SwitchKeys_Layout"
+        ]
+      },
+      "red": {
+        "label": "Accents",
+        "color": "#e5a947",
+        "keys": [
+          "Enter"
+        ]
+      }
+    },
+    "number": 13
+  },
+  "Control": {
+    "label": "Studio Control",
+    "height": 56,
+    "sheets": [
+      "profile-keys.css",
+      "concept-keycaps.css",
+      "reference-layout.css",
+      "concept-type-barlow-semi.css",
+      "studio-control.css",
+      "staggered-legends.css",
+      "reference-cap-surface.css",
+      "reference-cap-studio-control.css",
+      "reference-cap-legend-fit.css",
+      "outer-key-legends.css"
+    ],
+    "colors": {
+      "cream": {
+        "label": "Typing keys",
+        "color": "#e6e3db"
+      },
+      "blue": {
+        "label": "Modifiers",
+        "color": "#546d86",
+        "keys": [
+          "Tab",
+          "CapsLock",
+          "Shift",
+          "Backspace",
+          "Enter",
+          "MasterkeyboardAlt"
+        ]
+      },
+      "gold": {
+        "label": "Number row",
+        "color": "#d4d3cd",
+        "rows": [
+          0
+        ]
+      },
+      "amber": {
+        "label": "Utility keys",
+        "color": "#ce641e",
+        "keys": [
+          "ArrowLeft",
+          "ArrowRight",
+          "ArrowUp",
+          "ArrowDown",
+          "VKPaste",
+          "VKClose",
+          "SwitchKeys_Steam",
+          "SwitchKeys_Layout",
+          "MasterkeyboardCtrl",
+          "MasterkeyboardFn",
+          "MasterkeyboardABC"
+        ]
+      },
+      "red": {
+        "label": "Accents",
+        "color": "#586e82",
+        "keys": [
+          "Enter"
+        ]
+      }
+    },
+    "number": 14
+  },
+  "Industrial": {
+    "label": "Industrial Gray",
+    "height": 59,
+    "sheets": [
+      "profile-keys.css",
+      "concept-keycaps.css",
+      "reference-layout.css",
+      "concept-type-plex-mono.css",
+      "concept-type-barlow-semi.css",
+      "industrial-gray.css",
+      "staggered-legends.css",
+      "reference-cap-surface.css",
+      "reference-cap-industrial-gray.css",
+      "outer-key-legends.css",
+      "bottom-arrow-legends.css"
+    ],
+    "colors": {
+      "cream": {
+        "label": "Typing keys",
+        "color": "#d9d4c0"
+      },
+      "blue": {
+        "label": "Modifiers",
+        "color": "#777a63",
+        "keys": [
+          "Tab",
+          "CapsLock",
+          "Shift",
+          "Backspace",
+          "Enter",
+          "MasterkeyboardCtrl",
+          "MasterkeyboardFn",
+          "MasterkeyboardAlt",
+          "MasterkeyboardABC"
+        ]
+      },
+      "gold": {
+        "label": "Number row",
+        "color": "#dad5c5",
+        "rows": [
+          0
+        ]
+      },
+      "amber": {
+        "label": "Utility keys",
+        "color": "#525748",
+        "keys": [
+          "ArrowLeft",
+          "ArrowRight",
+          "ArrowUp",
+          "ArrowDown",
+          "VKPaste",
+          "VKClose",
+          "SwitchKeys_Steam",
+          "SwitchKeys_Layout"
+        ]
+      },
+      "red": {
+        "label": "Accents",
+        "color": "#858774",
+        "keys": [
+          "Enter"
+        ]
+      }
+    },
+    "number": 15
+  },
+  "Translucent": {
+    "label": "Translucent Shell",
+    "height": 56,
+    "sheets": [
+      "profile-keys.css",
+      "concept-keycaps.css",
+      "reference-layout.css",
+      "concept-type-space-grotesk.css",
+      "translucent-shell.css",
+      "staggered-legends.css",
+      "reference-cap-surface.css",
+      "reference-cap-translucent-shell.css",
+      "outer-key-legends.css"
+    ],
+    "colors": {
+      "cream": {
+        "label": "Typing keys",
+        "color": "#f3e4c3"
+      },
+      "blue": {
+        "label": "Modifiers",
+        "color": "#50282a",
+        "keys": [
+          "Tab",
+          "CapsLock",
+          "Shift",
+          "Backspace",
+          "Enter",
+          "MasterkeyboardCtrl",
+          "MasterkeyboardFn",
+          "MasterkeyboardAlt",
+          "MasterkeyboardABC"
+        ]
+      },
+      "gold": {
+        "label": "Number row",
+        "color": "#eddbb4",
+        "rows": [
+          0
+        ]
+      },
+      "amber": {
+        "label": "Utility keys",
+        "color": "#6d3d32",
+        "keys": [
+          "ArrowLeft",
+          "ArrowRight",
+          "ArrowUp",
+          "ArrowDown",
+          "VKPaste",
+          "VKClose",
+          "SwitchKeys_Steam",
+          "SwitchKeys_Layout"
+        ]
+      },
+      "red": {
+        "label": "Accents",
+        "color": "#602d2f",
+        "keys": [
+          "Enter"
+        ]
+      }
+    },
+    "number": 16
+  },
+  "Machined": {
+    "label": "Machined Alloy",
+    "height": 57,
+    "sheets": [
+      "profile-keys.css",
+      "concept-keycaps.css",
+      "reference-layout.css",
+      "concept-type-rajdhani.css",
+      "concept-type-barlow-semi.css",
+      "machined-alloy.css",
+      "staggered-legends.css",
+      "reference-cap-surface.css",
+      "reference-cap-machined-alloy.css",
+      "outer-key-legends.css"
+    ],
+    "colors": {
+      "cream": {
+        "label": "Typing keys",
+        "color": "#33373b"
+      },
+      "blue": {
+        "label": "Modifiers",
+        "color": "#24282c",
+        "keys": [
+          "Tab",
+          "CapsLock",
+          "Shift",
+          "Backspace",
+          "Enter",
+          "MasterkeyboardCtrl",
+          "MasterkeyboardFn",
+          "MasterkeyboardAlt",
+          "MasterkeyboardABC"
+        ]
+      },
+      "gold": {
+        "label": "Number row",
+        "color": "#3e4348",
+        "rows": [
+          0
+        ]
+      },
+      "amber": {
+        "label": "Utility keys",
+        "color": "#20282e",
+        "keys": [
+          "ArrowLeft",
+          "ArrowRight",
+          "ArrowUp",
+          "ArrowDown",
+          "VKPaste",
+          "VKClose",
+          "SwitchKeys_Steam",
+          "SwitchKeys_Layout"
+        ]
+      },
+      "red": {
+        "label": "Accents",
+        "color": "#9e2c2b",
+        "keys": [
+          "Shift",
+          "Backspace"
+        ]
+      }
+    },
+    "number": 17
+  },
+  "Studio": {
+    "label": "Studio DSA",
+    "height": 54,
+    "sheets": [
+      "profile-keys.css",
+      "square-textures.css",
+      "photo-keycaps.css",
+      "studio.css",
+      "rt-shift-legends.css"
+    ],
+    "colors": {
+      "cream": {
+        "label": "Typing keys",
+        "color": "#dedacf"
+      },
+      "blue": {
+        "label": "Modifiers",
+        "color": "#667e92",
+        "keys": [
+          "Tab",
+          "CapsLock",
+          "Shift",
+          "Enter",
+          "Backspace",
+          "SwitchKeys_Steam",
+          "SwitchKeys_Layout"
+        ]
+      },
+      "gold": {
+        "label": "Number row",
+        "color": "#aec0c7",
+        "rows": [
+          0
+        ]
+      },
+      "amber": {
+        "label": "Home row",
+        "color": "#b6bea9",
+        "rows": [
+          2
+        ],
+        "keys": [
+          " "
+        ]
+      },
+      "red": {
+        "label": "Navigation",
+        "color": "#b76a57",
+        "keys": [
+          "ArrowLeft",
+          "ArrowRight",
+          "ArrowUp",
+          "ArrowDown",
+          "VKPaste",
+          "VKClose"
+        ]
+      }
+    },
+    "number": 18
+  },
+  "PastelPlush": {
+    "label": "Pastel Plush",
+    "height": 59,
+    "sheets": [
+      "profile-keys.css",
+      "concept-keycaps.css",
+      "reference-layout.css",
+      "concept-type-nunito.css",
+      "plush-keycap-art.css",
+      "pastel-plush.css",
+      "staggered-legends.css",
+      "outer-key-legends.css"
+    ],
+    "colors": {
+      "cream": {
+        "label": "Vanilla plush",
+        "color": "#f9edcc",
+        "keys": [
+          "2",
+          "@",
+          "6",
+          "^",
+          "0",
+          ")"
+        ]
+      },
+      "blue": {
+        "label": "Lilac plush",
+        "color": "#e6d8fa",
+        "keys": [
+          "1",
+          "!",
+          "5",
+          "%",
+          "9",
+          "(",
+          "w",
+          "i",
+          "s",
+          "g",
+          "k",
+          "x",
+          "n",
+          "[",
+          "{",
+          ";",
+          ":",
+          "MasterkeyboardAlt",
+          " "
+        ]
+      },
+      "gold": {
+        "label": "Blush plush",
+        "color": "#f8d6e7",
+        "rows": [
+          0
+        ],
+        "keys": [
+          "q",
+          "r",
+          "y",
+          "o",
+          "d",
+          "h",
+          "l",
+          "c",
+          "m",
+          "/",
+          "?"
+        ]
+      },
+      "amber": {
+        "label": "Sky plush",
+        "color": "#d3e4f9",
+        "keys": [
+          "e",
+          "u",
+          "f",
+          "j",
+          "b",
+          ",",
+          "<",
+          "Tab",
+          "MasterkeyboardFn",
+          "MasterkeyboardABC",
+          "ArrowLeft",
+          "ArrowRight",
+          "ArrowUp",
+          "ArrowDown",
+          "MasterkeyboardArrowLeft",
+          "MasterkeyboardArrowRight",
+          "MasterkeyboardArrowUp",
+          "MasterkeyboardArrowDown",
+          "VKPaste",
+          "SwitchKeys_Steam",
+          "SwitchKeys_Layout"
+        ]
+      },
+      "red": {
+        "label": "Peach plush",
+        "color": "#f8decf",
+        "keys": [
+          "t",
+          "p",
+          "a",
+          "z",
+          "v",
+          "CapsLock",
+          "Shift",
+          "Backspace",
+          "Enter",
+          "MasterkeyboardCtrl",
+          "VKClose",
+          "MasterkeyboardEscape"
+        ]
+      }
+    },
+    "number": 19
+  },
+  "SpectrumRGB": {
+    "label": "Spectrum RGB",
+    "number": 20,
+    "height": 58,
+    "sheets": [
+      "profile-keys.css",
+      "concept-keycaps.css",
+      "reference-layout.css",
+      "concept-type-rajdhani.css",
+      "spectrum-rgb.css",
+      "staggered-legends.css",
+      "outer-key-legends.css",
+      "bottom-arrow-legends.css"
+    ],
+    "colors": {
+      "cream": {
+        "label": "Typing keys",
+        "color": "#17191d"
+      },
+      "blue": {
+        "label": "Modifiers",
+        "color": "#191b20",
+        "keys": [
+          "Tab",
+          "CapsLock",
+          "Shift",
+          "Backspace",
+          "MasterkeyboardCtrl",
+          "MasterkeyboardAlt"
+        ]
+      },
+      "gold": {
+        "label": "Number row",
+        "color": "#181b1f",
+        "rows": [
+          0
+        ]
+      },
+      "amber": {
+        "label": "Utility keys",
+        "color": "#1b1d23",
+        "keys": [
+          " ",
+          "VKPaste",
+          "VKClose",
+          "VKDone",
+          "SwitchKeys_Steam",
+          "SwitchKeys_Layout",
+          "ArrowLeft",
+          "ArrowRight",
+          "ArrowUp",
+          "ArrowDown",
+          "MasterkeyboardArrowLeft",
+          "MasterkeyboardArrowRight",
+          "MasterkeyboardArrowUp",
+          "MasterkeyboardArrowDown"
+        ]
+      },
+      "red": {
+        "label": "Accent keys",
+        "color": "#202127",
+        "keys": [
+          "Enter",
+          "MasterkeyboardFn",
+          "MasterkeyboardABC",
+          "MasterkeyboardEscape"
+        ]
+      }
+    }
+  }
+}

@@ -53,6 +53,10 @@ If you use another Steam keyboard theme in CSS Loader, disable it before enablin
 
 Master Keyboard includes six ready-to-use themes and previews of fourteen additional styles.
 
+## Source and verification
+
+The Decky client source, dependency lockfile, and third-party notices are here. See [Build and verify](BUILD.md) for instructions to reproduce the frontend and review what the plugin accesses.
+
 ## Feedback
 
 To report an issue, include your handheld model, OS, Steam client channel, Decky version and the selected theme.

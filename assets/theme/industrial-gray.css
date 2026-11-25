@@ -1,0 +1,25 @@
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 {
+  --mk-concept-font: "MK IBM Plex Mono", monospace;
+  --mk-concept-weight: 600;
+  --mk-concept-size: 14px;
+  --mk-concept-control-font: "MK Barlow Semi Condensed", system-ui, sans-serif;
+  --mk-concept-control-tracking: .035em;
+  --mk-concept-corner: 6px;
+  --mk-concept-wall: 5px;
+  --mk-concept-depth: .15;
+  --mk-reference-cap-glint: #d3c6a850;
+  --mk-concept-grain:
+    repeating-linear-gradient(128deg, #24251c0c 0 1px, transparent 1px 4px),
+    radial-gradient(ellipse at 47% 42%, #0002, transparent 56%, #fff3);
+  --mk-concept-face-shadow: inset 0 1px 1px #fff7, inset 0 -2px 1px #302d245c, 0 1px 2px #0009;
+}
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="Tab"], [data-key="CapsLock"], [data-key="Shift"]) {
+  --mk-profile-edge-radius: 4px;
+  --mk-profile-face-radius: 3px;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 .Row_4
+[data-key^="Arrow"][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-bottom-arrow-y: 41%;
+}

@@ -1,0 +1,18 @@
+.DefaultTheme:is(.virtualkeyboard_Keyboard_45rH7, .virtualkeyboard_EmojiKeyboard_icETE),
+.DefaultTheme :is(.virtualkeyboard_Keyboard_45rH7, .virtualkeyboard_EmojiKeyboard_icETE) {
+  --mk-panel-rgb: var(--mk-custom-background-rgb);
+  --mk-custom-pressed-well: transparent;
+  --background-color: rgb(var(--mk-panel-rgb) / var(--mk-background-opacity, 100%));
+  background-color: var(--background-color);
+}
+
+/* Let the custom panel begin at the first row. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7:is([role="grid"], .mk-preview-keyboard) {
+  --mk-panel-cap-inset: 1px;
+  padding-block-start: 0;
+}
+
+/* Let the selected panel show through the socket in every key state. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 [data-key][data-key-row] {
+  background: transparent;
+}

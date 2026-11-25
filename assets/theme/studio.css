@@ -1,0 +1,88 @@
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 {
+  --mk-profile-edge-radius: 7px;
+  --mk-photo-legend-font: "URW Gothic", "Liberation Sans", sans-serif;
+  --mk-photo-tracking: .016em;
+  --mk-profile-label-rise: clamp(2px, calc(var(--retro-row-height) * .05), 3px);
+  --mk-profile-legend-size: 14px;
+  --mk-profile-legend-weight: 600;
+  --mk-profile-control-inset: 12px;
+  --mk-paired-legend-start: calc(-1 * min(5px, 10%));
+  --mk-paired-legend-top: calc(-1 * var(--mk-profile-label-rise));
+  --mk-paired-legend-end: min(5px, 10%);
+  --mk-cap-photo-strength: .9;
+  --mk-cap-photo-slice: 40 47 57 fill;
+  --mk-cap-photo-insets: 4px 7px 7px;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is(.Row_0, .Row_1, .Row_2, .Row_3, .Row_4) {
+  column-gap: 0;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+.virtualkeyboard_KeyboardKeyHitArea_1YqjV[data-key-row] {
+  padding: .65px .35px;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+  border-color: color-mix(in srgb, var(--mk-profile-edge), #181920 40%);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX::before {
+  --mk-cap-sliced-photo: var(--mk-cap-photo);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="MasterkeyboardCtrl"], [data-key="MasterkeyboardAlt"], [data-key="MasterkeyboardFn"], [data-key="MasterkeyboardABC"])[data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX {
+  justify-content: center;
+  align-items: center;
+  padding-inline: min(7px, 12%);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="MasterkeyboardCtrl"], [data-key="MasterkeyboardAlt"], [data-key="MasterkeyboardFn"], [data-key="MasterkeyboardABC"])[data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX > span {
+  margin: 0;
+  text-align: center;
+  letter-spacing: 0;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key="Backspace"][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-profile-control-inset: min(12px, 14%);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+:is([data-key="CapsLock"], [data-key="Shift"], [data-key="Enter"], [data-key="Backspace"])[data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX > .virtualkeyboard_ActionButtonGlyph_3VtXf {
+  top: -2px;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row="0"] > .virtualkeyboard_KeyboardKey_2KhPX:has(
+  > :is(.virtualkeyboard_ShiftedLabel_3FZuk, .virtualkeyboard_InactiveLabel_1lPIY):not(.virtualkeyboard_AltGrLabel_21WhT)
+) {
+  row-gap: 2px;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 [data-key=" "] {
+  --mk-bottom-icon-offset: 2px;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 .Row_4
+:is([data-key="SwitchKeys_Steam"], [data-key="SwitchKeys_Layout"])[data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX > span:has(> svg) {
+  inset-block: 0;
+  block-size: auto;
+  transform: none;
+}
+
+/* Keep square and curly brackets distinct at the keyboard's small sizes. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row]:is([data-key="["], [data-key="]"], [data-key="{"], [data-key="}"])
+> .virtualkeyboard_KeyboardKey_2KhPX > span:not(.virtualkeyboard_AltGrLabel_21WhT) {
+  font-family: "Nimbus Sans", "Liberation Sans", sans-serif;
+}

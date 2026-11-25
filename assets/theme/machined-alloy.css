@@ -1,0 +1,68 @@
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 {
+  --mk-concept-font: "Rajdhani", system-ui, sans-serif;
+  --mk-concept-weight: 700;
+  --mk-concept-tracking: .04em;
+  --mk-concept-control-font: "MK Barlow Semi Condensed", system-ui, sans-serif;
+  --mk-concept-control-tracking: .045em;
+  --mk-concept-corner: 5px;
+  --mk-concept-wall: 5px;
+  --mk-concept-depth: .17;
+  --mk-reference-cap-glint: #e5efff90;
+  --mk-concept-grain: linear-gradient(162deg, #ffffff24, transparent 40%, #090a0b26);
+  --mk-concept-face-shadow: inset 0 1px 0 #fff7, inset 1px 0 0 #fff2, inset -1px -1px 1px #0007;
+}
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+  clip-path: polygon(5px 0, calc(100% - 5px) 0, 100% 5px, 100% calc(100% - 5px),
+    calc(100% - 5px) 100%, 5px 100%, 0 calc(100% - 5px), 0 5px);
+}
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX::before {
+  clip-path: polygon(3px 0, calc(100% - 3px) 0, 100% 3px, 100% 100%, 0 100%, 0 3px);
+}
+
+/* Center each control and its badge on the raised metal face. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+> :is(.Row_0, .Row_1, .Row_2, .Row_3, .Row_4)
+:is([data-key="Tab"], [data-key="CapsLock"], [data-key="Shift"], [data-key="Backspace"],
+    [data-key="Enter"], [data-key="MasterkeyboardCtrl"])[data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX {
+  justify-content: center;
+  align-items: center;
+  padding-inline: min(6px, 9%);
+  gap: 3px;
+  text-align: center;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+> .Row_1 [data-key="Backspace"][data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX > span:not(.virtualkeyboard_AltGrLabel_21WhT) {
+  font-size: clamp(9px, calc(var(--retro-row-height) * .22), 11px);
+}
+
+/* Keep paired legends clear of the top chamfer. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+> :is(.Row_0, .Row_1, .Row_2, .Row_3)
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX:has(
+  > .virtualkeyboard_ShiftedLabel_3FZuk:not(.virtualkeyboard_AltGrLabel_21WhT, .virtualkeyboard_InactiveLabel_1lPIY)
+) {
+  --mk-cap-legend-lift: clamp(2px, calc(var(--retro-row-height) * .075), 4px);
+  row-gap: 1px;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+> :is(.Row_0, .Row_1, .Row_2, .Row_3)
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX:has(
+  > .virtualkeyboard_ShiftedLabel_3FZuk:not(.virtualkeyboard_AltGrLabel_21WhT, .virtualkeyboard_InactiveLabel_1lPIY)
+)
+> span:not(.virtualkeyboard_AltGrLabel_21WhT, .virtualkeyboard_InactiveLabel_1lPIY) {
+  line-height: 1;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+> .Row_4 [data-key^="Arrow"][data-key][data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX
+> span:not(.virtualkeyboard_AltGrLabel_21WhT):not(.virtualkeyboard_InactiveLabel_1lPIY) {
+  position: absolute;
+  inset: 41% auto auto 50%;
+}
