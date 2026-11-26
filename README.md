@@ -3,6 +3,7 @@
 Master Keyboard redesigns Steam’s on-screen keyboard for **Bazzite and SteamOS Gaming Mode**. The Decky Loader plugin adds function keys, text editing shortcuts, controller feedback and customizable keyboard themes for handheld play.
 
 [**Download the latest release for Decky Loader**](https://github.com/soullegacyvn-ux/Master-Keyboard/releases/latest)
+· [See the keyboard in use](#see-the-keyboard-in-use)
 
 ![Master Keyboard poster showing cropped keycaps from Jade Enamel, Wukong, RTC-86, RTR-85 and Cyber Alloy](master-keyboard.png)
 
@@ -10,11 +11,25 @@ Master Keyboard redesigns Steam’s on-screen keyboard for **Bazzite and SteamOS
 
 - **Fn and navigation.** Reach F1–F12, Escape, Home, End, Page Up, Page Down and the four arrow keys from the on-screen keyboard.
 - **Text editing.** Select all, cut, copy, paste, undo and redo with dedicated buttons. Tap Ctrl or Alt to hold it for a shortcut.
-- **Typing preview and Premium gestures.** Enable **Typing preview** to see your text above the keyboard. With Premium, drag horizontally on Space to move the cursor. Hold Shift with one finger and drag Space with the other to select text. Tap Space once to insert a space.
+- **Typing preview.** See the text you’re typing above the keyboard. Premium adds gestures for moving the cursor and selecting text.
 - **Visible controller feedback.** A filled focus color shows your selected key. Pressed and held keys sink and darken.
 - **Custom appearance and sound.** Adjust the keyboard height, theme colors, background opacity, focus color and typing sound.
 
-![Fn, editing and handheld controls in the Master Keyboard layout](keyboard-controls.png)
+## See the keyboard in use
+
+### Space gestures · Premium
+
+In Gaming Mode, open **Decky → Master Keyboard → Layout & sound** and turn on **Typing preview**. This enables both gestures on **v1.2.11 or later** with Premium active. The **Preview on/off** button at the upper left of the keyboard also controls whether the gestures are available.
+
+![Swipe horizontally on Space to move the cursor within your text. Tap Space to type one space.](docs/features/space-swipe.png)
+
+![Hold Shift with one finger and swipe Space with the other to select text. Copy it, cut it from Fn, delete it with Backspace, or type to replace it.](docs/features/text-selection.png)
+
+### Fn and editing shortcuts
+
+Tap **Fn** to reveal **F1–F12**, navigation and editing commands. **Copy** and **Paste** are also available on the main layout.
+
+![The Fn layer adds function keys, Home, End, Page Up and Page Down, plus Cut, Copy, Paste, Undo and Redo.](docs/features/fn-shortcuts.png)
 
 ## Install on Bazzite or SteamOS
 
