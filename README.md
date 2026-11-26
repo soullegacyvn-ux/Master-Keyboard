@@ -42,14 +42,6 @@ If Decky is already installed, skip to the next section.
 
 ### 2. Install Master Keyboard
 
-#### From Decky's Custom Store
-
-1. In Gaming Mode, open the Quick Access Menu (**…**) and select the **Decky** plug icon.
-2. Open **Settings → General → Store Channel** and select **Custom**. Enter `https://master-keyboard-decky-store.soullegacyvn.workers.dev/plugins` as the Store URL.
-3. Open Decky's Store and install **Master Keyboard**. Decky checks this catalog for updates while the Custom channel is selected.
-
-#### From a ZIP
-
 1. In Desktop Mode, download the Master Keyboard install ZIP from [GitHub Releases](https://github.com/soullegacyvn-ux/Master-Keyboard/releases/latest) to **Downloads** and leave it zipped.
 2. Return to Gaming Mode. Open the Quick Access Menu (**…**) and select the **Decky** plug icon.
 3. Select the **Settings** gear. Under **General**, turn on **Developer mode**.
@@ -61,7 +53,7 @@ After installation, open **Master Keyboard** in Decky, turn on **Enabled**, and 
 
 On **v1.2.0 or later**, open **Decky → Master Keyboard → Check for updates**. When a release is available, choose **Install update** and confirm in Decky.
 
-For versions before v1.2.0, install the latest ZIP over your current copy or update through the Master Keyboard Custom Store above. Your saved settings carry over.
+For versions before v1.2.0, install the latest ZIP over your current copy. Your saved settings carry over.
 
 If you use another Steam keyboard theme in CSS Loader, disable it before enabling Master Keyboard.
 
