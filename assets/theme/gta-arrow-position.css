@@ -1,0 +1,15 @@
+/* Use the same center for the regular and shifted directions on the bottom caps. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 {
+  --mk-bottom-arrow-y: 49%;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 .Row_4
+[data-key^="Arrow"][data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX:has(
+  > .virtualkeyboard_ShiftedLabel_3FZuk:not(.virtualkeyboard_AltGrLabel_21WhT, .virtualkeyboard_InactiveLabel_1lPIY)
+)
+> span:not(.virtualkeyboard_AltGrLabel_21WhT, .virtualkeyboard_InactiveLabel_1lPIY) {
+  position: absolute;
+  inset: var(--mk-bottom-arrow-y) auto auto 50%;
+  transform: none;
+}

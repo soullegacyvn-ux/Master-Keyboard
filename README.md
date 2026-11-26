@@ -10,6 +10,7 @@ Master Keyboard redesigns Steam’s on-screen keyboard for **Bazzite and SteamOS
 
 - **Fn and navigation.** Reach F1–F12, Escape, Home, End, Page Up, Page Down and the four arrow keys from the on-screen keyboard.
 - **Text editing.** Select all, cut, copy, paste, undo and redo with dedicated buttons. Tap Ctrl or Alt to hold it for a shortcut.
+- **Typing preview and Premium gestures.** Enable **Typing preview** to see your text above the keyboard. With Premium, drag horizontally on Space to move the cursor. Hold Shift with one finger and drag Space with the other to select text. Tap Space once to insert a space.
 - **Visible controller feedback.** A filled focus color shows your selected key. Pressed and held keys sink and darken.
 - **Custom appearance and sound.** Adjust the keyboard height, theme colors, background opacity, focus color and typing sound.
 

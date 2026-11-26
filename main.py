@@ -328,6 +328,8 @@ class Theme:
             files.add("focus.css")
         for profile in self.profiles.values():
             files.update(profile["sheets"])
+        if "MiamiAfterHours" in self.profiles:
+            files.add("gta-arrow-position.css")
         sources = {
             name: downloaded[name] if name in downloaded else (folder / name).read_text(encoding="utf-8")
             for name in sorted(files)
@@ -377,6 +379,8 @@ class Theme:
             sheets.append(self.profile_rules[shape])
         sheets.append(self.sheets["control-accents.css"])
         sheets.append(self.sheets["focus-fill.css"])
+        if shape == "MiamiAfterHours":
+            sheets.append(self.sheets["gta-arrow-position.css"])
         css = "\n".join(sheets)
         focus_color = settings["focus_color"]
         preset = FOCUS_PALETTES.get(focus_color)
@@ -1141,6 +1145,7 @@ class Plugin:
                 response.raise_for_status()
                 targets = await response.json()
             typing_shortcuts = {name: self.settings[name] for name in TYPING_SHORTCUTS}
+            typing_shortcuts["space_cursor_swipe"] = self.public is not None and self.public.pack is not None
             updates = [
                 style_page(client, url, css, revision, preset not in (None, "Off"),
                            self.reference_script,

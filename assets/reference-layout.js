@@ -64,17 +64,30 @@
     const layoutAttribute = "data-mk-layout";
     let patch;
 
+    const spaceKey = '[data-key=" "][data-key-row]';
+    const shiftKey = '[data-key="Shift"][data-key-row]';
+    const spaceSwipeStep = 14;
+    const spaceTouchListeners = new AbortController();
+    let spaceGesture;
+
     // Typing preview: a strip above the keyboard that mirrors what was typed since
     // the keyboard opened, so the text stays readable when the keyboard covers the field.
     const previewId = "masterkeyboard-typing-preview";
     let typed = "";
-    let selectedAll = false;
+    let selectionAnchor = null;
     let previewDismissed = false;
+    let previewCaret = null;
+    let previewUpdateFrame = 0;
+    let revealCaretFrame = 0;
+    const previewGraphemes = new Intl.Segmenter(undefined, { granularity: "grapheme" });
+    let segmentedText = "";
+    let caretStops = [0];
     let managerPatch;
     const typingSettings = {
         shift_double_tap_lock: settings.shift_double_tap_lock !== false,
         double_space_period: settings.double_space_period !== false,
         sentence_capitalization: settings.sentence_capitalization !== false,
+        space_cursor_swipe: settings.space_cursor_swipe === true,
     };
     let lastCommitted = "";
     let firstSpaceAt;
@@ -89,11 +102,12 @@
     function setTypingSettings(next = {}) {
         let changed = false;
         for (const key of Object.keys(typingSettings)) {
-            const enabled = next[key] !== false;
+            const enabled = key === "space_cursor_swipe" ? next[key] === true : next[key] !== false;
             changed ||= typingSettings[key] !== enabled;
             typingSettings[key] = enabled;
         }
         if (changed) {
+            if (!typingSettings.space_cursor_swipe) clearSpaceGesture();
             resetTyping();
             const component = managerPatch?.component;
             if (component) state(component).lastShiftTap = undefined;
@@ -114,12 +128,19 @@
     const toggleId = "masterkeyboard-typing-preview-toggle";
 
     function removePreview() {
+        cancelAnimationFrame(previewUpdateFrame);
+        previewUpdateFrame = 0;
+        cancelAnimationFrame(revealCaretFrame);
+        revealCaretFrame = 0;
         document.getElementById(previewId)?.remove();
     }
 
     function resetPreview() {
         typed = "";
-        selectedAll = false;
+        selectionAnchor = null;
+        previewCaret = null;
+        segmentedText = "";
+        caretStops = [0];
         removePreview();
     }
 
@@ -135,8 +156,8 @@
         }
     }
 
-    // A small button above the keyboard's right edge that turns the preview on and off.
-    function showToggle(root = document.querySelector(board)) {
+    // A small button above the keyboard's left edge that turns the preview on and off.
+    function showToggle(root = document.querySelector(board), bottom) {
         const host = root?.parentElement;
         let button = document.getElementById(toggleId);
         if (!typingPreview || !host) {
@@ -148,7 +169,7 @@
             button = document.createElement("div");
             button.id = toggleId;
             button.setAttribute("role", "button");
-            button.style.cssText = "position:absolute;right:10px;z-index:6;box-sizing:border-box;" +
+            button.style.cssText = "position:absolute;left:10px;z-index:6;box-sizing:border-box;" +
                 "padding:6px 12px;border-radius:9px;border:1px solid #ffffff2e;background:#101216f0;" +
                 "font:600 13px/1.3 system-ui,sans-serif;white-space:nowrap;pointer-events:auto;";
             shield(button, () => {
@@ -158,19 +179,25 @@
             });
             host.appendChild(button);
         }
-        button.textContent = previewDismissed ? "Preview off" : "Preview on";
-        button.style.color = previewDismissed ? "#9aa3af" : "#f3f5f8";
-        button.setAttribute("aria-pressed", String(!previewDismissed));
-        button.style.bottom = `${host.clientHeight - root.offsetTop + 6}px`;
+        const label = previewDismissed ? "Preview off" : "Preview on";
+        if (button.textContent !== label) {
+            button.textContent = label;
+            button.style.color = previewDismissed ? "#9aa3af" : "#f3f5f8";
+            button.setAttribute("aria-pressed", String(!previewDismissed));
+        }
+        button.style.bottom = bottom ?? `${host.clientHeight - root.offsetTop + 6}px`;
     }
 
     function showPreview() {
+        cancelAnimationFrame(previewUpdateFrame);
+        previewUpdateFrame = 0;
         const root = document.querySelector(board);
         const host = root?.parentElement;
-        if (!host || !typed || previewDismissed) {
+        if (!host || (!typed && previewCaret === null) || previewDismissed) {
             removePreview();
             return;
         }
+        const bottom = `${host.clientHeight - root.offsetTop + 6}px`;
         let strip = document.getElementById(previewId);
         if (!strip || strip.parentElement !== host) {
             strip?.remove();
@@ -178,17 +205,136 @@
             strip.id = previewId;
             strip.setAttribute("aria-hidden", "true");
             strip.style.cssText = "position:absolute;left:50%;transform:translateX(-50%);z-index:5;" +
-                "box-sizing:border-box;max-width:min(calc(100% - 280px),960px);display:flex;justify-content:flex-end;" +
+                "box-sizing:border-box;max-width:min(calc(100% - 280px),960px);" +
                 "overflow:hidden;padding:7px 14px;border-radius:10px;border:1px solid #ffffff2e;" +
                 "background:#101216f0;color:#f3f5f8;font:600 16px/1.3 system-ui,sans-serif;" +
                 "white-space:pre;pointer-events:auto;";
-            strip.appendChild(document.createElement("span"));
+            const caret = document.createElement("span");
+            caret.setAttribute("data-mk-preview-caret", "");
+            caret.style.cssText = "display:inline-block;position:relative;inline-size:0;";
+            const bar = document.createElement("span");
+            bar.style.cssText = "position:absolute;inset-inline-start:-1px;inset-block-start:-.83em;" +
+                "inline-size:2px;block-size:1em;border-radius:1px;background:currentColor;";
+            caret.appendChild(bar);
+            const selected = document.createElement("mark");
+            selected.style.cssText = "background:#3d6092;color:inherit;";
+            selected.appendChild(document.createTextNode(""));
+            strip.append(document.createTextNode(""), caret, selected, document.createTextNode(""));
             shield(strip, () => {});
             host.appendChild(strip);
         }
-        strip.firstChild.textContent = typed.slice(-400) + "\u258F";
-        strip.style.bottom = `${host.clientHeight - root.offsetTop + 6}px`;
-        showToggle(root);
+        const offset = previewCaret ?? typed.length;
+        const start = Math.max(0, Math.min(offset - 200, typed.length - 400));
+        const limit = start + 400;
+        const [selectionStart, selectionEnd] = previewRange();
+        const low = Math.max(start, selectionStart);
+        const high = Math.min(limit, selectionEnd);
+        const caret = strip.querySelector("[data-mk-preview-caret]");
+        const mark = strip.querySelector("mark");
+        strip.firstChild.data = typed.slice(start, low);
+        mark.firstChild.data = typed.slice(low, high);
+        strip.lastChild.data = typed.slice(high, limit);
+        const afterCaret = offset === selectionStart ? mark : strip.lastChild;
+        if (caret.nextSibling !== afterCaret) strip.insertBefore(caret, afterCaret);
+        strip.style.bottom = bottom;
+        if (!revealCaretFrame) {
+            revealCaretFrame = requestAnimationFrame(() => {
+                revealCaretFrame = 0;
+                const bounds = strip.getBoundingClientRect();
+                const bar = caret.firstElementChild.getBoundingClientRect();
+                if (bar.left < bounds.left + 14) strip.scrollLeft -= bounds.left + 14 - bar.left;
+                else if (bar.right > bounds.right - 14) strip.scrollLeft += bar.right - bounds.right + 14;
+            });
+        }
+        showToggle(root, bottom);
+    }
+
+    function queuePreviewUpdate() {
+        if (!previewUpdateFrame) {
+            previewUpdateFrame = requestAnimationFrame(() => {
+                previewUpdateFrame = 0;
+                showPreview();
+            });
+        }
+    }
+
+    function previewRange() {
+        const caret = previewCaret ?? typed.length;
+        const anchor = selectionAnchor ?? caret;
+        return [Math.min(caret, anchor), Math.max(caret, anchor)];
+    }
+
+    function movePreviewCaret(steps, extend = false) {
+        if (!typingPreview || previewDismissed || !typed || secretField(managerPatch?.manager)) return 0;
+        if (typed !== segmentedText) {
+            segmentedText = typed;
+            caretStops = [0];
+            for (const { index, segment } of previewGraphemes.segment(typed)) {
+                caretStops.push(index + segment.length);
+            }
+        }
+        const end = caretStops.length - 1;
+        const [low, high] = previewRange();
+        const collapse = !extend && low !== high;
+        const origin = collapse ? (steps < 0 ? low : high) : (previewCaret ?? typed.length);
+        const current = caretStops.findLastIndex(stop => stop <= origin);
+        const next = Math.max(0, Math.min(end, current + steps - (collapse ? Math.sign(steps) : 0)));
+        const caret = next === end ? null : caretStops[next];
+        const anchor = extend ? (selectionAnchor ?? origin) : null;
+        if (previewCaret !== caret || selectionAnchor !== anchor) {
+            previewCaret = caret;
+            selectionAnchor = anchor;
+            queuePreviewUpdate();
+        }
+        return Math.abs(next - current) + Number(collapse);
+    }
+
+    function activeTextField(manager) {
+        const props = manager.m_ActiveElementProps;
+        if (typeof props?.BIsElementValidForInput !== "function" || !props.BIsElementValidForInput()) return null;
+        const field = manager.m_ownerWindow?.document?.activeElement;
+        return field?.type !== "password" && typeof field?.selectionStart === "number" &&
+            typeof field.setSelectionRange === "function" ? field : null;
+    }
+
+    function extendTextSelection(field, presses, left) {
+        const backward = field.selectionDirection === "backward";
+        const anchor = backward ? field.selectionEnd : field.selectionStart;
+        let edge = backward ? field.selectionStart : field.selectionEnd;
+        const segments = previewGraphemes.segment(field.value);
+        for (let i = 0; i < presses; i++) {
+            const segment = segments.containing(left ? edge - 1 : edge);
+            if (!segment) break;
+            edge = left ? segment.index : segment.index + segment.segment.length;
+        }
+        field.setSelectionRange(Math.min(anchor, edge), Math.max(anchor, edge), edge < anchor ? "backward" : "forward");
+    }
+
+    function moveInputCaret(steps) {
+        const active = managerPatch;
+        const extend = spaceGesture.selecting;
+        const field = extend ? activeTextField(active.manager) : null;
+        const input = extend ? sharedWindow().SteamClient?.Input : null;
+        if (extend && !field && typeof input?.ControllerKeyboardSetKeyState !== "function") return;
+        const presses = movePreviewCaret(steps, extend);
+        if (!presses) return;
+        const left = steps < 0;
+        if (field) {
+            extendTextSelection(field, presses, left);
+            return;
+        }
+        const direction = left ? "ArrowLeft" : "ArrowRight";
+        for (let i = 0; i < presses && managerPatch === active && spaceGesture; i++) {
+            if (extend) sendChord(input, specialKeys[direction], [shiftCode]);
+            else active.original.call(active.manager, direction, false);
+        }
+    }
+
+    function replacePreviewText(before, after) {
+        typed = before + after;
+        selectionAnchor = null;
+        previewCaret = after ? before.length : null;
+        showPreview();
     }
 
     function trackKey(manager, key, shift) {
@@ -196,43 +342,168 @@
             if (typed) resetPreview();
             return;
         }
-        if (key === "VKClose" || key === "VKDone") {
+        if (["VKClose", "VKDone", "VKPaste", "ArrowUp", "ArrowDown"].includes(key)) {
             resetPreview();
             return;
         }
-        if (key === "Backspace") {
-            typed = selectedAll ? "" : Array.from(typed).slice(0, -1).join("");
+        if (key === "ArrowLeft" || key === "ArrowRight") {
+            movePreviewCaret(key === "ArrowLeft" ? -1 : 1);
+            return;
+        }
+        const [low, high] = previewRange();
+        let before = typed.slice(0, low);
+        const after = typed.slice(high);
+        if (key === "Backspace" || key === "Delete") {
+            if (low === high) {
+                if (key === "Backspace") {
+                    before = before.slice(0, previewGraphemes.segment(before).containing(before.length - 1)?.index ?? 0);
+                } else {
+                    const next = previewGraphemes.segment(after).containing(0);
+                    replacePreviewText(before, after.slice(next?.segment.length ?? 0));
+                    return;
+                }
+            }
         } else if (key === "Enter") {
-            typed = shift ? typed + "\u23CE " : "";
-        } else if (key === "VKPaste") {
-            typed = (selectedAll ? "" : typed) + "\u2398";
+            if (!shift) {
+                resetPreview();
+                return;
+            }
+            before += "\u23CE";
         } else if (key === "Tab") {
-            typed += " ";
+            before += " ";
         } else if (Array.from(key).length === 1) {
-            typed = (selectedAll ? "" : typed) + key;
+            before += key;
         } else {
             return;
         }
-        selectedAll = false;
-        showPreview();
+        replacePreviewText(before, after);
     }
 
     function trackCommand(command) {
         if (!typingPreview) return;
         if (command === "a") {
-            selectedAll = true;
+            selectionAnchor = 0;
+            previewCaret = null;
+            queuePreviewUpdate();
             return;
         }
-        if (command === "x") typed = selectedAll ? "" : typed;
-        else if (command === "delete-word") typed = typed.replace(/\S*\s*$/, "");
-        else if (command === "z" || command === "redo") typed = "";
-        else return;
-        selectedAll = false;
-        showPreview();
+        const [low, high] = previewRange();
+        if (command === "delete-word" || (command === "x" && low !== high)) {
+            const before = typed.slice(0, low);
+            replacePreviewText(low === high ? before.replace(/\S*\s*$/, "") : before, typed.slice(high));
+        } else if (command === "z" || command === "redo") {
+            resetPreview();
+        }
     }
 
     function resetOnOutsidePointer(event) {
         if (!event.target?.closest?.(board)) resetTyping();
+    }
+
+    function clearSpaceGesture() {
+        const gesture = spaceGesture;
+        spaceGesture = undefined;
+        if (!gesture) return;
+        gesture.hit.removeAttribute(heldAttribute);
+        if (gesture.pointer && gesture.hit.hasPointerCapture(gesture.id)) {
+            gesture.hit.releasePointerCapture(gesture.id);
+        }
+    }
+
+    function resetInputTarget() {
+        clearSpaceGesture();
+        resetPreview();
+        resetTyping();
+    }
+
+    function startSpaceGesture(event, point, pointer, shiftTarget = null) {
+        if (!typingSettings.space_cursor_swipe || !typingPreview || previewDismissed) return;
+        clearSpaceGesture();
+        const hit = point?.target.closest?.(spaceKey);
+        const component = managerPatch?.component;
+        if (!event.cancelable || !hit ||
+            !component?.m_keyboardDiv?.contains(hit) || !isQwerty(component) ||
+            typeof component.TypeKey !== "function") return;
+        const layer = state(component);
+        if (layer.ctrl || layer.alt) return;
+
+        // Defer Space until release so a drag cannot also submit a character.
+        event.preventDefault();
+        event.stopPropagation();
+        spaceGesture = {
+            hit, component, pointer, id: pointer ? point.pointerId : point.identifier,
+            x: point.clientX, y: point.clientY, anchorX: point.clientX, axis: null,
+            selecting: Boolean(shiftTarget || event.shiftKey || component.state.toggleStates?.Shift),
+            shiftTarget,
+        };
+        if (pointer && hit.isConnected) hit.setPointerCapture(point.pointerId);
+        hit.setAttribute(heldAttribute, "");
+    }
+
+    function startSpaceTouch(event) {
+        if (!typingSettings.space_cursor_swipe || !typingPreview || previewDismissed) return;
+        if (event.touches.length === 1) {
+            startSpaceGesture(event, event.changedTouches[0], false);
+            return;
+        }
+        const point = Array.from(event.changedTouches).find(touch => touch.target.closest?.(spaceKey));
+        const other = Array.from(event.touches).filter(touch => touch.identifier !== point?.identifier);
+        const shift = other.length === 1 && other[0].target.closest?.(shiftKey);
+        if (point && (!other.length || shift)) startSpaceGesture(event, point, false, shift && other[0].target);
+        else clearSpaceGesture();
+    }
+
+    function startSpacePointer(event) {
+        // Gamescope can present a screen contact as a mouse drag.
+        if (event.pointerType === "mouse" && event.button === 0) startSpaceGesture(event, event, true);
+    }
+
+    function updateSpaceGesture(event) {
+        const gesture = spaceGesture;
+        if (!gesture) return;
+        const pointer = event.type.startsWith("pointer") || event.type === "lostpointercapture";
+        if (pointer !== gesture.pointer) return;
+        const point = pointer
+            ? event.pointerId === gesture.id && event
+            : Array.prototype.find.call(event.changedTouches, touch => touch.identifier === gesture.id);
+        if (!point) return;
+        event.preventDefault();
+        // Steam still has to clear its Shift touch when both fingers lift together.
+        if (event.type !== "touchend" || event.changedTouches.length === 1) event.stopPropagation();
+        if (["touchcancel", "pointercancel", "lostpointercapture"].includes(event.type) || !gesture.hit.isConnected ||
+            gesture.component !== managerPatch?.component || !isQwerty(gesture.component)) {
+            clearSpaceGesture();
+            return;
+        }
+
+        const horizontal = Math.abs(point.clientX - gesture.x);
+        const vertical = Math.abs(point.clientY - gesture.y);
+        if (!gesture.axis && Math.max(horizontal, vertical) >= spaceSwipeStep) {
+            gesture.axis = horizontal > vertical ? "horizontal" : "vertical";
+            if (gesture.axis === "vertical") gesture.hit.removeAttribute(heldAttribute);
+            if (gesture.axis === "horizontal" && gesture.selecting) {
+                const component = gesture.component;
+                component.m_mapTouched?.delete(gesture.shiftTarget);
+                if (component.state.toggleStates?.Shift & shiftOnce) {
+                    component.setState(({ toggleStates }) => ({
+                        toggleStates: { ...toggleStates, Shift: toggleStates.Shift & ~shiftOnce },
+                    }));
+                    state(component).lastShiftTap = undefined;
+                }
+            }
+            resetTyping();
+        }
+        if (gesture.axis === "horizontal") {
+            const steps = Math.trunc((point.clientX - gesture.anchorX) / spaceSwipeStep);
+            if (steps) {
+                gesture.anchorX += steps * spaceSwipeStep;
+                moveInputCaret(steps);
+            }
+        }
+        if (event.type === "touchend" || event.type === "pointerup") {
+            clearSpaceGesture();
+            if (!gesture.axis) gesture.component.TypeKey(gesture.hit);
+        }
     }
 
     function typeText(key, shift, send) {
@@ -271,7 +542,7 @@
             else delete manager.HandleVirtualKeyDown;
         }
         managerPatch = undefined;
-        resetTyping();
+        resetInputTarget();
     }
 
     function watchManager(component) {
@@ -308,8 +579,8 @@
             return typeText(key, shift, send);
         };
         manager.HandleVirtualKeyDown = wrapped;
-        const changed = manager.OnActiveElementChanged?.Register?.(resetTyping);
-        const clicked = manager.OnActiveElementClicked?.Register?.(resetTyping);
+        const changed = manager.OnActiveElementChanged?.Register?.(resetInputTarget);
+        const clicked = manager.OnActiveElementClicked?.Register?.(resetInputTarget);
         managerPatch = { manager, component, original, owned, wrapped, changed, clicked };
     }
 
@@ -433,6 +704,11 @@
         }
         if (!Object.hasOwn(editorShortcuts, command)) return false;
         trackCommand(command);
+        if (command === "c" || command === "x") {
+            const field = activeTextField(component.props.VirtualKeyboardManager);
+            if (field && field.selectionStart !== field.selectionEnd &&
+                field.ownerDocument.execCommand(command === "c" ? "copy" : "cut")) return true;
+        }
         const [action, key, shift] = editorShortcuts[command];
         const shared = sharedWindow();
         const modifiers = shift ? [ctrlCode, shiftCode] : [ctrlCode];
@@ -605,6 +881,8 @@
         restore() {
             observer.disconnect();
             focusObserver.disconnect();
+            spaceTouchListeners.abort();
+            clearSpaceGesture();
             document.querySelectorAll(`[${focusAttribute}]`).forEach(node => node.removeAttribute(focusAttribute));
             document.querySelectorAll(`[${layoutAttribute}]`).forEach(node => node.removeAttribute(layoutAttribute));
             removePreview();
@@ -641,5 +919,12 @@
     observer.observe(document.documentElement, { childList: true, subtree: true });
     focusObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["class"], subtree: true });
     document.addEventListener("pointerdown", resetOnOutsidePointer, true);
+    const spaceTouchOptions = { capture: true, passive: false, signal: spaceTouchListeners.signal };
+    document.addEventListener("touchstart", startSpaceTouch, spaceTouchOptions);
+    document.addEventListener("pointerdown", startSpacePointer, spaceTouchOptions);
+    for (const type of ["touchmove", "touchend", "touchcancel",
+        "pointermove", "pointerup", "pointercancel", "lostpointercapture"]) {
+        document.addEventListener(type, updateSpaceGesture, spaceTouchOptions);
+    }
     attach();
 })

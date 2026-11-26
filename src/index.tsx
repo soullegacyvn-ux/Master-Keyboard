@@ -1474,7 +1474,9 @@ function Content({ bundleVersion }: { bundleVersion: string }) {
                 <PanelSectionRow>
                   <ToggleField
                     label="Typing preview"
-                    description="Show what you type in a strip above the keyboard. Tap the strip to hide it."
+                    description={access.active
+                      ? "Drag Space to move the cursor. Hold Shift and drag to select text."
+                      : "Show text above the keyboard. Cursor and selection gestures are included with Premium."}
                     bottomSeparator="none"
                     checked={settings.typing_preview ?? false}
                     onChange={(typing_preview) => update({ typing_preview })}
