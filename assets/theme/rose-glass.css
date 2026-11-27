@@ -1,0 +1,11 @@
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 {
+  --mk-panel-rgb: 20 20 21;
+  --background-color: rgb(var(--mk-panel-rgb));
+  --mk-photo-legend-font: "Nunito", system-ui, sans-serif;
+  --mk-photo-tracking: .02em;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
+  --mk-photo-ink: var(--retro-ink);
+}

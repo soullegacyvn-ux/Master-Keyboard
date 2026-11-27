@@ -12,10 +12,17 @@ Master Keyboard redesigns Steam’s on-screen keyboard for **Bazzite and SteamOS
 - **Fn and navigation.** Reach F1–F12, Escape, Home, End, Page Up, Page Down and the four arrow keys from the on-screen keyboard.
 - **Text editing.** Select all, cut, copy, paste, undo and redo with dedicated buttons. Tap Ctrl or Alt to hold it for a shortcut.
 - **Typing preview.** See the text you’re typing above the keyboard. Premium adds gestures for moving the cursor and selecting text.
+- **Split Keyboard · Premium.** Bring the keys within reach of both thumbs in Gaming Mode.
 - **Visible controller feedback.** A filled focus color shows your selected key. Pressed and held keys sink and darken.
 - **Custom appearance and sound.** Adjust the keyboard height, theme colors, background opacity, focus color and typing sound.
 
 ## See the keyboard in use
+
+### Split Keyboard · Premium
+
+Switch between Full and Split with the layout icon beside Typing Preview. The Split layout puts two groups of keys at the screen edges and keeps Space within reach on either side. Use **Decky → Master Keyboard → Typing shortcuts → Split keyboard** to choose your starting layout.
+
+![Master Keyboard Premium Split layout with a gap in the center and a Space key on each side](docs/features/split-keyboard-premium.webp)
 
 ### Space gestures · Premium
 

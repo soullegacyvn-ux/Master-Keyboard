@@ -1,3 +1,8 @@
+/* Match Backspace's warm ink on the colored utility and navigation keys. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 {
+  --mk-utility-icon-ink: #fff1d0;
+}
+
 /* Align the regular keycap projection with the engraved brass keys. */
 .DefaultTheme.virtualkeyboard_Keyboard_45rH7
 :is(.virtualkeyboard_KeyboardKeyHitArea_1YqjV, .mk-preview-hit)[data-key-row] {
@@ -17,6 +22,8 @@
 .DefaultTheme.virtualkeyboard_Keyboard_45rH7
 [data-key="Shift"][data-key-row] {
   --mk-wukong-key-travel: clamp(2px, calc(var(--retro-row-height) * .075), 4px);
+  --mk-split-icon-position: clamp(17px, 20%, 25px);
+  --mk-split-icon-max-size: 20px;
 }
 
 .DefaultTheme.virtualkeyboard_Keyboard_45rH7

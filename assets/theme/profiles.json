@@ -418,8 +418,8 @@
     }
   },
   "Ceramic": {
-    "label": "Ceramic Glaze",
-    "height": 56,
+    "label": "Rose Glass",
+    "height": 57,
     "sheets": [
       "profile-keys.css",
       "concept-keycaps.css",
@@ -434,56 +434,43 @@
     ],
     "colors": {
       "cream": {
-        "label": "Typing keys",
-        "color": "#eee6d5"
+        "label": "Space row",
+        "color": "#f9b6c2",
+        "ink": "#291a22",
+        "rows": [
+          4
+        ]
       },
       "blue": {
-        "label": "Modifiers",
-        "color": "#d7dce2",
-        "keys": [
-          "Tab",
-          "CapsLock",
-          "Shift",
-          "Backspace",
-          "Enter",
-          "MasterkeyboardCtrl",
-          "MasterkeyboardFn",
-          "MasterkeyboardAlt",
-          "MasterkeyboardABC"
+        "label": "QWERTY row",
+        "color": "#75566a",
+        "ink": "#ffe2ed",
+        "rows": [
+          1
         ]
       },
       "gold": {
         "label": "Number row",
-        "color": "#f5eddb",
+        "color": "#4c4450",
+        "ink": "#f7c0dd",
         "rows": [
           0
         ]
       },
       "amber": {
-        "label": "Utility keys",
-        "color": "#22476c",
-        "keys": [
-          "ArrowLeft",
-          "ArrowRight",
-          "ArrowUp",
-          "ArrowDown",
-          "MasterkeyboardArrowLeft",
-          "MasterkeyboardArrowRight",
-          "MasterkeyboardArrowUp",
-          "MasterkeyboardArrowDown",
-          "VKPaste",
-          "VKClose",
-          "SwitchKeys_Steam",
-          "SwitchKeys_Layout"
+        "label": "Shift row",
+        "color": "#e797a9",
+        "ink": "#291a22",
+        "rows": [
+          3
         ]
       },
       "red": {
-        "label": "Accents",
-        "color": "#7fbab2",
-        "keys": [
-          " ",
-          "Shift",
-          "Backspace"
+        "label": "Home row",
+        "color": "#bd798d",
+        "ink": "#261820",
+        "rows": [
+          2
         ]
       }
     },

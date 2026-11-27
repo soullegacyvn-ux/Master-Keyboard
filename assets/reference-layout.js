@@ -13,6 +13,7 @@
     const board = '[role="grid"].DefaultTheme.Layout_qwerty';
     const layerToggle = "MasterkeyboardFn";
     const layerReturn = "MasterkeyboardABC";
+    const symbolToggle = "MasterkeyboardSplitSymbols";
     const ctrl = "MasterkeyboardCtrl";
     const alt = "MasterkeyboardAlt";
     const copy = "MasterkeyboardCopy";
@@ -62,7 +63,116 @@
     const stateFor = new WeakMap();
     const heldAttribute = "data-masterkeyboard-held";
     const layoutAttribute = "data-mk-layout";
+    const splitAttribute = "data-mk-split";
+    const splitButtonId = "masterkeyboard-split-toggle";
+    const paletteRow = "data-mk-palette-row";
+    const paletteKey = "data-mk-palette-key";
+    const splitIcon = "data-mk-split-icon";
+    const hideIcon = "data-mk-hide-icon";
+    const capSelector = ":first-child";
+    const hitSelector = '[role="gridcell"] > [data-key][data-key-row]';
+    const splitBoard = `${board}[${splitAttribute}]`;
+    const glyphStroke = 2.35;
+    const keyboardIcons = {
+        shift: "M5 11.7l7-7 7 7h-4.1v7.1H9.1v-7.1z",
+        backspace: "M9.1 6h10a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-10l-6-6z M12 9.5l5 5m0-5-5 5",
+        hide: "M5 4.5h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2z M7 8.9h.1m4.9 0h.1m4.9 0h.1 M8.5 17.1l3.5 3.5 3.5-3.5",
+        eye: "M2.5 12s3.5-5.5 9.5-5.5 9.5 5.5 9.5 5.5-3.5 5.5-9.5 5.5S2.5 12 2.5 12z M14 12a2 2 0 1 0-4 0 2 2 0 0 0 4 0z",
+        eyeOff: "M3.5 3.5l17 17 M9.5 6.8c.8-.2 1.6-.3 2.5-.3 6 0 9.5 5.5 9.5 5.5a15.5 15.5 0 0 1-2.7 2.8 M6 8.5A14 14 0 0 0 2.5 12s3.5 5.5 9.5 5.5a10 10 0 0 0 3.4-.6",
+        full: "M4.5 6.5h15a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-15a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2z M6 10h1m4.5 0h1m4.5 0h1M7.5 14h9",
+        split: "M4 6.5h4a1.5 1.5 0 0 1 1.5 1.5v8A1.5 1.5 0 0 1 8 17.5H4A1.5 1.5 0 0 1 2.5 16V8A1.5 1.5 0 0 1 4 6.5z M16 6.5h4A1.5 1.5 0 0 1 21.5 8v8a1.5 1.5 0 0 1-1.5 1.5h-4a1.5 1.5 0 0 1-1.5-1.5V8A1.5 1.5 0 0 1 16 6.5z M5.5 10h1m-1 4h1m11-4h1m-1 4h1",
+    };
+    const keyIconMask = path => `url("data:image/svg+xml,${encodeURIComponent(
+        `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="${glyphStroke}" stroke-linecap="round" stroke-linejoin="round"><path d="${path}"/></svg>`
+    )}")`;
+    const splitStyle = document.createElement("style");
+    splitStyle.textContent = `
+        ${board}[${splitAttribute}] {
+            --background-color: transparent !important;
+            --mk-custom-pressed-well: transparent !important;
+            --mk-key-well-color: transparent !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+        ${board}[${splitAttribute}] > [role="row"] {
+            display: grid !important;
+            grid-template-columns: var(--mk-split-columns);
+            grid-auto-flow: row;
+            gap: 0 !important;
+        }
+        ${board}[${splitAttribute}] > [role="row"]::before {
+            content: "";
+            grid-area: 1 / var(--mk-split-gap);
+            pointer-events: none;
+        }
+        ${board}[${splitAttribute}] > [role="row"] > [role="gridcell"] {
+            display: contents !important;
+        }
+        ${splitBoard} ${hitSelector} {
+            box-sizing: border-box;
+            width: auto !important;
+            min-width: 0 !important;
+            max-width: none !important;
+        }
+        ${splitBoard} [${paletteRow}] {
+            --mk-spectrum-index: var(--mk-palette-column);
+            --mk-spectrum-steps: 13;
+            --mk-spectrum-space-weight: 0;
+        }
+        ${splitBoard} [${paletteRow}="2"] { --mk-spectrum-steps: 12; }
+        ${splitBoard} [${paletteRow}="3"] { --mk-spectrum-steps: 11; }
+        ${splitBoard} [${paletteRow}="4"] { --mk-spectrum-steps: 10.4; }
+        ${splitBoard} [${paletteRow}="4"][data-key=" "] { --mk-spectrum-space-weight: 1.7; }
+        ${splitBoard} [${paletteRow}="4"]:is([data-key="VKClose"], [data-key="VKDone"]) {
+            --mk-spectrum-space-weight: 3.4;
+        }
+        ${splitBoard} ${hitSelector}:is([data-key="Shift"], [data-key="Backspace"]) > ${capSelector}
+            > :not([${splitIcon}]) {
+            visibility: hidden !important;
+        }
+        [${splitIcon}] { display: none; }
+        ${splitBoard} ${hitSelector} > ${capSelector} > [${splitIcon}] {
+            position: absolute;
+            display: block;
+            z-index: 3;
+            inset: calc(50% - var(--mk-key-icon-rise, 3px)) auto auto var(--mk-split-icon-position, 50%);
+            transform: translate(-50%, -50%);
+            inline-size: min(var(--mk-key-icon-size, 20px), var(--mk-split-icon-max-size, 22px));
+            aspect-ratio: 1;
+            pointer-events: none;
+            background: currentColor;
+            mask: var(--mk-split-icon) center / contain no-repeat;
+        }
+        ${splitBoard} [${splitIcon}="Shift"] {
+            --mk-split-icon: ${keyIconMask(keyboardIcons.shift)};
+        }
+        ${splitBoard} [${splitIcon}="Backspace"] {
+            --mk-split-icon: ${keyIconMask(keyboardIcons.backspace)};
+        }
+        [${hideIcon}] { display: none; }
+        ${board} ${hitSelector}[data-key="VKClose"] > ${capSelector}:has(> [${hideIcon}]) > span {
+            opacity: 0 !important;
+        }
+        ${board} ${hitSelector}[data-key="VKClose"] > ${capSelector} > [${hideIcon}] {
+            position: absolute;
+            display: block;
+            z-index: 3;
+            left: 50%;
+            top: calc(50% - var(--mk-key-icon-rise, 3px) + var(--mk-bottom-icon-offset, 0px));
+            transform: translate(-50%, -50%);
+            width: var(--mk-key-icon-size, 20px);
+            aspect-ratio: 1;
+            pointer-events: none;
+            background-color: var(--mk-utility-icon-ink, currentColor);
+            mask: var(--mk-key-glyph, ${keyIconMask(keyboardIcons.hide)}) center / contain no-repeat;
+        }
+    `;
+    (document.head || document.documentElement).appendChild(splitStyle);
     let patch;
+    let keyboardComponent;
+    const controlsId = "masterkeyboard-keyboard-controls";
+    let toolbarRoot;
+    const controlsResize = new ResizeObserver(() => showControls(toolbarRoot));
 
     const spaceKey = '[data-key=" "][data-key-row]';
     const shiftKey = '[data-key="Shift"][data-key-row]';
@@ -88,7 +198,10 @@
         double_space_period: settings.double_space_period !== false,
         sentence_capitalization: settings.sentence_capitalization !== false,
         space_cursor_swipe: settings.space_cursor_swipe === true,
+        split_available: settings.split_available === true,
+        split_keyboard: settings.split_keyboard === true,
     };
+    let splitMode = typingSettings.split_available && typingSettings.split_keyboard;
     let lastCommitted = "";
     let firstSpaceAt;
     let capitalizeNext = false;
@@ -101,8 +214,11 @@
 
     function setTypingSettings(next = {}) {
         let changed = false;
+        const splitChanged = typingSettings.split_available !== (next.split_available === true) ||
+            typingSettings.split_keyboard !== (next.split_keyboard === true);
         for (const key of Object.keys(typingSettings)) {
-            const enabled = key === "space_cursor_swipe" ? next[key] === true : next[key] !== false;
+            const enabled = key === "space_cursor_swipe" || key.startsWith("split_")
+                ? next[key] === true : next[key] !== false;
             changed ||= typingSettings[key] !== enabled;
             typingSettings[key] = enabled;
         }
@@ -111,6 +227,11 @@
             resetTyping();
             const component = managerPatch?.component;
             if (component) state(component).lastShiftTap = undefined;
+        }
+        if (splitChanged) {
+            splitMode = typingSettings.split_available && typingSettings.split_keyboard;
+            keyboardComponent?.forceUpdate();
+            showControls();
         }
     }
 
@@ -156,48 +277,110 @@
         }
     }
 
-    // A small button above the keyboard's left edge that turns the preview on and off.
-    function showToggle(root = document.querySelector(board), bottom) {
+    function makeControl(id, onTap) {
+        const button = document.createElement("button");
+        button.id = id;
+        button.type = "button";
+        button.style.cssText = "display:grid;place-items:center;flex:0 0 34px;width:34px;height:30px;" +
+            "padding:0;border-radius:8px;border:1px solid #ffffff30;background:#101216f0;" +
+            "color:#f3f5f8;pointer-events:auto;cursor:pointer;";
+        shield(button, onTap);
+        button.addEventListener("click", event => {
+            if (!event.detail && !event.pointerType && !event.sourceCapabilities?.firesTouchEvents) onTap();
+        });
+        return button;
+    }
+
+    function setControl(button, mode, label, path) {
+        if (!button || button.dataset.mode === mode) return;
+        button.dataset.mode = mode;
+        button.title = label;
+        button.setAttribute("aria-label", label);
+        button.innerHTML = `<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="${glyphStroke}" stroke-linecap="round"
+            stroke-linejoin="round"><path d="${path}"/></svg>`;
+    }
+
+    function removeControls() {
+        controlsResize.disconnect();
+        toolbarRoot = undefined;
+        document.getElementById(controlsId)?.remove();
+    }
+
+    function showControls(root = document.querySelector(board)) {
         const host = root?.parentElement;
-        let button = document.getElementById(toggleId);
-        if (!typingPreview || !host) {
-            button?.remove();
+        const canSplit = typingSettings.split_available && keyboardComponent;
+        if (!host || (!typingPreview && !canSplit)) {
+            removeControls();
             return;
         }
-        if (!button || button.parentElement !== host) {
-            button?.remove();
-            button = document.createElement("div");
-            button.id = toggleId;
-            button.setAttribute("role", "button");
-            button.style.cssText = "position:absolute;left:10px;z-index:6;box-sizing:border-box;" +
-                "padding:6px 12px;border-radius:9px;border:1px solid #ffffff2e;background:#101216f0;" +
-                "font:600 13px/1.3 system-ui,sans-serif;white-space:nowrap;pointer-events:auto;";
-            shield(button, () => {
-                previewDismissed = !previewDismissed;
-                showToggle();
-                showPreview();
-            });
-            host.appendChild(button);
+        let row = document.getElementById(controlsId);
+        if (row?.parentElement !== host || row.dataset.splitAvailable !== String(!!canSplit) ||
+            toolbarRoot !== root) {
+            removeControls();
+            row = document.createElement("div");
+            row.id = controlsId;
+            row.dataset.splitAvailable = String(!!canSplit);
+            row.style.cssText = "position:absolute;left:10px;right:10px;height:30px;z-index:6;" +
+                "display:flex;align-items:center;gap:6px;pointer-events:none;";
+            if (typeof row.showPopover === "function") {
+                row.setAttribute("popover", "manual");
+                row.style.cssText += "position:fixed;inset:auto;margin:0;border:0;padding:0;" +
+                    "background:transparent;width:auto;overflow:visible;";
+            }
+            if (typingPreview) {
+                row.appendChild(makeControl(toggleId, () => {
+                    previewDismissed = !previewDismissed;
+                    showControls();
+                    showPreview();
+                }));
+            }
+            if (canSplit) {
+                row.appendChild(makeControl(splitButtonId, () => {
+                    if (!typingSettings.split_available || !keyboardComponent) return;
+                    splitMode = !splitMode;
+                    state(keyboardComponent).symbols = false;
+                    clearSpaceGesture();
+                    keyboardComponent.forceUpdate();
+                }));
+            }
+            host.appendChild(row);
+            row.showPopover?.();
+            toolbarRoot = root;
+            controlsResize.observe(root);
         }
-        const label = previewDismissed ? "Preview off" : "Preview on";
-        if (button.textContent !== label) {
-            button.textContent = label;
-            button.style.color = previewDismissed ? "#9aa3af" : "#f3f5f8";
-            button.setAttribute("aria-pressed", String(!previewDismissed));
+        const previewButton = document.getElementById(toggleId);
+        if (previewButton) {
+            setControl(previewButton, previewDismissed ? "off" : "on",
+                previewDismissed ? "Show typing preview" : "Hide typing preview",
+                previewDismissed ? keyboardIcons.eyeOff : keyboardIcons.eye);
+            previewButton.setAttribute("aria-pressed", String(!previewDismissed));
         }
-        button.style.bottom = bottom ?? `${host.clientHeight - root.offsetTop + 6}px`;
+        const splitButton = document.getElementById(splitButtonId);
+        setControl(splitButton, splitMode ? "split" : "full",
+            splitMode ? "Switch to full keyboard" : "Switch to split keyboard",
+            splitMode ? keyboardIcons.full : keyboardIcons.split);
+        splitButton?.setAttribute("aria-pressed", String(splitMode));
+        if (row.hasAttribute("popover")) {
+            const bounds = root.getBoundingClientRect();
+            row.style.left = `${bounds.left + 10}px`;
+            row.style.right = `${innerWidth - bounds.right + 10}px`;
+            row.style.bottom = `${innerHeight - bounds.top + 6}px`;
+        } else {
+            row.style.bottom = `${host.clientHeight - root.offsetTop + 6}px`;
+        }
+        return row;
     }
 
     function showPreview() {
         cancelAnimationFrame(previewUpdateFrame);
         previewUpdateFrame = 0;
         const root = document.querySelector(board);
-        const host = root?.parentElement;
+        const host = showControls(root);
         if (!host || (!typed && previewCaret === null) || previewDismissed) {
             removePreview();
             return;
         }
-        const bottom = `${host.clientHeight - root.offsetTop + 6}px`;
         let strip = document.getElementById(previewId);
         if (!strip || strip.parentElement !== host) {
             strip?.remove();
@@ -236,7 +419,6 @@
         strip.lastChild.data = typed.slice(high, limit);
         const afterCaret = offset === selectionStart ? mark : strip.lastChild;
         if (caret.nextSibling !== afterCaret) strip.insertBefore(caret, afterCaret);
-        strip.style.bottom = bottom;
         if (!revealCaretFrame) {
             revealCaretFrame = requestAnimationFrame(() => {
                 revealCaretFrame = 0;
@@ -246,7 +428,6 @@
                 else if (bar.right > bounds.right - 14) strip.scrollLeft += bar.right - bounds.right + 14;
             });
         }
-        showToggle(root, bottom);
     }
 
     function queuePreviewUpdate() {
@@ -609,6 +790,95 @@
         return component.state.standardLayout?.name === "qwerty" && component.state.layoutState === 0;
     }
 
+    function fullPaletteKey(name, sources) {
+        if (!sources || sources.has(name)) return name;
+        const digit = "!@#$%^&*()".indexOf(name);
+        if (digit >= 0) return "1234567890"[digit];
+        const symbol = shifted.indexOf(name);
+        return symbol >= 0 ? punctuation[symbol] : name;
+    }
+
+    function splitLayout(layout, layer, halves, paletteSources) {
+        layer.splitRows = halves.map(([left, right]) => {
+            const weights = (keys, side) => keys.map(([cap]) => {
+                const name = keyName(cap);
+                if (name === " ") return side === 0 ? 1.35 : 1.5;
+                if (name === "Shift" || name === "Backspace" || name === "Enter") return 1.25;
+                return 1;
+            });
+            const columns = halves => {
+                const total = halves.reduce((sum, weight) => sum + weight, 0);
+                return halves.map(weight => `minmax(0, ${weight * 5 / total}fr)`);
+            };
+            return {
+                leftCount: left.length,
+                columns: [...columns(weights(left, 0)), "25%", ...columns(weights(right, 1))].join(" "),
+                palette: paletteSources && [...left, ...right].map(([cap]) => {
+                    const name = fullPaletteKey(keyName(cap), paletteSources);
+                    return paletteSources.get(name) || { row: 4, column: 2, name };
+                }),
+            };
+        });
+        const rows = halves.map(([left, right]) => [...left, ...right]);
+        return {
+            ...layout,
+            rgLayout: () => rows.map(row => row.map(([cap]) => cap)),
+            rgKeycodes: rows.map(row => row.map(([, code]) => code)),
+        };
+    }
+
+    function setPaletteSource(hit, source) {
+        if (!source) {
+            if (hit.hasAttribute(paletteRow)) {
+                hit.removeAttribute(paletteRow);
+                hit.removeAttribute(paletteKey);
+                hit.style.removeProperty("--mk-palette-column");
+            }
+            return;
+        }
+        const row = String(source.row);
+        const column = String(source.column);
+        if (hit.getAttribute(paletteRow) !== row) hit.setAttribute(paletteRow, row);
+        if (hit.getAttribute(paletteKey) !== source.name) hit.setAttribute(paletteKey, source.name);
+        if (hit.style.getPropertyValue("--mk-palette-column") !== column)
+            hit.style.setProperty("--mk-palette-column", column);
+    }
+
+    function addKeyIcon(hit, attribute, value = "") {
+        const cap = hit?.firstElementChild;
+        if (!cap || cap.querySelector(`[${attribute}]`)) return;
+        const icon = document.createElement("i");
+        icon.setAttribute(attribute, value);
+        icon.setAttribute("aria-hidden", "true");
+        cap.appendChild(icon);
+    }
+
+    function applySplitGeometry(keyboard, rows) {
+        if (!keyboard || (!rows && !keyboard.hasAttribute(splitAttribute))) return;
+        keyboard.toggleAttribute(splitAttribute, !!rows);
+        Array.from(keyboard.children).filter(row => row.getAttribute("role") === "row")
+            .forEach((row, index) => {
+                const spec = rows?.[index];
+                if (spec) {
+                    if (row.style.getPropertyValue("--mk-split-columns") !== spec.columns)
+                        row.style.setProperty("--mk-split-columns", spec.columns);
+                    const gap = String(spec.leftCount + 1);
+                    if (row.style.getPropertyValue("--mk-split-gap") !== gap)
+                        row.style.setProperty("--mk-split-gap", gap);
+                    row.querySelectorAll(hitSelector).forEach((hit, col) => {
+                        setPaletteSource(hit, spec.palette?.[col]);
+                        if (hit.dataset.key === "Shift" || hit.dataset.key === "Backspace")
+                            addKeyIcon(hit, splitIcon, hit.dataset.key);
+                    });
+                } else if (row.style.getPropertyValue("--mk-split-columns")) {
+                    row.style.removeProperty("--mk-split-columns");
+                    row.style.removeProperty("--mk-split-gap");
+                    row.querySelectorAll(`[${splitIcon}]`).forEach(icon => icon.remove());
+                    row.querySelectorAll(`[${paletteRow}]`).forEach(hit => setPaletteSource(hit, null));
+                }
+            });
+    }
+
     function layoutFor(component, layout) {
         const rows = layout.rgLayout(component.GetLayoutOptions());
         if (!Array.isArray(rows) || rows.length !== 5 || rows[0]?.length !== 14 ||
@@ -631,6 +901,41 @@
             ? rows[3].findLastIndex((cap, index) => index > 0 && keyName(cap) === "Shift")
             : -1;
         const clipboardKeys = [customKey(copy, "Copy"), customKey(paste, "Paste")];
+        const keyIn = (row, key) => {
+            const index = rows[row].findIndex(cap => keyName(cap) === key);
+            return index < 0 ? null : existing(row, index);
+        };
+        if (splitMode && !layer.secondary) {
+            const keyMap = new Map(rows.slice(0, 4).flatMap((row, index) =>
+                row.map((cap, column) => [keyName(cap), existing(index, column)])));
+            const keys = sequence => Array.from(sequence, key => {
+                const native = keyMap.get(key);
+                return native && !Array.isArray(native[0]) ? native : [key, keyCode(key)];
+            });
+            const hide = steamControls.find(([cap]) => ["VKClose", "VKDone"].includes(keyName(cap)));
+            const backspace = keyIn(0, "Backspace");
+            const enter = keyIn(2, "Enter");
+            if (hide && backspace && enter) {
+                const paletteSources = new Map();
+                rows.slice(0, 4).forEach((row, rowIndex) => row.forEach((cap, column) => {
+                    const name = keyName(cap);
+                    if (name && !paletteSources.has(name)) paletteSources.set(name, { row: rowIndex, column, name });
+                }));
+                bottom.forEach(([cap], column) => {
+                    const name = keyName(cap);
+                    paletteSources.set(name, { row: 4, column, name });
+                });
+                const symbols = !!layer.symbols;
+                const top = symbols ? [keys("12345"), keys("67890")] : [keys("qwert"), keys("yuiop")];
+                const middle = symbols ? [keys("!@#$%"), keys("^&*()")] : [keys("asdfg"), keys("ghjkl")];
+                const lower = symbols ? [keys("-=[]\\"), keys(";',./")]
+                    : [[existing(3, 0), ...keys("zxcv")], [...keys("vbnm"), backspace]];
+                return splitLayout(layout, layer, [top, middle, lower, [
+                    [customKey(symbolToggle, symbols ? "ABC" : "123"), control, alternate, layerKey, space],
+                    [space, ...keys(symbols ? "?" : "."), enter, hide],
+                ]], paletteSources);
+            }
+        }
         if (!layer.secondary) {
             // Steam already prepared the typing rows. Only rebuild rows with custom keys.
             const typing = rows.slice(0, 4);
@@ -646,10 +951,6 @@
             return { ...layout, rgLayout: () => typing, rgKeycodes: codes };
         }
 
-        const keyIn = (row, key) => {
-            const index = rows[row].findIndex(cap => keyName(cap) === key);
-            return index < 0 ? null : existing(row, index);
-        };
         const extra = key => {
             const name = `Masterkeyboard${key}`;
             return customKey(name, extendedKeys[name][0]);
@@ -667,6 +968,12 @@
             bottom,
         ];
         const available = result.map(row => row.filter(Boolean));
+        if (splitMode) {
+            return splitLayout(layout, layer, available.map((row, index) => {
+                const midpoint = index === available.length - 1 ? 4 : Math.ceil(row.length / 2);
+                return [row.slice(0, midpoint), row.slice(midpoint)];
+            }));
+        }
         return {
             ...layout,
             rgLayout: () => available.map(row => row.map(([cap]) => cap)),
@@ -736,8 +1043,9 @@
             const update = prototype.componentDidUpdate;
             const unmount = prototype.componentWillUnmount;
             const renderLayer = function(layout) {
-                const rendered = layout?.name === "qwerty" ? layoutFor(this, layout) : layout;
                 const layer = state(this);
+                layer.splitRows = null;
+                const rendered = layout?.name === "qwerty" ? layoutFor(this, layout) : layout;
                 layer.rendered = rendered === layout ? null : layer.secondary ? "fn" : "typing";
                 return render.call(this, rendered);
             };
@@ -770,6 +1078,12 @@
                     return;
                 }
                 layer.lastShiftTap = undefined;
+                if (key === symbolToggle && splitMode && typingSettings.split_available) {
+                    resetTyping();
+                    layer.symbols = !layer.symbols;
+                    this.forceUpdate();
+                    return;
+                }
                 if (key === layerToggle || key === layerReturn) {
                     resetTyping();
                     layer.secondary = key === layerToggle;
@@ -821,6 +1135,12 @@
                 const result = update?.apply(this, args);
                 const layer = stateFor.get(this);
                 const keyboard = this.m_keyboardDiv;
+                if (keyboard?.matches(board)) {
+                    keyboardComponent = this;
+                    applySplitGeometry(keyboard, layer?.splitRows);
+                    addKeyIcon(keyboard.querySelector(`${hitSelector}[data-key="VKClose"]`), hideIcon);
+                    showControls(keyboard);
+                }
                 if (keyboard && layer?.rendered && keyboard.matches(board)) {
                     if (keyboard.getAttribute(layoutAttribute) !== layer.rendered) {
                         keyboard.setAttribute(layoutAttribute, layer.rendered);
@@ -837,10 +1157,11 @@
             };
             const unmountLayer = function(...args) {
                 this.m_keyboardDiv?.removeAttribute(layoutAttribute);
+                if (keyboardComponent === this) keyboardComponent = undefined;
+                removeControls();
                 stateFor.delete(this);
                 if (managerPatch?.component === this) unwatchManager();
                 resetPreview();
-                document.getElementById(toggleId)?.remove();
                 return unmount?.apply(this, args);
             };
             prototype.RenderStandardKeyboard = renderLayer;
@@ -851,7 +1172,7 @@
             patch = { prototype, render, type, updateTouch, update, unmount,
                 renderLayer, typeLayer, updateTouchLayer, updateLayer, unmountLayer };
             watchManager(component);
-            showToggle();
+            showControls();
             observer.disconnect();
             component.forceUpdate();
             return;
@@ -868,7 +1189,7 @@
             const keyboard = record.target.closest('[role="grid"].DefaultTheme');
             keyboard?.toggleAttribute(focusAttribute, !!keyboard.querySelector("[data-key-row].gpfocus"));
             // The keyboard is on screen: make sure the preview button is too.
-            if (typingPreview && !document.getElementById(toggleId)) showToggle();
+            if (!document.getElementById(controlsId)) showControls();
             return;
         }
     });
@@ -886,7 +1207,10 @@
             document.querySelectorAll(`[${focusAttribute}]`).forEach(node => node.removeAttribute(focusAttribute));
             document.querySelectorAll(`[${layoutAttribute}]`).forEach(node => node.removeAttribute(layoutAttribute));
             removePreview();
-            document.getElementById(toggleId)?.remove();
+            removeControls();
+            splitStyle.remove();
+            document.querySelectorAll(`[${hideIcon}]`).forEach(icon => icon.remove());
+            applySplitGeometry(document.querySelector(board), null);
             document.removeEventListener("pointerdown", resetOnOutsidePointer, true);
             unwatchManager();
             if (patch) {

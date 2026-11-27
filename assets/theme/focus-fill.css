@@ -13,6 +13,7 @@
   --retro-highlight: var(--mk-focus-highlight, #f2b6e887);
   --mk-square-focus-ink: var(--mk-custom-focus-ink, initial);
   --retro-ink: var(--mk-focus-ink, #21151e);
+  --mk-utility-icon-ink: currentColor;
   --retro-square-photo: var(--retro-square-photo-dark);
   --retro-square-photo-lightness: 2.7;
   outline: var(--mk-focus-ring-width, 1px) solid var(--mk-focus-outline, #e0a9f0);

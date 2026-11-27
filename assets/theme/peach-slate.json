@@ -1,0 +1,28 @@
+{
+  "data": "peach-slate",
+  "label": "Peach & Slate",
+  "colors": {
+    "cream": "#fed2ad",
+    "blue": "#4c758e",
+    "gold": "#fc878c",
+    "amber": "#3f6883",
+    "red": "#d37e9e"
+  },
+  "ink": {
+    "cream": "#291e2b",
+    "blue": "#f4faff",
+    "gold": "#291e2b",
+    "amber": "#f4faff",
+    "red": "#291e2b"
+  },
+  "keys": {
+    "cream": [
+      "`", "~", "1", "!", "2", "@", "3", "#", "Tab", "q", "w",
+      "CapsLock", "a", "Shift", "MasterkeyboardCtrl",
+      "Escape", "MasterkeyboardEscape", "MasterkeyboardF1", "MasterkeyboardF2", "MasterkeyboardF3"
+    ],
+    "gold": ["4", "$", "5", "%", "e", "r", "s", "d", "z", "x", "MasterkeyboardAlt", "MasterkeyboardF4"],
+    "red": ["6", "^", "t", "f", "c", "MasterkeyboardFn", "MasterkeyboardF5"],
+    "amber": [" "]
+  }
+}

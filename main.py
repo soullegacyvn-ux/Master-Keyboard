@@ -27,6 +27,7 @@ CEF_WS_TIMEOUT = (
 )
 HEIGHTS = (-20, -16, -12, -8, -4, 0, 4, 8)
 SHAPES = json.loads((Path(__file__).parent / "assets/theme/profiles.json").read_text(encoding="utf-8"))
+PEACH_SLATE = json.loads((Path(__file__).parent / "assets/theme/peach-slate.json").read_text(encoding="utf-8"))
 PLUGIN_NAME = json.loads((Path(__file__).parent / "plugin.json").read_text(encoding="utf-8"))["name"]
 PLUGIN_VERSION = json.loads((Path(__file__).parent / "package.json").read_text(encoding="utf-8"))["version"]
 UPDATE_CATALOG = "https://master-keyboard-decky-store.soullegacyvn.workers.dev/plugins/versions"
@@ -64,6 +65,7 @@ DEFAULTS = {
     "typing_sound": True,
     "typing_sound_style": None,
     "typing_preview": False,
+    "split_keyboard": False,
     **dict.fromkeys(TYPING_SHORTCUTS, True),
     "focus_color": "Purple",
     "focus_brightness": 100,
@@ -266,6 +268,11 @@ def focus_palette(color):
     )
 
 
+def palette_key(key):
+    value = json.dumps(key, ensure_ascii=False)
+    return f"[data-mk-palette-key={value} i], [data-key={value} i]:where(:not([data-mk-palette-key]))"
+
+
 def profile_block_rules(palette, aliases, *, tint_artwork=False):
     keyboard = ".DefaultTheme." + aliases["virtualkeyboard_Keyboard_45rH7"]
     cap = "." + aliases["virtualkeyboard_KeyboardKey_2KhPX"]
@@ -281,7 +288,10 @@ def profile_block_rules(palette, aliases, *, tint_artwork=False):
     rules = [rule("[data-key-row]", "cream")]
     for block, spec in palette.items():
         if rows := spec.get("rows"):
-            hit = ", ".join(f'[data-key-row="{row}"]' for row in rows)
+            hit = ", ".join(
+                f'[data-mk-palette-row="{row}"], [data-key-row="{row}"]:where(:not([data-mk-palette-row]))'
+                for row in rows
+            )
             rules.append(rule(f":is({hit})", block))
     for block, spec in palette.items():
         if keys := spec.get("keys"):
@@ -289,8 +299,34 @@ def profile_block_rules(palette, aliases, *, tint_artwork=False):
                 keys = [*keys, "VKMove"]
             if "VKPaste" in keys:
                 keys = [*keys, "MasterkeyboardCut", "MasterkeyboardCopy", "MasterkeyboardPaste", "MasterkeyboardSelectAll"]
-            hit = ", ".join(f"[data-key={json.dumps(key, ensure_ascii=False)} i]" for key in keys)
+            hit = ", ".join(map(palette_key, keys))
             rules.append(rule(f":is({hit})", block))
+    return "\n".join(rules)
+
+
+def peach_slate_rules(aliases):
+    keyboard = ".DefaultTheme." + aliases["virtualkeyboard_Keyboard_45rH7"]
+    cap = "." + aliases["virtualkeyboard_KeyboardKey_2KhPX"]
+
+    def block_variables(block):
+        return (f"--mk-scheme-face: {PEACH_SLATE['colors'][block]}; "
+                f"--mk-scheme-ink: {PEACH_SLATE['ink'][block]};")
+
+    rules = [f"""{keyboard} [data-key][data-key-row] > {cap} {{
+        {block_variables("blue")}
+        --mk-style-color: var(--mk-scheme-face);
+        --mk-style-art-tint: color-mix(in srgb, var(--mk-scheme-face) 82%, transparent);
+        --mk-custom-block: var(--mk-scheme-face);
+        --mk-custom-ink: var(--mk-scheme-ink);
+        --mk-control-face: var(--mk-scheme-face);
+        --mk-control-ink: var(--mk-scheme-ink);
+        --retro-face-light: var(--mk-scheme-face);
+        --retro-face-dark: color-mix(in srgb, var(--mk-scheme-face), #18191f 28%);
+        --retro-ink: var(--mk-scheme-ink);
+    }}"""]
+    for block, keys in PEACH_SLATE["keys"].items():
+        selectors = ", ".join(map(palette_key, keys))
+        rules.append(f"{keyboard} :is({selectors})[data-key-row] > {cap} {{ {block_variables(block)} }}")
     return "\n".join(rules)
 
 
@@ -316,6 +352,10 @@ def unified_preview(template):
 
 
 class Theme:
+    rose_glass_sheets = (
+        *SHAPES["Console"]["sheets"], "concept-type-nunito.css", "rose-glass.css",
+    )
+
     def __init__(self, folder, available=None, downloaded=None, *, local_wukong_art=None):
         aliases = json.loads((folder / "class-aliases.json").read_text(encoding="utf-8"))
         self.profiles = SHAPES if available is None else {shape: SHAPES[shape] for shape in available}
@@ -328,6 +368,9 @@ class Theme:
             files.add("focus.css")
         for profile in self.profiles.values():
             files.update(profile["sheets"])
+        if "Ceramic" in self.profiles:
+            # The purchase still verifies the original slot and signed sheet set.
+            files.update(self.rose_glass_sheets)
         if "MiamiAfterHours" in self.profiles:
             files.add("gta-arrow-position.css")
         sources = {
@@ -354,12 +397,14 @@ class Theme:
             for shape, profile in self.profiles.items()
             if shape not in LEGACY_COLOR_SETTINGS and not profile.get("legacy_color_layout")
         }
+        self.peach_slate_css = peach_slate_rules(aliases)
         self.preview_template = unified_preview((folder / "preview.html").read_text(encoding="utf-8"))
 
     def render_css(self, settings):
         shape = settings["shape"]
         profile = self.profiles[shape]
-        names = ["keys.css", *profile["sheets"], "unified-layout.css"]
+        profile_sheets = self.rose_glass_sheets if shape == "Ceramic" else profile["sheets"]
+        names = ["keys.css", *profile_sheets, "unified-layout.css"]
         if shape == "Wukong":
             engraving = "wukong-local-art.css" if "wukong-local-art.css" in self.sheets else "wukong-engraving.css"
             if engraving in self.sheets:
@@ -378,6 +423,12 @@ class Theme:
         if shape in self.profile_rules:
             sheets.append(self.profile_rules[shape])
         sheets.append(self.sheets["control-accents.css"])
+        legacy_setting = LEGACY_COLOR_SETTINGS.get(shape)
+        overrides = settings[legacy_setting] if legacy_setting else settings["style_block_colors"].get(shape, {})
+        brightness_by_block = settings["wukong_block_brightness"] if shape == "Wukong" else {}
+        if all(overrides.get(block, profile["colors"][block]["color"]).casefold() == color
+               and brightness_by_block.get(block, 100) == 100 for block, color in PEACH_SLATE["colors"].items()):
+            sheets.append(self.peach_slate_css)
         sheets.append(self.sheets["focus-fill.css"])
         if shape == "MiamiAfterHours":
             sheets.append(self.sheets["gta-arrow-position.css"])
@@ -405,9 +456,7 @@ class Theme:
         )
         if custom_focus:
             variables.append("  --mk-custom-focus-ink: var(--mk-focus-ink);")
-        legacy_setting = LEGACY_COLOR_SETTINGS.get(shape)
         if legacy_setting or profile.get("legacy_color_layout"):
-            overrides = settings[legacy_setting] if legacy_setting else settings["style_block_colors"].get(shape, {})
             for block, color in sorted(overrides.items()):
                 original = profile["colors"][block]["color"]
                 if color.casefold() == original.casefold():
@@ -422,8 +471,6 @@ class Theme:
                         variables.append("  --mk-legacy-caps-filter: brightness(0) invert(1);")
         else:
             variables.append(f"  --mk-profile-height: {profile['height']}px;")
-            overrides = settings["style_block_colors"].get(shape, {})
-            brightness_by_block = settings["wukong_block_brightness"] if shape == "Wukong" else {}
             for block, spec in profile["colors"].items():
                 color = overrides.get(block, spec["color"])
                 brightness = brightness_by_block.get(block, 100)
@@ -447,6 +494,11 @@ class Theme:
             ("caps", "red", "#743d3a" if shape == "Wukong" else "#a24647", "#f7dca3" if shape == "Wukong" else "#fff4de"),
             ("shift", "gold", "#cda35d" if shape == "Wukong" else "#e3c067", "#2c210e"),
         )
+        if shape == "Ceramic":
+            accents = tuple(
+                (name, block, profile["colors"][block]["color"], profile["colors"][block]["ink"])
+                for name, block in (("caps", "red"), ("shift", "amber"))
+            )
         for name, block, default, default_ink in accents:
             color = overrides.get(block, default)
             uses_default = color.casefold() in (default, profile["colors"][block]["color"].casefold())
@@ -868,6 +920,10 @@ class Plugin:
     def colors_locked(self):
         return bool(self.public and self.public.pack is None)
 
+    @property
+    def split_available(self):
+        return self.public is not None and self.public.pack is not None
+
     def live_settings(self, settings=None):
         settings = self.settings if settings is None else settings
         if self.public and settings["shape"] not in self.public.unlocked:
@@ -875,6 +931,8 @@ class Plugin:
         if self.colors_locked:
             # The saved colours stay on disk and come back when Premium is unlocked.
             settings = {**settings, **{key: DEFAULTS[key] for key in PREMIUM_COLOR_SETTINGS}}
+        if not self.split_available and settings["split_keyboard"]:
+            settings = {**settings, "split_keyboard": False}
         return settings
 
     async def get_access(self):
@@ -1057,6 +1115,8 @@ class Plugin:
             raise ValueError("Unlock this Premium theme before using it.")
         if self.colors_locked:
             patch = {key: value for key, value in patch.items() if key not in PREMIUM_COLOR_SETTINGS}
+        if not self.split_available:
+            patch.pop("split_keyboard", None)
         next_settings = {**self.settings, **patch}
         if next_settings != self.settings:
             desired = self.theme.stylesheet(self.live_settings(next_settings))
@@ -1146,6 +1206,8 @@ class Plugin:
                 targets = await response.json()
             typing_shortcuts = {name: self.settings[name] for name in TYPING_SHORTCUTS}
             typing_shortcuts["space_cursor_swipe"] = self.public is not None and self.public.pack is not None
+            typing_shortcuts["split_available"] = self.split_available
+            typing_shortcuts["split_keyboard"] = typing_shortcuts["split_available"] and self.settings["split_keyboard"]
             updates = [
                 style_page(client, url, css, revision, preset not in (None, "Off"),
                            self.reference_script,

@@ -13,6 +13,7 @@ import {
 } from "@decky/ui";
 import React, { createContext, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import profiles from "../assets/theme/profiles.json";
+import peachSlate from "../assets/theme/peach-slate.json";
 import { version as installedVersion } from "../package.json";
 import plugin from "../plugin.json";
 import { checkoutQrData } from "./checkout-qr";
@@ -38,7 +39,7 @@ function defaultColors(shape: KeyShape): Record<ColorBlock, string> {
 }
 
 const colorSchemes = [
-  { data: "rtr", label: "RTR-85", colors: defaultColors("Sculpted") },
+  peachSlate,
   { data: "terminal", label: "Terminal SA", colors: defaultColors("Terminal") },
   { data: "console", label: "Retro Console", colors: defaultColors("Console") },
   {
@@ -136,6 +137,7 @@ interface Settings {
   typing_sound: boolean;
   typing_sound_style?: TypingSound | null;
   typing_preview?: boolean;
+  split_keyboard?: boolean;
   shift_double_tap_lock?: boolean;
   double_space_period?: boolean;
   sentence_capitalization?: boolean;
@@ -1485,6 +1487,18 @@ function Content({ bundleVersion }: { bundleVersion: string }) {
               </section>
               <section className="mk-panel-group" aria-labelledby="mk-typing-shortcuts">
                 <h2 className="mk-section-title" id="mk-typing-shortcuts">Typing shortcuts</h2>
+                <PanelSectionRow>
+                  <ToggleField
+                    label={<span className="mk-enabled-label">Split keyboard{!access.active && <PremiumBadge />}</span>}
+                    description={access.active
+                      ? "Open with two thumb-sized key groups. Switch back to Full above the keyboard."
+                      : "Two thumb-sized key groups · Premium"}
+                    disabled={!access.active}
+                    bottomSeparator="none"
+                    checked={access.active && (settings.split_keyboard ?? false)}
+                    onChange={(split_keyboard) => update({ split_keyboard })}
+                  />
+                </PanelSectionRow>
                 <PanelSectionRow>
                   <ToggleField
                     label="Double-tap Shift to lock"
