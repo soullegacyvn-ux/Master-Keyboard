@@ -190,12 +190,6 @@
   --mk-layout-key-weight: 4.4;
 }
 
-.DefaultTheme.virtualkeyboard_Keyboard_45rH7
-:is([data-key="MasterkeyboardABC"], [data-key="MasterkeyboardEscape"])
-> .virtualkeyboard_KeyboardKey_2KhPX {
-  border-color: color-mix(in srgb, var(--retro-ink) 32%, var(--mk-profile-edge));
-}
-
 .mk-preview-keyboard > :is(.Row_3, .Row_4) .mk-preview-hit {
   flex: var(--mk-layout-key-weight, 1) 1 0;
 }
@@ -218,6 +212,7 @@
   inset: var(--mk-bottom-arrow-y, calc(50% - clamp(2px, var(--mk-profile-label-rise, 3px), 5px))) auto auto 50%;
   margin: 0;
   line-height: 1;
+  opacity: 1;
   transform: none;
   translate: -50% -50%;
   transition: none;

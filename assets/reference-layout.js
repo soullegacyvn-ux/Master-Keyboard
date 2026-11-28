@@ -174,6 +174,109 @@
     let toolbarRoot;
     const controlsResize = new ResizeObserver(() => showControls(toolbarRoot));
 
+    const bandColumns = ["c", "v", "b", "n"];
+    const bandStops = [...Array.from({ length: 5 }, (_, index) => `--mk-space-band-${index}`),
+        "--mk-space-band-aspect", "--mk-rt-y-band-light"];
+    const bandResize = new ResizeObserver(queueSpaceBands);
+    let bandKeyboard;
+    let bandLayout;
+    let bandFrame = 0;
+    let paintedHits = new Set();
+
+    function setBandStops(paint) {
+        for (const hit of paintedHits) {
+            if (!paint.has(hit)) bandStops.forEach(stop => hit.style.removeProperty(stop));
+        }
+        for (const [hit, values] of paint) {
+            bandStops.forEach((stop, index) => {
+                const value = values[index] ?? "";
+                if (hit.style.getPropertyValue(stop) !== value) hit.style.setProperty(stop, value);
+            });
+        }
+        paintedHits = new Set(paint.keys());
+    }
+
+    function queueSpaceBands() {
+        if (bandFrame) return;
+        bandFrame = requestAnimationFrame(() => {
+            bandFrame = 0;
+            const keyboard = bandKeyboard;
+            if (!keyboard?.isConnected || !bandLayout) return;
+            const columns = bandColumns.map(key =>
+                keyboard.querySelector(`${hitSelector}[data-key="${key}" i]`)?.firstElementChild);
+            if (columns.some(cap => !cap)) {
+                setBandStops(new Map());
+                return;
+            }
+            // Left and right Split Space clip the same set of x coordinates.
+            const bounds = columns.map(cap => cap.getBoundingClientRect());
+            const edges = [...bounds.map(rect => rect.left), bounds.at(-1).right];
+            const paint = new Map();
+            const row = bandLayout === "split" ? "3" : "4";
+            for (const hit of keyboard.querySelectorAll(`${hitSelector}[data-key-row="${row}"]`)) {
+                const cap = hit.firstElementChild;
+                if (!cap) continue;
+                const style = getComputedStyle(cap);
+                if (style.getPropertyValue("--mk-space-band-target").trim() !== "1") continue;
+                const capBounds = cap.getBoundingClientRect();
+                if (!cap.offsetWidth || !cap.offsetHeight || !capBounds.width) continue;
+                const scale = capBounds.width / cap.offsetWidth;
+                const verticalScale = capBounds.height / cap.offsetHeight;
+                const inset = style.getPropertyValue("--mk-space-band-surface").trim() === "before"
+                    ? getComputedStyle(cap, "::before") : null;
+                const leftBorder = parseFloat(style.borderLeftWidth) || 0;
+                const rightBorder = parseFloat(style.borderRightWidth) || 0;
+                const left = capBounds.left + (leftBorder + (parseFloat(inset?.left) || 0)) * scale;
+                const width = capBounds.width - (leftBorder + rightBorder
+                    + (parseFloat(inset?.left) || 0) + (parseFloat(inset?.right) || 0)) * scale;
+                const topInset = (parseFloat(style.borderTopWidth) || 0) + (parseFloat(inset?.top) || 0);
+                const height = capBounds.height - (topInset
+                    + (parseFloat(style.borderBottomWidth) || 0)
+                    + (parseFloat(inset?.bottom) || 0)) * verticalScale;
+                if (width > 0 && height > 0) {
+                    const stops = edges.map(edge => `${(100 * (edge - left) / width).toFixed(3)}%`);
+                    const tones = style.getPropertyValue("--mk-rt-y-band-tones").trim();
+                    const badge = tones && (cap.querySelector('img[src$="/shared_color_button_y.svg"]')?.parentElement
+                        ?? cap.querySelector(".mk-preview-space-badge"));
+                    let badgeLight;
+                    if (badge) {
+                        const box = badge.getBoundingClientRect();
+                        const slope = parseFloat(style.getPropertyValue("--mk-rt-y-band-slope")) || 0;
+                        const y = box.top + box.height / 2 - capBounds.top - topInset * verticalScale;
+                        const x = box.left + box.width / 2 - slope * y;
+                        const band = edges.findIndex(edge => edge > x);
+                        badgeLight = tones.split(/\s+/)[band < 0 ? edges.length : band];
+                    }
+                    paint.set(hit, [...stops, (height / width).toFixed(5), badgeLight]);
+                }
+            }
+            setBandStops(paint);
+        });
+    }
+
+    function refreshSpaceBands() {
+        bandResize.disconnect();
+        cancelAnimationFrame(bandFrame);
+        bandFrame = 0;
+        if (bandLayout && bandKeyboard?.isConnected
+            && getComputedStyle(bandKeyboard).getPropertyValue("--mk-align-space-bands").trim() === "1") {
+            bandResize.observe(bandKeyboard);
+            queueSpaceBands();
+        } else {
+            setBandStops(new Map());
+        }
+    }
+
+    function trackSpaceBands(keyboard, layer) {
+        const layout = layer?.rendered === "typing" && !(layer.splitRows && layer.symbols)
+            ? layer.splitRows ? "split" : "full"
+            : null;
+        if (keyboard === bandKeyboard && layout === bandLayout) return;
+        bandKeyboard = keyboard;
+        bandLayout = layout;
+        refreshSpaceBands();
+    }
+
     const spaceKey = '[data-key=" "][data-key-row]';
     const shiftKey = '[data-key="Shift"][data-key-row]';
     const spaceSwipeStep = 14;
@@ -1148,6 +1251,7 @@
                 } else {
                     keyboard?.removeAttribute(layoutAttribute);
                 }
+                trackSpaceBands(keyboard?.matches(board) ? keyboard : undefined, layer);
                 if (keyboard && layer && (layer.ctrl || layer.alt || layer.marked)) {
                     keyboard.querySelector(`[data-key="${ctrl}"][data-key-row]`)?.toggleAttribute(heldAttribute, layer.ctrl);
                     keyboard.querySelector(`[data-key="${alt}"][data-key-row]`)?.toggleAttribute(heldAttribute, layer.alt);
@@ -1157,6 +1261,7 @@
             };
             const unmountLayer = function(...args) {
                 this.m_keyboardDiv?.removeAttribute(layoutAttribute);
+                if (bandKeyboard === this.m_keyboardDiv) trackSpaceBands(undefined);
                 if (keyboardComponent === this) keyboardComponent = undefined;
                 removeControls();
                 stateFor.delete(this);
@@ -1199,11 +1304,13 @@
         revision,
         typingSettings,
         setTypingSettings,
+        refreshSpaceBands,
         restore() {
             observer.disconnect();
             focusObserver.disconnect();
             spaceTouchListeners.abort();
             clearSpaceGesture();
+            trackSpaceBands(undefined);
             document.querySelectorAll(`[${focusAttribute}]`).forEach(node => node.removeAttribute(focusAttribute));
             document.querySelectorAll(`[${layoutAttribute}]`).forEach(node => node.removeAttribute(layoutAttribute));
             removePreview();

@@ -18,7 +18,7 @@
 [data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX {
   --mk-photo-ink: var(--retro-ink);
   --mk-key-shell-color: var(--mk-profile-face);
-  background: var(--mk-key-shell-color);
+  background: var(--mk-scheme-paint, none), var(--mk-key-shell-color);
   border-color: #15161b;
   border-width: 0 1px 1px 0;
   isolation: isolate;

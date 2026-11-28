@@ -19,7 +19,7 @@ The 1.2.9 build was published before the client source was added to this reposit
 ### What runs on the device
 
 - The plugin uses Steam's loopback CEF interface to render the keyboard and implement local editing shortcuts. The Gamescope clipboard helper runs as the desktop user and handles only the requested shortcut in the supported focused editor.
-- The six included themes work offline. Purchase and restore actions use the Master Keyboard store endpoint and a public key to verify signed theme downloads. Server-side commerce code and the paid artwork downloads are separate from this Decky client.
+- The six included themes work offline. Trial, purchase, and restore actions use the Master Keyboard store endpoint and a public key to verify signed theme downloads. The 24-hour trial is tied to the plugin’s installation ID and has its own signed expiry. Server-side commerce code and the paid artwork downloads are separate from this Decky client.
 - The manual update action uses the Master Keyboard catalog and GitHub Releases. The optional Plasma setup action uses the separate Plasma GitHub repository and validates the SHA-256 of its package before running the installer as the desktop user.
 - The support form sends the email and message entered by the user when submitted.
 

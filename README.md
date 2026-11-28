@@ -68,6 +68,12 @@ If you use another Steam keyboard theme in CSS Loader, disable it before enablin
 
 Master Keyboard includes six ready-to-use themes and previews of fourteen additional styles.
 
+### 24-hour Premium trial
+
+Open **Decky → Master Keyboard** and choose **Start free trial** if the offer is available. Split Keyboard, Premium themes, color schemes, and Space gestures unlock for 24 hours. The trial does not require payment details.
+
+The panel shows the time remaining and an **Unlock Now** button for lifetime Premium. **Restore purchase** is available if you already have a license. When the trial ends, the keyboard returns to Free and keeps your saved preferences.
+
 ## Source and verification
 
 The Decky client source, dependency lockfile, and third-party notices are here. See [Build and verify](BUILD.md) for instructions to reproduce the frontend and review what the plugin accesses.

@@ -1,0 +1,7 @@
+/* Jade already centers its arrow legends using transform in the theme sheet. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 .Row_4
+.virtualkeyboard_KeyboardKeyHitArea_1YqjV:is([data-key="ArrowLeft"], [data-key="ArrowRight"])[data-key-row="4"]
+> .virtualkeyboard_KeyboardKey_2KhPX
+> span:not(.virtualkeyboard_AltGrLabel_21WhT, .virtualkeyboard_InactiveLabel_1lPIY) {
+  translate: none;
+}

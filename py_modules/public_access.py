@@ -11,12 +11,15 @@ from urllib.parse import urlsplit
 
 import aiohttp
 import certifi
-from entitlement import LIFETIME_PRICE_USD, LIMIT, PUBLIC_COLLECTION, verify
+from entitlement import (
+    LIFETIME_PRICE_USD, LIMIT, PUBLIC_COLLECTION, TRIAL_COLLECTION, TRIAL_DURATION, verify,
+)
 
 LICENSE = re.compile(r"MK(?:-[A-Z2-7]{8}){4}")
 DEVICE = re.compile(r"[a-f0-9]{32}")
 CHECKOUT_TOKEN = re.compile(r"[A-Za-z0-9_-]{43}")
 HTTP_HEADERS = {"User-Agent": "Master-Keyboard-Decky/1.1"}
+TRIAL_CLOCK_TOLERANCE = 60
 
 
 def normalize_license(code):
@@ -70,11 +73,17 @@ class PublicAccess:
         self.logger = logger
         self.activation_lock = asyncio.Lock()
         self.entitlement_file = settings_dir / "premium-entitlement.json"
+        self.trial_file = settings_dir / "premium-trial.json"
         self.checkout_file = settings_dir / "pending-checkout.json"
         self.checkout = None
         self.device = None
         self.pack = None
         self.renewal = None
+        self.trial_pack = None
+        self.trial_deadline = 0
+        self.trial_state = "unavailable"
+        self.trial_status_retry_at = 0
+        self.trial_status_task = None
         # Decky bundles OpenSSL and uses certifi for its own HTTPS requests.
         self.https_context = ssl.create_default_context(cafile=certifi.where())
         if not self.store:
@@ -95,6 +104,8 @@ class PublicAccess:
                 self.pack = self.read_saved_pack(json.loads(self.entitlement_file.read_text(encoding="utf-8")))
             except (OSError, ValueError, subprocess.SubprocessError):
                 logger.warning("Saved Master Keyboard purchase could not be verified.")
+        if self.trial_supported and self.pack is None:
+            self.load_trial()
         if self.pack is None and self.device:
             try:
                 saved = json.loads(self.checkout_file.read_text(encoding="utf-8"))
@@ -135,13 +146,158 @@ class PublicAccess:
         return pack
 
     @property
+    def trial_supported(self):
+        return bool(self.store and self.device and self.client.get("client") == "decky-v2")
+
+    def read_trial(self, envelope):
+        pack = verify(
+            envelope, self.public_key, self.device, collection=TRIAL_COLLECTION,
+            bundle_collection=PUBLIC_COLLECTION, premium=self.premium,
+        )
+        start, end = pack.get("issued_at"), pack.get("expires_at")
+        if (pack.get("kind") != "trial" or "license" in pack or "bundle_sha256" not in pack
+                or type(start) is not int or type(end) is not int or start <= 0
+                or end - start != TRIAL_DURATION or start > time.time() + TRIAL_CLOCK_TOLERANCE
+                or set(pack["sheets"]) != self.private_sheets):
+            raise ValueError("Invalid Master Keyboard trial")
+        return pack
+
+    def load_trial(self):
+        try:
+            with self.trial_file.open("rb") as stream:
+                raw = stream.read(LIMIT * 2 + 1)
+            if len(raw) > LIMIT * 2:
+                raise ValueError("Trial file exceeds the download limit.")
+            saved = json.loads(raw)
+            if saved == {"used": True}:
+                self.trial_state = "used"
+                return
+            self.use_trial_pack(self.read_trial(saved))
+            self.expire_trial()
+        except FileNotFoundError:
+            pass
+        except (OSError, ValueError, subprocess.SubprocessError):
+            self.logger.warning("Saved Master Keyboard trial could not be verified.")
+
+    def use_trial_pack(self, pack):
+        remaining = min(TRIAL_DURATION, pack["expires_at"] - time.time())
+        self.trial_deadline = time.monotonic() + remaining
+        self.trial_pack = pack
+
+    @property
+    def trial_remaining(self):
+        if self.trial_pack is None:
+            return 0
+        now = time.time()
+        if now < self.trial_pack["issued_at"] - TRIAL_CLOCK_TOLERANCE:
+            return 0
+        return max(0, min(self.trial_pack["expires_at"] - now, self.trial_deadline - time.monotonic()))
+
+    def expire_trial(self):
+        if self.trial_pack is None or self.trial_remaining > 0:
+            return False
+        self.finish_trial()
+        return True
+
+    def finish_trial(self):
+        """Keep the one-time marker and discard the downloaded theme bundle."""
+        if self.trial_pack is None:
+            return
+        self.trial_pack = None
+        self.trial_state = "used"
+        try:
+            self.save(self.trial_file, {"used": True})
+        except OSError:
+            self.logger.warning("Could not clear the Master Keyboard trial bundle.")
+
+    def check_trial_status(self):
+        if (not self.trial_supported or self.pack is not None or self.trial_remaining
+                or self.trial_state == "used" or time.monotonic() < self.trial_status_retry_at
+                or (self.trial_status_task is not None and not self.trial_status_task.done())):
+            return
+        self.trial_status_task = asyncio.create_task(self.refresh_trial_status(), name="Master Keyboard trial status")
+
+    async def refresh_trial_status(self):
+        state = None
+        retry = 30
+        try:
+            async with aiohttp.ClientSession(headers=HTTP_HEADERS, timeout=aiohttp.ClientTimeout(total=5)) as session:
+                async with session.post(self.store + "/api/trial/status",
+                                        json={"device": self.device, **self.client},
+                                        allow_redirects=False, ssl=self.https_context) as response:
+                    if response.status == 200:
+                        answer = await response_json(response, 4096)
+                        if isinstance(answer, dict) and isinstance(remote_state := answer.get("state"), str):
+                            state = {
+                                "available": "available", "active": "resume", "used": "used", "paid": "unavailable",
+                            }.get(remote_state)
+                            if state is not None:
+                                retry = 300
+                    elif response.status == 404:
+                        state, retry = "unavailable", 900
+        except (aiohttp.ClientError, TimeoutError, OSError, ValueError):
+            pass
+        self.trial_status_retry_at = time.monotonic() + retry
+        if state and self.pack is None and self.trial_pack is None and self.trial_state != "used":
+            self.trial_state = state
+
+    async def download_trial(self):
+        if not self.trial_supported:
+            return {"error": "The trial is unavailable in this installation."}
+        try:
+            async with aiohttp.ClientSession(headers=HTTP_HEADERS, timeout=aiohttp.ClientTimeout(total=20)) as session:
+                async with session.post(self.store + "/api/trial/start",
+                                        json={"device": self.device, **self.client},
+                                        allow_redirects=False, ssl=self.https_context) as response:
+                    if response.status == 410:
+                        self.trial_state = "used"
+                        return {"error": "This installation has already used its Premium trial."}
+                    if response.status in (404, 409):
+                        self.trial_state = "unavailable"
+                        self.trial_status_retry_at = time.monotonic() + 900
+                    if response.status != 200:
+                        return {"error": {
+                            404: "The Premium trial is currently unavailable.",
+                            409: "A Premium purchase is already linked to this installation. Restore your purchase.",
+                            429: "Too many attempts. Try again later.",
+                        }.get(response.status, "Could not start the Premium trial. Try again.")}
+                    envelope = await response_json(response, LIMIT * 2)
+            pack = await asyncio.to_thread(self.read_trial, envelope)
+            if pack["expires_at"] <= time.time():
+                self.trial_state = "used"
+                return {"error": "This installation has already used its Premium trial."}
+            self.trial_state = "resume"
+            return {"envelope": envelope, "pack": pack}
+        except (aiohttp.ClientError, TimeoutError, OSError, ValueError, subprocess.SubprocessError):
+            return {"error": "Could not load the Premium trial. Check your connection and try again."}
+
+    @property
+    def effective_pack(self):
+        if self.pack is not None:
+            return self.pack
+        return self.trial_pack if self.trial_remaining else None
+
+    @property
     def unlocked(self):
-        return self.free | self.premium.intersection(self.pack["profiles"]) if self.pack else self.free
+        pack = self.effective_pack
+        return self.free | self.premium.intersection(pack["profiles"]) if pack else self.free
 
     def status(self):
         pending = bool(self.valid_checkout(self.checkout))
         checkout_url = f"{self.store}/checkout/device?id={self.checkout['id']}" if pending else None
-        return {"public": True, "store": self.store, "active": self.pack is not None,
+        paid = self.pack is not None
+        trial = not paid and self.trial_remaining > 0
+        trial_state = self.trial_state
+        if paid:
+            trial_state = "unavailable"
+        elif trial:
+            trial_state = "active"
+        elif self.trial_pack is not None:
+            trial_state = "used"
+        elif trial_state == "unavailable" and self.trial_status_task and not self.trial_status_task.done():
+            trial_state = "checking"
+        return {"public": True, "store": self.store, "active": paid or trial, "paid": paid,
+                "trial_state": trial_state, "trial_expires_at": self.trial_pack["expires_at"] if trial else None,
                 "plasma_install": isinstance(self.plasma, dict),
                 "price": f"${LIFETIME_PRICE_USD} USD" if self.store else None,
                 "pending": pending, "checkout_url": checkout_url, "locked": sorted(self.premium - self.unlocked),

@@ -1,0 +1,21 @@
+/* Native directions switch between two legends in the same bottom-row slot. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 .Row_4
+[data-key^="Arrow"][data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX:has(
+  > .virtualkeyboard_ShiftedLabel_3FZuk:not(.virtualkeyboard_AltGrLabel_21WhT, .virtualkeyboard_InactiveLabel_1lPIY)
+)
+> span:not(.virtualkeyboard_AltGrLabel_21WhT, .virtualkeyboard_InactiveLabel_1lPIY) {
+  position: absolute;
+  inset: var(--mk-bottom-arrow-y, calc(50% - clamp(2px, var(--mk-profile-label-rise, 3px), 5px))) auto auto 50%;
+  font-size: var(--mk-bottom-arrow-size, min(1em, 14px));
+  line-height: 1;
+  opacity: 1;
+  transform: none;
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 .Row_4
+[data-key^="Arrow"][data-key-row]
+> .virtualkeyboard_KeyboardKey_2KhPX > span > svg {
+  inline-size: var(--mk-bottom-arrow-size, 20px);
+  block-size: var(--mk-bottom-arrow-size, 20px);
+}

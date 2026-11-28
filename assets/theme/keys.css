@@ -272,7 +272,8 @@
   margin-inline: auto;
 }
 
-.DefaultTheme .virtualkeyboard_KeyboardKey_2KhPX > .virtualkeyboard_ShiftedLabel_3FZuk > svg {
+.DefaultTheme .virtualkeyboard_KeyboardKey_2KhPX:where(:not(.Row_4 [data-key^="Arrow"] > *))
+> .virtualkeyboard_ShiftedLabel_3FZuk > svg {
   width: 13px;
   height: 13px;
 }

@@ -1,0 +1,33 @@
+/* Recolor the native alpha cutout, including Steam's alternate icon asset. */
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key="CapsLock"][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX
+> .virtualkeyboard_ActionButtonGlyph_3VtXf > img[src$="/shared_lstick_click.svg"] {
+  filter: brightness(0) invert(var(--mk-rt-l3-light, 1));
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key="CapsLock"][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX
+> .mk-preview-profile-badge[data-profile-glyph="L3"]::after {
+  --mk-rt-l3-blend: calc(var(--mk-rt-l3-light, 1) * 100%);
+  background: color-mix(in srgb, #fff var(--mk-rt-l3-blend), #22262a);
+  color: color-mix(in srgb, #302e2a var(--mk-rt-l3-blend), #fff);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7 :is(
+  :is([data-key="CapsLock"], [data-key=" "])[data-key-row].gpfocus > .virtualkeyboard_KeyboardKey_2KhPX,
+  :where(.virtualkeyboard_Keyboard_45rH7:not(:has([data-key-row].gpfocus)))
+    :is([data-key="CapsLock"], [data-key=" "])[data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX.virtualkeyboard_Focused_21EoN
+) {
+  --mk-rt-l3-light: var(--mk-rt-l3-focus-light, 1);
+  --mk-rt-y-focus-light: var(--mk-rt-l3-focus-light, 0);
+}
+
+.DefaultTheme.virtualkeyboard_Keyboard_45rH7
+[data-key=" "][data-key-row] > .virtualkeyboard_KeyboardKey_2KhPX
+> .virtualkeyboard_ActionButtonGlyph_3VtXf:is(
+  .mk-preview-space-badge, :has(> img[src$="/shared_color_button_y.svg"])
+)::after {
+  --mk-rt-y-blend: calc(var(--mk-rt-y-focus-light, var(--mk-rt-y-band-light, var(--mk-rt-y-base-light, 0))) * 100%);
+  background: color-mix(in srgb, #fff var(--mk-rt-y-blend), #302e2a);
+  color: color-mix(in srgb, #302e2a var(--mk-rt-y-blend), #f0ebdb);
+}

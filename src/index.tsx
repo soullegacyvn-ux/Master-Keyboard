@@ -14,6 +14,7 @@ import {
 import React, { createContext, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import profiles from "../assets/theme/profiles.json";
 import peachSlate from "../assets/theme/peach-slate.json";
+import referenceColorSchemes from "../assets/theme/reference-color-schemes.json";
 import { version as installedVersion } from "../package.json";
 import plugin from "../plugin.json";
 import { checkoutQrData } from "./checkout-qr";
@@ -38,68 +39,7 @@ function defaultColors(shape: KeyShape): Record<ColorBlock, string> {
   return Object.fromEntries(blockKeys.map((block) => [block, colors[block].color])) as Record<ColorBlock, string>;
 }
 
-const colorSchemes = [
-  peachSlate,
-  { data: "terminal", label: "Terminal SA", colors: defaultColors("Terminal") },
-  { data: "console", label: "Retro Console", colors: defaultColors("Console") },
-  {
-    data: "ocarina", label: "Ocarina",
-    colors: { cream: "#d9c89b", blue: "#47734c", gold: "#dbad52", amber: "#456795", red: "#8e4a3b" },
-  },
-  {
-    data: "midnight-teal", label: "Midnight Teal",
-    colors: { cream: "#293847", blue: "#296967", gold: "#74acab", amber: "#42647c", red: "#ba815e" },
-  },
-  {
-    data: "porcelain-blue", label: "Porcelain Blue",
-    colors: { cream: "#eae8df", blue: "#31557f", gold: "#bec9d5", amber: "#7199b0", red: "#ad5d54" },
-  },
-  {
-    data: "sakura-smoke", label: "Sakura Smoke",
-    colors: { cream: "#dcd3d8", blue: "#68495f", gold: "#d39da6", amber: "#7f8b9d", red: "#a8676a" },
-  },
-  {
-    data: "graphite-amber", label: "Graphite Amber",
-    colors: { cream: "#303135", blue: "#464753", gold: "#cf9a46", amber: "#8c7154", red: "#9e5451" },
-  },
-  {
-    data: "ink-jade", label: "Ink & Jade",
-    colors: { cream: "#1d262b", blue: "#245c4d", gold: "#9bd6ad", amber: "#d8c49a", red: "#a04952" },
-  },
-  {
-    data: "cream-espresso", label: "Cream & Espresso",
-    colors: { cream: "#f0e1cb", blue: "#47312e", gold: "#d7ae77", amber: "#935435", red: "#792d40" },
-  },
-  {
-    data: "persimmon", label: "Persimmon",
-    colors: { cream: "#efe4d5", blue: "#2f414b", gold: "#f0be5d", amber: "#e1783f", red: "#a73936" },
-  },
-  {
-    data: "moss-and-clay", label: "Moss & Clay",
-    colors: { cream: "#c9c6a9", blue: "#344d3b", gold: "#bfc37e", amber: "#705a42", red: "#a15443" },
-  },
-  {
-    data: "blue-hour", label: "Blue Hour",
-    colors: { cream: "#202638", blue: "#35458d", gold: "#a3a9ed", amber: "#70549f", red: "#d38fb1" },
-  },
-  {
-    data: "sea-glass", label: "Sea Glass",
-    colors: { cream: "#e0f0ec", blue: "#226b73", gold: "#a9e0d2", amber: "#467b9e", red: "#d9877c" },
-  },
-  {
-    data: "black-cherry", label: "Black Cherry",
-    colors: { cream: "#2c222b", blue: "#473d67", gold: "#e0b9a4", amber: "#bc7896", red: "#91344f" },
-  },
-  {
-    data: "signal-lime", label: "Signal Lime",
-    colors: { cream: "#25292a", blue: "#435675", gold: "#d0ec63", amber: "#86ac77", red: "#f57b52" },
-  },
-];
-
-const retroIvory = {
-  data: "retro-ivory", label: "Retro Ivory",
-  colors: { cream: "#fff1da", blue: "#4388a4", gold: "#d0b44a", amber: "#d99a4b", red: "#c75650" },
-};
+const colorSchemes = [...referenceColorSchemes, peachSlate];
 
 const rgbChannels = ["Red", "Green", "Blue"];
 const colorPresets = [
@@ -161,6 +101,9 @@ type Access = {
   store: string | null;
   price?: string | null;
   active: boolean;
+  paid?: boolean;
+  trial_state?: "checking" | "unavailable" | "available" | "active" | "used" | "resume";
+  trial_expires_at?: number | null;
   pending: boolean;
   renewing?: boolean;
   checkout_url?: string | null;
@@ -172,6 +115,7 @@ const getAccess = callable<[], Access>("get_access");
 const getPremiumPreview = callable<[KeyShape], string>("get_premium_preview");
 const activatePurchase = callable<[string], { error: string } | { access: Access; settings: StoredSettings }>("activate_purchase");
 const beginCheckout = callable<[], { error: string } | { access: Access; url: string }>("begin_checkout");
+const startTrial = callable<[], { error: string; access?: Access } | { access: Access; settings: StoredSettings }>("start_trial");
 const checkUpdate = callable<[boolean], { version: string } | null>("check_update");
 const prepareUpdate = callable<[string], { artifact: string; hash: string }>("prepare_update");
 type PlasmaSetupResult = { installed: true; version: string; already_current?: boolean; updated?: boolean }
@@ -248,15 +192,15 @@ function PremiumBadge() {
   );
 }
 
-function ProBadge() {
+function ProBadge({ trial = false }: { trial?: boolean }) {
   return (
-    <span className="mk-pro-badge" aria-label="Premium active">
+    <span className="mk-pro-badge" aria-label={trial ? "Premium trial active" : "Premium active"}>
       <svg aria-hidden="true" width="14" height="14" viewBox="0 0 16 16" fill="none"
         stroke="currentColor" strokeWidth="1.35" strokeLinejoin="round">
         <path d="m4 2.75-2.5 3.5L8 13.5l6.5-7.25L12 2.75H4Z" />
         <path d="M1.5 6.25h13M5.75 6.25 8 13.5l2.25-7.25" />
       </svg>
-      <span aria-hidden="true">PRO</span>
+      <span aria-hidden="true">{trial ? "TRIAL" : "PRO"}</span>
     </span>
   );
 }
@@ -431,9 +375,23 @@ function ContactSupport() {
   );
 }
 
-function PurchasePanel({ access, onCheckout, onActivated }: {
+function TrialTime({ expiresAt }: { expiresAt: number }) {
+  const [now, setNow] = useState(Date.now);
+  useEffect(() => {
+    const timer = setInterval(() => setNow(Date.now()), 15_000);
+    return () => clearInterval(timer);
+  }, []);
+  const remaining = Math.ceil((expiresAt * 1000 - now) / 60_000);
+  const hours = Math.floor(remaining / 60);
+  const minutes = remaining % 60;
+  return <span role="timer" className="mk-trial-time">
+    {remaining <= 0 ? "Ending…" : hours ? `${hours}h ${minutes}m left` : `${minutes}m left`}
+  </span>;
+}
+
+function PurchasePanel({ access, onAccess, onActivated }: {
   access: Access;
-  onCheckout: (access: Access) => void;
+  onAccess: (access: Access) => void;
   onActivated: (access: Access, settings: StoredSettings) => void;
 }) {
   const [showCheckout, setShowCheckout] = useState(true);
@@ -441,10 +399,14 @@ function PurchasePanel({ access, onCheckout, onActivated }: {
   const [key, setKey] = useState("");
   const [busy, setBusy] = useState(false);
   const [opening, setOpening] = useState(false);
+  const [startingTrial, setStartingTrial] = useState(false);
   const [message, setMessage] = useState<string>();
   const [error, setError] = useState<string>();
   const checkoutUrl = access.checkout_url;
   const checkoutQR = useMemo(() => checkoutUrl ? checkoutQrData(checkoutUrl) : undefined, [checkoutUrl]);
+  const trialState = access.trial_state;
+  const trialOffer = trialState === "available" || trialState === "resume";
+  const purchaseBusy = busy || opening || startingTrial;
 
   const openBrowser = openExternal;
 
@@ -454,7 +416,7 @@ function PurchasePanel({ access, onCheckout, onActivated }: {
       return;
     }
     if (!access.store) {
-      setMessage("PayPal checkout and purchase recovery are coming soon.");
+      setMessage("Checkout and purchase recovery are unavailable.");
       return;
     }
     setOpening(true);
@@ -463,11 +425,11 @@ function PurchasePanel({ access, onCheckout, onActivated }: {
       const result = await beginCheckout();
       if ("error" in result) setError(result.error);
       else {
-        onCheckout(result.access);
+        onAccess(result.access);
         setShowCheckout(true);
       }
     } catch {
-      setError("Could not open the PayPal checkout. Try again.");
+      setError("Could not open checkout. Try again.");
     } finally {
       setOpening(false);
     }
@@ -492,20 +454,68 @@ function PurchasePanel({ access, onCheckout, onActivated }: {
     }
   }
 
+  async function beginTrial() {
+    if (purchaseBusy) return;
+    setStartingTrial(true);
+    setError(undefined);
+    try {
+      await pendingWrite;
+      const result = await startTrial();
+      if ("error" in result) {
+        if (result.access) onAccess(result.access);
+        setError(result.error);
+      } else {
+        onActivated(result.access, result.settings);
+      }
+    } catch {
+      setError("Could not start the trial. Try again.");
+    } finally {
+      setStartingTrial(false);
+    }
+  }
+
   return (
     <div className="mk-purchase-panel">
-      <SettingsButton label="Unlock Premium"
-        disabled={opening} value={access.price ?? <PremiumBadge />}
-        expanded={checkoutUrl ? showCheckout : undefined}
-        arrow={checkoutUrl && showCheckout ? "▴" : "▾"} onClick={() => void checkout()} />
+      {(trialOffer || trialState === "active" || trialState === "used") && (
+        <div className="mk-trial-card">
+          {trialOffer ? (
+            <>
+              <SettingsButton label={startingTrial ? "Opening trial…" : trialState === "resume" ? "Resume trial" : "Start free trial"}
+                value={trialState === "available" ? "24 hours" : undefined}
+                disabled={purchaseBusy} onClick={() => void beginTrial()} />
+              <div className="mk-premium-hint">
+                {trialState === "resume" ? "Restore access for the time left on this installation’s trial."
+                  : "Try Premium without payment details or automatic charges."}
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="mk-preview-title">
+                <span>{trialState === "active" ? "Premium trial" : "Premium trial ended"}</span>
+                {trialState === "active" && access.trial_expires_at != null && <TrialTime expiresAt={access.trial_expires_at} />}
+              </div>
+              <div className="mk-premium-hint">
+                {trialState === "active" ? "The keyboard returns to Free when the trial ends."
+                  : "Free features are active. Your Premium settings are saved."}
+              </div>
+            </>
+          )}
+        </div>
+      )}
+      <div className="mk-buy-row">
+        <SettingsButton label={trialState === "active" ? "Unlock Now" : "Unlock Premium"}
+          disabled={purchaseBusy} value={access.price ?? <PremiumBadge />}
+          expanded={checkoutUrl ? showCheckout : undefined}
+          arrow={checkoutUrl && showCheckout ? "▴" : "▾"} onClick={() => void checkout()} />
+      </div>
       {checkoutUrl && showCheckout && (
         <div className="mk-checkout-card">
           <div className="mk-checkout-label">Scan with your phone to pay</div>
-          <img src={checkoutQR} alt="QR code for your PayPal checkout" draggable={false} />
+          <img src={checkoutQR} alt="QR code for your checkout" draggable={false} />
           <SettingsButton label="Open checkout in browser" arrow="›" onClick={() => openBrowser(checkoutUrl)} />
         </div>
       )}
-      {access.pending && <div className="mk-premium-hint" role="status">Waiting for PayPal. Premium unlocks here after payment.</div>}
+      {access.pending && <div className="mk-premium-hint" role="status">Waiting for payment. Premium unlocks here after checkout.</div>}
       <SettingsButton label="Restore purchase" quieter expanded={showRestore} arrow={showRestore ? "▴" : "▾"}
         onClick={() => {
           setMessage(undefined);
@@ -514,11 +524,11 @@ function PurchasePanel({ access, onCheckout, onActivated }: {
       {showRestore && (access.store ? (
         <>
           <TextField label="License key" value={key} onChange={(event) => setKey(event.target.value.slice(0, 60))} />
-          <SettingsButton label={busy ? "Restoring…" : "Activate license"} disabled={busy || !key.trim()}
+          <SettingsButton label={busy ? "Restoring…" : "Activate license"} disabled={purchaseBusy || !key.trim()}
             onClick={() => void activate()} />
           <SettingsButton label="Recover by receipt email" arrow="›" onClick={() => openBrowser(access.store + "/recover")} />
         </>
-      ) : <div className="mk-premium-hint">License key and receipt recovery will be available when PayPal is connected.</div>)}
+      ) : <div className="mk-premium-hint">Connect to the store to restore a purchase.</div>)}
       {message && <div className="mk-premium-hint" role="status">{message}</div>}
       {error && <div role="alert">{error}</div>}
     </div>
@@ -652,8 +662,15 @@ const panelCss = `
   }
   #masterkeyboard-controls .mk-premium-hint { color: #bfc8d5; font-size: 12px; line-height: 1.35; }
   #masterkeyboard-controls .mk-purchase-panel { display: grid; gap: 8px; width: 100%; }
-  #masterkeyboard-controls .mk-purchase-panel > button:first-child:not(:is(.gpfocus, :focus-visible)) {
+  #masterkeyboard-controls :is(.mk-buy-row, .mk-trial-card) > button:not(:is(.gpfocus, :focus-visible)) {
     background: #32291e; border-color: #9e804d80; color: #ffdf9c;
+  }
+  #masterkeyboard-controls .mk-trial-card {
+    display: grid; gap: 7px; min-width: 0; padding: 8px;
+    border: 1px solid #ffffff18; border-radius: 7px; background: #1c2027;
+  }
+  #masterkeyboard-controls .mk-trial-time {
+    color: #f4d38e; font-variant-numeric: tabular-nums; white-space: nowrap;
   }
   #masterkeyboard-controls .mk-setting-value-text {
     overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;
@@ -868,13 +885,11 @@ function ColorSchemePicker({ shape, palette, defaults, onChange, onCustom }: {
 }) {
   const effective = paletteColors(shape, palette);
   const isDefault = samePalette(shape, palette, defaults);
-  const schemes = shape === "Sculpted" || shape === "Square" || shape === "RTC"
-    ? [retroIvory, ...colorSchemes] : colorSchemes;
-  const selected = isDefault ? "default" : schemes.find((scheme) =>
+  const selected = isDefault ? "default" : colorSchemes.find((scheme) =>
     blockKeys.every((block) => effective[block].toLowerCase() === scheme.colors[block]))?.data ?? "custom";
   const choices = [
     { data: "default", label: "Default", colors: paletteColors(shape, defaults) },
-    ...schemes,
+    ...colorSchemes,
     { data: "custom", label: "Custom", colors: effective },
   ];
   return (
@@ -893,7 +908,7 @@ function ColorSchemePicker({ shape, palette, defaults, onChange, onCustom }: {
         if (data === "custom") onCustom();
         else if (data === "default") onChange(defaults);
         else {
-          const scheme = schemes.find((option) => option.data === data);
+          const scheme = colorSchemes.find((option) => option.data === data);
           if (scheme) onChange({ colors: scheme.colors, brightness: {} });
         }
       }}
@@ -1111,7 +1126,10 @@ type ColorView = (typeof colorViewOrder)[number];
 let lastColorView: ColorView | undefined;
 
 function Content({ bundleVersion }: { bundleVersion: string }) {
-  const [colorView, setColorView] = useState(lastColorView);
+  const [access, setAccess] = useState<Access>();
+  const [requestedColorView, setColorView] = useState(lastColorView);
+  const blockColorsLost = requestedColorView === "blocks" && access?.colors_locked;
+  const colorView = blockColorsLost ? undefined : requestedColorView;
   const colorNavigation = useRef<HTMLDivElement>(null);
   const returnFocus = useRef<ColorView | "keyboard" | null>(null);
   const themePicker = useRef<HTMLDivElement>(null);
@@ -1135,7 +1153,6 @@ function Content({ bundleVersion }: { bundleVersion: string }) {
   }, [colorView]);
 
   const [settings, setSettings] = useState<Settings>();
-  const [access, setAccess] = useState<Access>();
   const [premiumPreview, setPremiumPreview] = useState<KeyShape>();
   const [openPicker, setOpenPicker] = useState<string>();
   const [error, setError] = useState<string>();
@@ -1147,10 +1164,13 @@ function Content({ bundleVersion }: { bundleVersion: string }) {
   useEffect(() => {
     mounted.current = true;
     let cancelled = false;
+    const deadline = setTimeout(() => setError("Decky took too long to load the keyboard settings."), 8000);
 
     void pendingWrite.then(() => Promise.all([readSettings(), getAccess()])).then(
       ([stored, access]) => {
         if (cancelled) return;
+        clearTimeout(deadline);
+        setError(undefined);
         const initial = normalizeSettings(stored);
         desired.current = initial;
         saved.current = initial;
@@ -1158,21 +1178,19 @@ function Content({ bundleVersion }: { bundleVersion: string }) {
         setAccess(access);
       },
       () => {
+        clearTimeout(deadline);
         if (!cancelled) setError("Could not load keyboard settings.");
       },
     );
 
     return () => {
+      clearTimeout(deadline);
       mounted.current = false;
       cancelled = true;
     };
   }, [reload]);
 
-  function showActivatedPurchase(nextAccess: Access, stored: StoredSettings) {
-    const options = purchaseOptions.current;
-    focusThemeOnUnlock.current = Boolean(options?.contains(options.ownerDocument.activeElement));
-    setAccess(nextAccess);
-    setPremiumPreview(undefined);
+  function synchronizeSettings(stored: StoredSettings) {
     if (desired.current !== saved.current) return;
     const initial = normalizeSettings(stored);
     desired.current = initial;
@@ -1180,42 +1198,79 @@ function Content({ bundleVersion }: { bundleVersion: string }) {
     setSettings(initial);
   }
 
+  function showActivatedAccess(nextAccess: Access, stored: StoredSettings) {
+    const options = purchaseOptions.current;
+    focusThemeOnUnlock.current = Boolean(options?.contains(options.ownerDocument.activeElement));
+    synchronizeSettings(stored);
+    setAccess(nextAccess);
+    setPremiumPreview(undefined);
+  }
+
+  function goToPremium() {
+    const options = purchaseOptions.current;
+    options?.querySelector<HTMLButtonElement>("button:not([disabled])")?.focus({ preventScroll: true });
+    options?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
   useEffect(() => {
     if (access?.active && focusThemeOnUnlock.current) {
       focusThemeOnUnlock.current = false;
       themePicker.current?.querySelector("button")?.focus();
     }
-  }, [access?.active]);
+  }, [access?.active, access?.paid]);
 
   useEffect(() => {
-    if (!access?.pending && !access?.renewing) return;
+    if (!blockColorsLost) return;
+    lastColorView = undefined;
+    setOpenPicker(undefined);
+    setColorView(undefined);
+    colorNavigation.current?.querySelector("button")?.focus();
+  }, [blockColorsLost]);
+
+  useEffect(() => {
+    if (!access) return;
+    const { active, paid, pending, renewing, trial_state: trialState, trial_expires_at: expiry } = access;
+    if (!pending && !renewing && trialState !== "active" && trialState !== "checking") return;
     let canceled = false;
     let timer: ReturnType<typeof setTimeout>;
+    const purchaseInProgress = pending || renewing;
+    const refreshDelay = purchaseInProgress ? 1500 : trialState === "checking" ? 400 : 60_000;
+
     async function refresh() {
       try {
         const next = await getAccess();
         if (canceled) return;
-        if (next.active && !next.renewing) {
+        if (active !== next.active || paid !== next.paid || (renewing && !next.renewing)) {
           await pendingWrite;
           const stored = await readSettings();
-          if (!canceled) showActivatedPurchase(next, stored);
-          return;
-        }
-        if (!next.pending && !next.renewing) {
+          if (canceled) return;
+          if ((next.paid ?? next.active) && !next.renewing) showActivatedAccess(next, stored);
+          else {
+            synchronizeSettings(stored);
+            setAccess(next);
+          }
+        } else {
           setAccess(next);
-          return;
         }
+        if (next.trial_state !== trialState || next.trial_expires_at !== expiry
+          || next.pending !== pending || next.renewing !== renewing || next.active !== active || next.paid !== paid) return;
       } catch {
-        // Keep checking after a brief loss of the Decky connection.
+        // A briefly disconnected panel will read back the current access and settings.
       }
-      if (!canceled) timer = setTimeout(() => void refresh(), 1500);
+      if (!canceled) {
+        const untilExpiry = typeof expiry === "number" ? expiry * 1000 - Date.now() : Infinity;
+        const delay = untilExpiry > 0 ? Math.max(350, Math.min(refreshDelay, untilExpiry)) : Math.min(refreshDelay, 5000);
+        timer = setTimeout(() => void refresh(), delay);
+      }
     }
-    timer = setTimeout(() => void refresh(), 1500);
+
+    const untilExpiry = typeof expiry === "number" ? expiry * 1000 - Date.now() : Infinity;
+    timer = setTimeout(() => void refresh(), Math.max(0, Math.min(refreshDelay, untilExpiry)));
     return () => {
       canceled = true;
       clearTimeout(timer);
     };
-  }, [access?.pending, access?.renewing]);
+  }, [access?.active, access?.paid, access?.pending, access?.renewing, access?.trial_state, access?.trial_expires_at]);
 
   function update(patch: Partial<Settings>) {
     if (!desired.current) return;
@@ -1246,6 +1301,7 @@ function Content({ bundleVersion }: { bundleVersion: string }) {
   if (!settings || !access) {
     return (
       <PanelSection spinner={!error}>
+        {!error && <PanelSectionRow><div role="status">Loading keyboard settings…</div></PanelSectionRow>}
         {error && (
           <PanelSectionRow>
             <ButtonItem
@@ -1266,6 +1322,7 @@ function Content({ bundleVersion }: { bundleVersion: string }) {
 
   const shape = settings.shape;
   const locked = new Set(access.locked);
+  const paid = access.paid ?? access.active;
   const backgroundColor = settings.background_color?.toLowerCase() ?? null;
   const backgroundLabel = backgroundPresets.find(({ data }) => data === backgroundColor)?.label
     ?? backgroundColor?.toUpperCase() ?? "Theme default";
@@ -1298,7 +1355,7 @@ function Content({ bundleVersion }: { bundleVersion: string }) {
   }
   const preview = settings.preview_open && (
     <PanelSectionRow>
-      <Preview settings={settings} showFocus={colorView === "focus"} />
+      <Preview key={String(access.active)} settings={settings} showFocus={colorView === "focus"} />
     </PanelSectionRow>
   );
 
@@ -1341,10 +1398,17 @@ function Content({ bundleVersion }: { bundleVersion: string }) {
               onChange={(background_color) => update({ background_color })} />
           ) : (
             <>
+              {access.public && !paid && (
+                <div ref={purchaseOptions}>
+                  <PanelSectionRow>
+                    <PurchasePanel access={access} onAccess={setAccess} onActivated={showActivatedAccess} />
+                  </PanelSectionRow>
+                </div>
+              )}
               <div className="mk-panel-group">
                 <PanelSectionRow>
                   <ToggleField
-                    label={<span className="mk-enabled-label">Enabled{access.active && <ProBadge />}</span>}
+                    label={<span className="mk-enabled-label">Enabled{access.active && <ProBadge trial={!paid} />}</span>}
                     checked={settings.enabled}
                     bottomSeparator="none"
                     onChange={(enabled) => update({ enabled })}
@@ -1378,13 +1442,6 @@ function Content({ bundleVersion }: { bundleVersion: string }) {
                   <PanelSectionRow><PremiumPreview key={premiumPreview} shape={premiumPreview} /></PanelSectionRow>
                 ) : preview}
               </div>
-              {access.public && !access.active && (
-                <div ref={purchaseOptions}>
-                  <PanelSectionRow>
-                    <PurchasePanel access={access} onCheckout={setAccess} onActivated={showActivatedPurchase} />
-                  </PanelSectionRow>
-                </div>
-              )}
               <section className="mk-panel-group" aria-labelledby="mk-appearance">
                 <h2 className="mk-section-title" id="mk-appearance">Appearance</h2>
                 {!access.colors_locked && (
@@ -1397,7 +1454,7 @@ function Content({ bundleVersion }: { bundleVersion: string }) {
                   <PanelSectionRow>
                     {access.colors_locked ? (
                       <SettingsButton label="Key colors" value={<PremiumBadge />}
-                        onClick={() => purchaseOptions.current?.scrollIntoView({ behavior: "smooth", block: "center" })}
+                        onClick={goToPremium}
                       />
                     ) : (
                       <SettingsButton label="Key colors" arrow="›" onClick={() => openColors("blocks")}
@@ -1488,16 +1545,17 @@ function Content({ bundleVersion }: { bundleVersion: string }) {
               <section className="mk-panel-group" aria-labelledby="mk-typing-shortcuts">
                 <h2 className="mk-section-title" id="mk-typing-shortcuts">Typing shortcuts</h2>
                 <PanelSectionRow>
-                  <ToggleField
-                    label={<span className="mk-enabled-label">Split keyboard{!access.active && <PremiumBadge />}</span>}
-                    description={access.active
-                      ? "Open with two thumb-sized key groups. Switch back to Full above the keyboard."
-                      : "Two thumb-sized key groups · Premium"}
-                    disabled={!access.active}
-                    bottomSeparator="none"
-                    checked={access.active && (settings.split_keyboard ?? false)}
-                    onChange={(split_keyboard) => update({ split_keyboard })}
-                  />
+                  {access.active ? (
+                    <ToggleField label="Split keyboard"
+                      description="Open with two thumb-sized key groups. Switch back to Full above the keyboard."
+                      bottomSeparator="none"
+                      checked={settings.split_keyboard ?? false}
+                      onChange={(split_keyboard) => update({ split_keyboard })}
+                    />
+                  ) : (
+                    <SettingsButton label="Split keyboard" value={<PremiumBadge />} disabled={!access.public}
+                      onClick={goToPremium} />
+                  )}
                 </PanelSectionRow>
                 <PanelSectionRow>
                   <ToggleField

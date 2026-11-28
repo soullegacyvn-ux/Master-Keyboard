@@ -13,6 +13,8 @@ LIMIT = 2_000_000
 OPENSSL = "/usr/bin/openssl"
 COLLECTION = "pro-1"
 PUBLIC_COLLECTION = "masterkeyboard-pro"
+TRIAL_COLLECTION = "masterkeyboard-trial"
+TRIAL_DURATION = 24 * 60 * 60
 LIFETIME_PRICE_USD = "4.99"
 PREMIUM = {"Terminal", "Studio", "Console", "Cyber"}
 STYLESHEET = re.compile(r"[a-z][a-z0-9-]*\.css")
@@ -56,7 +58,8 @@ def sign(payload, private_key):
     return {"body": encode(body), "signature": encode(signature)}
 
 
-def verify(envelope, public_key, device, *, collection=COLLECTION, premium=PREMIUM):
+def verify(envelope, public_key, device, *, collection=COLLECTION, premium=PREMIUM,
+           bundle_collection=None):
     if not isinstance(envelope, dict) or not isinstance(envelope.get("body"), str) or not isinstance(envelope.get("signature"), str):
         raise ValueError("Invalid entitlement")
     if len(envelope["body"]) > LIMIT * 4 // 3 + 4 or len(envelope["signature"]) != 88:
@@ -89,7 +92,7 @@ def verify(envelope, public_key, device, *, collection=COLLECTION, premium=PREMI
         if len(bundle_bytes) > LIMIT or not hmac.compare_digest(hashlib.sha256(bundle_bytes).hexdigest(), digest):
             raise ValueError("Entitlement bundle does not match its signature")
         bundle = json.loads(bundle_bytes)
-        if not isinstance(bundle, dict) or bundle.get("id") != collection:
+        if not isinstance(bundle, dict) or bundle.get("id") != (bundle_collection or collection):
             raise ValueError("Malformed entitlement bundle")
         data = {**data, "profiles": bundle.get("profiles"), "sheets": bundle.get("sheets")}
     if (not isinstance(profiles := data.get("profiles"), dict) or set(profiles) != premium

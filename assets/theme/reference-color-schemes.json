@@ -1,0 +1,579 @@
+[
+  {
+    "data": "sage-terracotta",
+    "label": "Sage & Terracotta",
+    "colors": {
+      "cream": "#d2bb8a", "blue": "#73938b", "gold": "#d8c67e", "amber": "#c59869", "red": "#884741"
+    },
+    "ink": {
+      "cream": "#32271f", "blue": "#192725", "gold": "#29271c", "amber": "#302319", "red": "#fff0df"
+    },
+    "shades": {
+      "mist": ["#99aca1", "#26312e"],
+      "eucalyptus": ["#5e7970", "#fcf7ec"],
+      "petrol": ["#435954", "#fcf7ec"],
+      "charcoal": ["#514a4e", "#f8eee4"],
+      "stone": ["#786b60", "#fff0df"],
+      "clay": ["#ac6d51", "#fff5e6"]
+    },
+    "keys": {
+      "cream": ["t", "y", "u", "i", "h", "j", "k", "l", "n", "m"],
+      "gold": ["CapsLock", "a", "s", "d", "f", "g", "Shift", "z", "x", "c", "v", "b"],
+      "amber": ["q", "w", "e", "r", "o", "[", "{", ",", "<", ".", ">"],
+      "red": ["Backspace", "MasterkeyboardF10", "MasterkeyboardF11", "MasterkeyboardF12"],
+      "mist": ["`", "~", "1", "!", "2", "@", "Escape", "MasterkeyboardEscape", "MasterkeyboardF1", "MasterkeyboardF2"],
+      "eucalyptus": ["3", "#", "4", "$", "5", "%", "MasterkeyboardF3", "MasterkeyboardF4", "MasterkeyboardF5"],
+      "petrol": ["6", "^", "7", "&", "8", "*", "9", "(", "0", ")", "MasterkeyboardF6", "MasterkeyboardF7", "MasterkeyboardF8"],
+      "charcoal": ["-", "_", "=", "+", " ", "MasterkeyboardF9"],
+      "stone": ["Tab", ";", ":", "'", "\"", "Enter", "MasterkeyboardCtrl", "MasterkeyboardAlt", "MasterkeyboardFn", "MasterkeyboardABC"],
+      "clay": ["p", "]", "}", "\\", "|", "/", "?"]
+    }
+  },
+  {
+    "data": "sorbet-rainbow",
+    "label": "Sorbet Rainbow",
+    "colors": {
+      "cream": "#e6cb92", "blue": "#67a6bd", "gold": "#a7be84", "amber": "#e4a475", "red": "#d9686f"
+    },
+    "ink": {
+      "cream": "#443520", "blue": "#183a47", "gold": "#2d3c23", "amber": "#472b21", "red": "#381c21"
+    },
+    "shades": {
+      "coral": ["#de835f", "#45291f"],
+      "lemon": ["#d3ce91", "#3b3a24"],
+      "mint": ["#92bca1", "#243f35"],
+      "seafoam": ["#6eac9e", "#183a35"],
+      "teal": ["#559fa6", "#173a3f"]
+    },
+    "paints": {
+      " ": [{ "gradient": ["#e8a375", "#e6c689", "#d3ce91", "#a7c28b", "#7fb6a5"] }]
+    },
+    "keys": {
+      "cream": ["4", "$", "r", "f", "v", " ", "MasterkeyboardF2", "MasterkeyboardF3"],
+      "blue": ["Backspace", "\\", "|", "MasterkeyboardF11", "MasterkeyboardF12"],
+      "gold": ["6", "^", "y", "h", "n", "MasterkeyboardF4"],
+      "amber": ["3", "#", "e", "d", "c", "ArrowRight", "MasterkeyboardArrowRight", "MasterkeyboardF1"],
+      "red": ["`", "~", "Tab", "CapsLock", "Shift", "MasterkeyboardCtrl", "MasterkeyboardCopy", "MasterkeyboardPaste", "Escape", "MasterkeyboardEscape", "ArrowDown", "MasterkeyboardArrowDown"],
+      "coral": ["1", "!", "2", "@", "q", "w", "a", "s", "z", "x", "MasterkeyboardAlt", "ArrowLeft", "MasterkeyboardArrowLeft", "ArrowUp", "MasterkeyboardArrowUp"],
+      "lemon": ["5", "%", "t", "g", "b"],
+      "mint": ["7", "&", "u", "j", "m", "MasterkeyboardF5"],
+      "seafoam": ["8", "*", "i", "k", ",", "<", "MasterkeyboardFn", "MasterkeyboardABC", "MasterkeyboardF6", "MasterkeyboardF7"],
+      "teal": ["9", "(", "0", ")", "-", "_", "=", "+", "o", "p", "[", "{", "]", "}", "l", ";", ":", "'", "\"", ".", ">", "/", "?", "Enter", "MasterkeyboardSelectAll", "VKClose", "VKDone", "VKMove", "MasterkeyboardF8", "MasterkeyboardF9", "MasterkeyboardF10"]
+    }
+  },
+  {
+    "data": "arcade-primary",
+    "label": "Arcade Primary",
+    "colors": {
+      "cream": "#087c90", "blue": "#104d83", "gold": "#f3a124", "amber": "#087487", "red": "#cf303c"
+    },
+    "ink": {
+      "cream": "#e7fbff", "blue": "#e9f5ff", "gold": "#382207", "amber": "#e7fbff", "red": "#fff5e5"
+    },
+    "keys": {
+      "cream": [
+        "`", "~", "1", "!", "2", "@", "3", "#", "4", "$", "5", "%", "6", "^", "7", "&", "8", "*", "9", "(", "0", ")", "-", "_", "=", "+",
+        "o", "p", "k", "l", "m", "MasterkeyboardF1", "MasterkeyboardF2", "MasterkeyboardF3", "MasterkeyboardF4"
+      ],
+      "gold": ["Backspace", "e", "r", "t", "\\", "|", "f", "g", "h", "v", "b", "n", "Enter", "MasterkeyboardCopy", "MasterkeyboardPaste", "MasterkeyboardFn", "MasterkeyboardABC", "Escape", "MasterkeyboardEscape"],
+      "amber": [" "],
+      "red": ["w", "y", "u", "i", "a", "s", "d", "j", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "MasterkeyboardArrowLeft", "MasterkeyboardArrowRight", "MasterkeyboardArrowUp", "MasterkeyboardArrowDown", "MasterkeyboardF9", "MasterkeyboardF10", "MasterkeyboardF11", "MasterkeyboardF12"]
+    }
+  },
+  {
+    "data": "ember-jade",
+    "label": "Ember & Jade",
+    "colors": {
+      "cream": "#d4b969",
+      "blue": "#2e9085",
+      "gold": "#af6746",
+      "amber": "#544041",
+      "red": "#b52f28"
+    },
+    "ink": {
+      "cream": "#2d2617",
+      "blue": "#fff4e5",
+      "gold": "#fff4e5",
+      "amber": "#fff4e5",
+      "red": "#fff4e5"
+    },
+    "base": "blue",
+    "shades": {
+      "scarlet": [
+        "#d8462e",
+        "#fff4e5"
+      ],
+      "leaf": [
+        "#66986c",
+        "#391f19"
+      ],
+      "sea-glass": [
+        "#45a699",
+        "#162d26"
+      ],
+      "turquoise": [
+        "#1b8591",
+        "#fff4e5"
+      ],
+      "slate": [
+        "#2d323a",
+        "#e3eaf0"
+      ],
+      "violet": [
+        "#504562",
+        "#e3eaf0"
+      ],
+      "moss": [
+        "#706f51",
+        "#fff4e5"
+      ],
+      "plum": [
+        "#60404a",
+        "#fff4e5"
+      ],
+      "umber": [
+        "#8c4e3e",
+        "#fff4e5"
+      ],
+      "dark-jade": [
+        "#36534f",
+        "#fff4e5"
+      ]
+    },
+    "keys": {
+      "red": [
+        "`",
+        "~",
+        "1",
+        "!",
+        "Escape",
+        "MasterkeyboardEscape"
+      ],
+      "scarlet": [
+        "2",
+        "@"
+      ],
+      "gold": [
+        "3",
+        "#",
+        "MasterkeyboardF1"
+      ],
+      "cream": [
+        "4",
+        "$",
+        "MasterkeyboardF2"
+      ],
+      "leaf": [
+        "5",
+        "%",
+        "t",
+        "MasterkeyboardF3",
+        "MasterkeyboardF4"
+      ],
+      "moss": [
+        "r",
+        "f"
+      ],
+      "umber": [
+        "w",
+        "e"
+      ],
+      "sea-glass": [
+        "6",
+        "^",
+        "7",
+        "&",
+        "8",
+        "*",
+        "9",
+        "(",
+        "0",
+        ")",
+        "u",
+        "i",
+        "o",
+        "g",
+        "MasterkeyboardF5",
+        "MasterkeyboardF6",
+        "MasterkeyboardF7"
+      ],
+      "turquoise": [
+        "=",
+        "+",
+        "\\",
+        "|",
+        "Backspace",
+        "Enter",
+        "MasterkeyboardFn",
+        "MasterkeyboardABC",
+        "MasterkeyboardCopy",
+        "VKPaste",
+        "MasterkeyboardPaste",
+        "MasterkeyboardF9",
+        "MasterkeyboardF10",
+        "MasterkeyboardF11",
+        "MasterkeyboardF12"
+      ],
+      "blue": [
+        "-",
+        "_",
+        "[",
+        "{",
+        "]",
+        "}",
+        ";",
+        ":",
+        "'",
+        "\"",
+        "y",
+        "p",
+        "h",
+        "j",
+        "k",
+        "l",
+        "MasterkeyboardF8"
+      ],
+      "violet": [
+        "ArrowLeft",
+        "ArrowRight",
+        "ArrowUp",
+        "ArrowDown",
+        "MasterkeyboardArrowUp",
+        "MasterkeyboardArrowDown",
+        "VKClose",
+        "VKMove"
+      ],
+      "plum": [
+        "Tab",
+        "CapsLock",
+        "Shift",
+        "q",
+        "a",
+        "s",
+        "MasterkeyboardSelectAll"
+      ],
+      "amber": [
+        "d",
+        "z",
+        "x",
+        "c",
+        "Ctrl",
+        "Control",
+        "MasterkeyboardCtrl",
+        "Alt",
+        "MasterkeyboardAlt"
+      ],
+      "slate": [
+        " ",
+        "v"
+      ],
+      "dark-jade": [
+        ",",
+        "<",
+        ".",
+        ">",
+        "/",
+        "?",
+        "b",
+        "n",
+        "m"
+      ]
+    }
+  },
+  {
+    "data": "signal-lime",
+    "label": "Signal Lime",
+    "colors": {
+      "cream": "#e8d8b5",
+      "blue": "#293943",
+      "gold": "#c7df31",
+      "amber": "#394b55",
+      "red": "#b0c925"
+    },
+    "ink": {
+      "cream": "#162023",
+      "blue": "#e3eaf0",
+      "gold": "#162023",
+      "amber": "#e3eaf0",
+      "red": "#162023"
+    },
+    "base": "cream",
+    "shades": {},
+    "keys": {
+      "gold": [
+        "`",
+        "~",
+        "-",
+        "_",
+        "=",
+        "+",
+        "[",
+        "{",
+        "]",
+        "}",
+        ";",
+        ":",
+        "'",
+        "\"",
+        ",",
+        "<",
+        ".",
+        ">",
+        "/",
+        "?",
+        "Escape",
+        "MasterkeyboardEscape",
+        "Ctrl",
+        "Control",
+        "MasterkeyboardCtrl",
+        "Alt",
+        "MasterkeyboardAlt",
+        "ArrowLeft",
+        "ArrowRight",
+        "ArrowUp",
+        "ArrowDown",
+        "MasterkeyboardArrowUp",
+        "MasterkeyboardArrowDown",
+        "MasterkeyboardSelectAll"
+      ],
+      "blue": [
+        "Tab",
+        "CapsLock",
+        "Shift",
+        "Backspace",
+        "Enter",
+        "MasterkeyboardFn",
+        "MasterkeyboardABC",
+        "VKPaste",
+        "MasterkeyboardPaste",
+        "VKClose",
+        "VKMove"
+      ],
+      "amber": [
+        "\\",
+        "|",
+        "MasterkeyboardCopy",
+        "MasterkeyboardF5",
+        "MasterkeyboardF6",
+        "MasterkeyboardF7",
+        "MasterkeyboardF8"
+      ],
+      "red": [
+        "MasterkeyboardF1",
+        "MasterkeyboardF12"
+      ],
+      "cream": [
+        " "
+      ]
+    }
+  },
+  {
+    "data": "seventies-stereo",
+    "label": "Seventies Stereo",
+    "align_space_bands": true,
+    "colors": {
+      "cream": "#f7ead2",
+      "blue": "#f5d13a",
+      "gold": "#ed7730",
+      "amber": "#c23242",
+      "red": "#e33b34"
+    },
+    "ink": {
+      "cream": "#391f19",
+      "blue": "#3d2b15",
+      "gold": "#3a1f17",
+      "amber": "#fff4e5",
+      "red": "#fff4e5"
+    },
+    "base": "cream",
+    "shades": {
+      "rust": [
+        "#783118",
+        "#fff4e5"
+      ]
+    },
+    "keys": {
+      "blue": [
+        "3",
+        "#",
+        "e",
+        "d",
+        "c",
+        "MasterkeyboardF1",
+        "MasterkeyboardCopy"
+      ],
+      "gold": [
+        "4",
+        "$",
+        "r",
+        "f",
+        "v",
+        "MasterkeyboardF2",
+        "VKPaste",
+        "MasterkeyboardPaste"
+      ],
+      "red": [
+        "5",
+        "%",
+        "t",
+        "g",
+        "b",
+        "MasterkeyboardF3",
+        "MasterkeyboardSelectAll"
+      ],
+      "amber": [
+        "6",
+        "^",
+        "y",
+        "h",
+        "n",
+        "MasterkeyboardF4"
+      ],
+      "rust": [
+        "Enter"
+      ],
+      "cream": [
+        " ",
+        "Ctrl",
+        "Control",
+        "MasterkeyboardCtrl",
+        "Alt",
+        "MasterkeyboardAlt",
+        "MasterkeyboardFn",
+        "MasterkeyboardABC",
+        "ArrowLeft",
+        "ArrowRight",
+        "ArrowUp",
+        "ArrowDown",
+        "MasterkeyboardArrowUp",
+        "MasterkeyboardArrowDown",
+        "VKClose",
+        "VKMove",
+        "Escape",
+        "MasterkeyboardEscape"
+      ]
+    },
+    "paints": {
+      " ": [{
+        "angle": 67,
+        "bands": [
+          ["#f7ead2", {"column": 0, "fallback": 17}],
+          ["#f5d13a", {"column": 1, "fallback": 34}],
+          ["#ed7730", {"column": 2, "fallback": 49}],
+          ["#e33b34", {"column": 3, "fallback": 78}],
+          ["#c23242", {"column": 4, "fallback": 85}],
+          ["#f7ead2", 100]
+        ]
+      }],
+      "Enter": [{
+        "angle": 111,
+        "bands": [["#783118", 60], ["#e33b34", 68], ["#ed7730", 74], ["#f5d13a", 78], ["#783118", 100]]
+      }]
+    }
+  },
+  {
+    "data": "rally-stripes",
+    "label": "Rally Stripes",
+    "align_space_bands": true,
+    "colors": {
+      "cream": "#eee7d3",
+      "blue": "#619ca5",
+      "gold": "#e59847",
+      "amber": "#7ab6b3",
+      "red": "#c83d40"
+    },
+    "ink": {
+      "cream": "#162023",
+      "blue": "#192a31",
+      "gold": "#3e261b",
+      "amber": "#16292b",
+      "red": "#fff4e5"
+    },
+    "base": "cream",
+    "shades": {},
+    "keys": {
+      "amber": [
+        "3",
+        "#",
+        "e",
+        "d",
+        "c",
+        "MasterkeyboardF1",
+        "MasterkeyboardCopy"
+      ],
+      "blue": [
+        "4",
+        "$",
+        "r",
+        "f",
+        "v",
+        "MasterkeyboardF2",
+        "ArrowLeft",
+        "ArrowRight",
+        "ArrowUp",
+        "ArrowDown",
+        "MasterkeyboardArrowUp",
+        "MasterkeyboardArrowDown",
+        "VKClose",
+        "VKMove"
+      ],
+      "red": [
+        "5",
+        "%",
+        "t",
+        "g",
+        "b",
+        "MasterkeyboardF3",
+        "VKPaste",
+        "MasterkeyboardPaste"
+      ],
+      "gold": [
+        "6",
+        "^",
+        "y",
+        "h",
+        "n",
+        "MasterkeyboardF4",
+        "MasterkeyboardSelectAll"
+      ],
+      "cream": [
+        " ",
+        "Ctrl",
+        "Control",
+        "MasterkeyboardCtrl",
+        "Alt",
+        "MasterkeyboardAlt",
+        "MasterkeyboardFn",
+        "MasterkeyboardABC",
+        "Escape",
+        "MasterkeyboardEscape"
+      ]
+    },
+    "paints": {
+      " ": [
+        { "angle": 69, "top": 5, "height": 5, "bands": [["transparent", {"column": 3, "fallback": 60}], ["#e59847", 100]] },
+        { "angle": 40, "top": 10.26, "height": 5, "align_from_face_top": true, "bands": [["transparent", {"column": 2, "fallback": 42}], ["#c83d40", 100]] },
+        { "angle": 40, "height": 10.26, "bands": [
+          ["transparent", {"column": 2, "fallback": 42}],
+          ["#c83d40", {"column": 3, "fallback": 60}],
+          ["transparent", 100]
+        ] },
+        { "angle": 71, "bands": [
+          ["#eee7d3", {"column": 0, "fallback": 12}],
+          ["#7ab6b3", {"column": 1, "fallback": 28}],
+          ["#619ca5", 100]
+        ] }
+      ]
+    },
+    "space_continuation": {
+      "keys": ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "MasterkeyboardSelectAll", "VKPaste", "VKClose", "VKDone", "VKMove"],
+      "split_keys": [".", "/", "?", "Enter"],
+      "layers": [
+        { "top": 5, "height": 5, "gradient": ["#e59847", "#e59847"] },
+        { "top": 10.26, "height": 5, "gradient": ["#c83d40", "#c83d40"] },
+        { "top": 15.53, "height": 5, "gradient": ["#7ab6b3", "#7ab6b3"] },
+        { "gradient": ["#619ca5", "#619ca5"] }
+      ]
+    }
+  }
+]

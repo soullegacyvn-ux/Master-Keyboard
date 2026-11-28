@@ -9,6 +9,7 @@ import sys
 import tempfile
 from time import monotonic
 from contextlib import suppress
+from math import radians, tan
 from pathlib import Path
 from urllib.parse import parse_qs, urlsplit
 
@@ -26,8 +27,12 @@ CEF_WS_TIMEOUT = (
     else CEF_CLOSE_TIMEOUT
 )
 HEIGHTS = (-20, -16, -12, -8, -4, 0, 4, 8)
-SHAPES = json.loads((Path(__file__).parent / "assets/theme/profiles.json").read_text(encoding="utf-8"))
-PEACH_SLATE = json.loads((Path(__file__).parent / "assets/theme/peach-slate.json").read_text(encoding="utf-8"))
+THEME_ASSETS = Path(__file__).parent / "assets/theme"
+SHAPES = json.loads((THEME_ASSETS / "profiles.json").read_text(encoding="utf-8"))
+COLOR_SCHEMES = [
+    json.loads((THEME_ASSETS / "peach-slate.json").read_text(encoding="utf-8")),
+    *json.loads((THEME_ASSETS / "reference-color-schemes.json").read_text(encoding="utf-8")),
+]
 PLUGIN_NAME = json.loads((Path(__file__).parent / "plugin.json").read_text(encoding="utf-8"))["name"]
 PLUGIN_VERSION = json.loads((Path(__file__).parent / "package.json").read_text(encoding="utf-8"))["version"]
 UPDATE_CATALOG = "https://master-keyboard-decky-store.soullegacyvn.workers.dev/plugins/versions"
@@ -273,6 +278,11 @@ def palette_key(key):
     return f"[data-mk-palette-key={value} i], [data-key={value} i]:where(:not([data-mk-palette-key]))"
 
 
+def scheme_key_face(scheme, key):
+    group = next((block for block, keys in scheme["keys"].items() if key in keys), scheme.get("base", "blue"))
+    return scheme["colors"].get(group) or scheme["shades"][group][0]
+
+
 def profile_block_rules(palette, aliases, *, tint_artwork=False):
     keyboard = ".DefaultTheme." + aliases["virtualkeyboard_Keyboard_45rH7"]
     cap = "." + aliases["virtualkeyboard_KeyboardKey_2KhPX"]
@@ -304,16 +314,54 @@ def profile_block_rules(palette, aliases, *, tint_artwork=False):
     return "\n".join(rules)
 
 
-def peach_slate_rules(aliases):
+def scheme_paint_layer(layer):
+    def pigment(color):
+        return color if color == "transparent" else f"var(--mk-focus-fill-light, {color})"
+
+    stops = [pigment(color) for color in layer.get("gradient", ())]
+    angle, height = layer.get("angle", 90), layer.get("height", 100)
+    aspect = "var(--mk-space-band-aspect, 0)"
+    slope = 1 / tan(radians(angle)) if angle != 90 else 0
+    top = layer.get("top", 0)
+    top_offset = top * (1 - height / 100) if layer.get("align_from_face_top") else 0
+    start = "0%"
+    for color, end in layer.get("bands", ()):
+        if isinstance(end, dict):
+            end = f'var(--mk-space-band-{end["column"]}, {end["fallback"]}%)'
+            if slope:
+                # Project the key edge onto the gradient axis. Joined layers can share the cap's top edge.
+                length = f"(1 + {aspect} * {slope * height / 100:.6f})"
+                offset = f"100% * {aspect} * {slope * (height + top_offset) / 100:.6f}"
+                end = f"clamp(0%, calc(({end} + {offset}) / {length}), 100%)"
+        else:
+            end = f"{end}%"
+        stops.append(f"{pigment(color)} {start} {end}")
+        start = end
+    position = f'left top {layer["top"]}%' if "top" in layer else "left top"
+    return f'linear-gradient({angle}deg, {", ".join(stops)}) {position} / 100% {height}% no-repeat'
+
+
+def space_continuation_selector(continuation, board):
+    keys = ", ".join(map(palette_key, continuation["keys"]))
+    split_keys = ", ".join(map(palette_key, continuation["split_keys"]))
+    return (
+        f':is({board} :is({keys}):is([data-key-row="4"], [data-mk-palette-row="4"]), '
+        f'{board}[data-mk-split] :is({split_keys})[data-key-row="3"])[data-key][data-key-row]'
+    )
+
+
+def color_scheme_rules(scheme, aliases):
     keyboard = ".DefaultTheme." + aliases["virtualkeyboard_Keyboard_45rH7"]
     cap = "." + aliases["virtualkeyboard_KeyboardKey_2KhPX"]
+    colors = {block: (face, scheme["ink"][block]) for block, face in scheme["colors"].items()}
+    colors.update(scheme.get("shades", {}))
 
     def block_variables(block):
-        return (f"--mk-scheme-face: {PEACH_SLATE['colors'][block]}; "
-                f"--mk-scheme-ink: {PEACH_SLATE['ink'][block]};")
+        face, ink = colors[block]
+        return f"--mk-scheme-face: {face}; --mk-scheme-ink: {ink};"
 
     rules = [f"""{keyboard} [data-key][data-key-row] > {cap} {{
-        {block_variables("blue")}
+        {block_variables(scheme.get("base", "blue"))}
         --mk-style-color: var(--mk-scheme-face);
         --mk-style-art-tint: color-mix(in srgb, var(--mk-scheme-face) 82%, transparent);
         --mk-custom-block: var(--mk-scheme-face);
@@ -324,10 +372,72 @@ def peach_slate_rules(aliases):
         --retro-face-dark: color-mix(in srgb, var(--mk-scheme-face), #18191f 28%);
         --retro-ink: var(--mk-scheme-ink);
     }}"""]
-    for block, keys in PEACH_SLATE["keys"].items():
+    if scheme.get("align_space_bands"):
+        rules.append(f"{keyboard} {{ --mk-align-space-bands: 1; }}")
+    for block, keys in scheme["keys"].items():
         selectors = ", ".join(map(palette_key, keys))
         rules.append(f"{keyboard} :is({selectors})[data-key-row] > {cap} {{ {block_variables(block)} }}")
+    for key, layers in scheme.get("paints", {}).items():
+        paint = ", ".join(map(scheme_paint_layer, layers))
+        align = " --mk-space-band-target: 1;" if key == " " and scheme.get("align_space_bands") else ""
+        rules.append(
+            f"{keyboard} :is({palette_key(key)})[data-key-row] > {cap} {{ --mk-scheme-paint: {paint};{align} }}"
+        )
+    if continuation := scheme.get("space_continuation"):
+        paint = ", ".join(map(scheme_paint_layer, continuation["layers"]))
+        hit = space_continuation_selector(continuation, keyboard)
+        rules.append(f"{hit} > {cap} {{ --mk-scheme-paint: {paint}; {block_variables('blue')} }}")
     return "\n".join(rules)
+
+
+def band_surface_rules(shape, profile_sheets, aliases, hit, layer_count):
+    """Put the stripes on the material layer already shaped by each profile."""
+    if "photo-keycaps.css" in profile_sheets:
+        return ""
+    cap = hit + " > ." + aliases["virtualkeyboard_KeyboardKey_2KhPX"]
+    paint = "var(--mk-scheme-paint)"
+    normal = ["normal"] * layer_count
+
+    def shade(background, blend=()):
+        modes = f" background-blend-mode: {', '.join(blend)};" if blend else ""
+        return f"{cap} {{ --mk-space-band-surface: before; }}\n{cap}::before {{ background: {background};{modes} }}"
+
+    if "reference-cap-surface.css" in profile_sheets:
+        return f"{cap} {{ --mk-cap-underpaint: {paint}; --mk-space-band-surface: before; }}"
+    if shape == "Square":
+        return f"{cap} {{ background: {paint}, var(--mk-key-shell-color); }}"
+    if shape in ("Sculpted", "RTC"):
+        return shade(f"var(--mk-rtr-cap-image) center / 100% 100% no-repeat, {paint}, var(--mk-rtr-tint)",
+                     ["multiply", *normal])
+    if shape == "Wukong":
+        return shade(
+            "var(--mk-wukong-glint) center / 100% 100% no-repeat, "
+            "var(--mk-wukong-metal-atlas) var(--mk-wukong-atlas-x) var(--mk-wukong-atlas-y) "
+            f"/ auto var(--mk-wukong-atlas-height) no-repeat, {paint}, var(--mk-wukong-tone)",
+            ["soft-light", "soft-light", *normal],
+        )
+    if shape == "JadeEnamel":
+        return shade(
+            "var(--mk-jade-texture, var(--mk-jade-surface-art, none)) var(--mk-jade-texture-x, 0%) "
+            "calc(var(--mk-jade-texture-y, 0%) + var(--mk-jade-texture-offset-y, 0%)) / 610% 360% no-repeat, "
+            "var(--mk-jade-cap) center / 100% 100% no-repeat, "
+            f"linear-gradient(175deg, #ffffff1a, transparent 30%, #13242020), {paint}, var(--mk-profile-face)",
+            ["soft-light", "multiply", "normal", *normal],
+        )
+    if shape == "PastelPlush":
+        return shade(
+            "radial-gradient(ellipse at 34% 0%, #fff8f22c, transparent 62%), "
+            "linear-gradient(180deg, transparent 68%, #4f35431d), "
+            f"var(--mk-plush-cap) center / 100% 100% no-repeat, {paint}, var(--mk-plush-tint)",
+            ["normal", "normal", "multiply", *normal],
+        )
+    if shape in ("FieldAtlas", "Cyber"):
+        image = "var(--mk-field-cap)" if shape == "FieldAtlas" else "var(--mk-cyber-cap)"
+        # Use the source photo for the edges and bevel. The mask already clips the cap.
+        return shade(f"{image} center / 100% 100% no-repeat, {paint}", ["luminosity", *normal])
+    if shape == "SpectrumRGB":
+        return shade(f"radial-gradient(ellipse at 25% 0%, #ffffff16, transparent 59%), {paint}")
+    return shade(f"var(--mk-concept-grain, none), {paint}")
 
 
 def unified_preview(template):
@@ -352,12 +462,26 @@ def unified_preview(template):
 
 
 class Theme:
+    rt_caps_shapes = ("Sculpted", "Square", "RTC")
     rose_glass_sheets = (
         *SHAPES["Console"]["sheets"], "concept-type-nunito.css", "rose-glass.css",
     )
+    arrow_alignment_sheets = {
+        "MiamiAfterHours": ("gta-arrow-position.css",),
+        "JadeEnamel": ("jade-arrow-position.css",),
+        "FieldAtlas": ("bottom-arrow-legends.css", "field-atlas-arrows.css"),
+        "Cyber": ("bottom-arrow-legends.css", "reference-bottom-arrows.css"),
+        "Walnut": ("reference-bottom-arrows.css",),
+        "Modular": ("reference-bottom-arrows.css",),
+        "Control": ("reference-bottom-arrows.css",),
+        "Industrial": ("reference-bottom-arrows.css",),
+        "Translucent": ("reference-bottom-arrows.css",),
+        "SpectrumRGB": ("reference-bottom-arrows.css",),
+    }
 
     def __init__(self, folder, available=None, downloaded=None, *, local_wukong_art=None):
         aliases = json.loads((folder / "class-aliases.json").read_text(encoding="utf-8"))
+        self.aliases = aliases
         self.profiles = SHAPES if available is None else {shape: SHAPES[shape] for shape in available}
         downloaded = downloaded or {}
         files = {
@@ -366,13 +490,15 @@ class Theme:
         }
         if (folder / "focus.css").is_file():
             files.add("focus.css")
+        if any(shape in self.profiles for shape in self.rt_caps_shapes):
+            files.add("rt-caps-contrast.css")
         for profile in self.profiles.values():
             files.update(profile["sheets"])
         if "Ceramic" in self.profiles:
             # The purchase still verifies the original slot and signed sheet set.
             files.update(self.rose_glass_sheets)
-        if "MiamiAfterHours" in self.profiles:
-            files.add("gta-arrow-position.css")
+        for shape in self.profiles:
+            files.update(self.arrow_alignment_sheets.get(shape, ()))
         sources = {
             name: downloaded[name] if name in downloaded else (folder / name).read_text(encoding="utf-8")
             for name in sorted(files)
@@ -397,7 +523,9 @@ class Theme:
             for shape, profile in self.profiles.items()
             if shape not in LEGACY_COLOR_SETTINGS and not profile.get("legacy_color_layout")
         }
-        self.peach_slate_css = peach_slate_rules(aliases)
+        self.scheme_rules = [
+            (scheme, color_scheme_rules(scheme, aliases)) for scheme in COLOR_SCHEMES
+        ]
         self.preview_template = unified_preview((folder / "preview.html").read_text(encoding="utf-8"))
 
     def render_css(self, settings):
@@ -419,6 +547,8 @@ class Theme:
             names.append("background-color.css")
         if "focus.css" in self.sheets:
             names.append("focus.css")
+        if shape in self.rt_caps_shapes:
+            names.append("rt-caps-contrast.css")
         sheets = [self.sheets[name] for name in names]
         if shape in self.profile_rules:
             sheets.append(self.profile_rules[shape])
@@ -426,12 +556,25 @@ class Theme:
         legacy_setting = LEGACY_COLOR_SETTINGS.get(shape)
         overrides = settings[legacy_setting] if legacy_setting else settings["style_block_colors"].get(shape, {})
         brightness_by_block = settings["wukong_block_brightness"] if shape == "Wukong" else {}
-        if all(overrides.get(block, profile["colors"][block]["color"]).casefold() == color
-               and brightness_by_block.get(block, 100) == 100 for block, color in PEACH_SLATE["colors"].items()):
-            sheets.append(self.peach_slate_css)
+        active_scheme = None
+        for scheme, rules in self.scheme_rules:
+            if all(overrides.get(block, profile["colors"][block]["color"]).casefold() == color
+                   and brightness_by_block.get(block, 100) == 100 for block, color in scheme["colors"].items()):
+                sheets.append(rules)
+                active_scheme = scheme
+                space_paint = scheme.get("paints", {}).get(" ", ())
+                if any("bands" in layer for layer in space_paint):
+                    board = ".DefaultTheme." + self.aliases["virtualkeyboard_Keyboard_45rH7"]
+                    hit = f'{board} :is({palette_key(" ")})[data-key][data-key-row]'
+                    sheets.append(band_surface_rules(shape, profile_sheets, self.aliases, hit, len(space_paint)))
+                    if shape == "Wukong":
+                        sheets.append(f"{hit}::before {{ opacity: .23; }}")
+                    if continuation := scheme.get("space_continuation"):
+                        hit = space_continuation_selector(continuation, board)
+                        sheets.append(band_surface_rules(shape, profile_sheets, self.aliases, hit, len(continuation["layers"])))
+                break
         sheets.append(self.sheets["focus-fill.css"])
-        if shape == "MiamiAfterHours":
-            sheets.append(self.sheets["gta-arrow-position.css"])
+        sheets.extend(self.sheets[name] for name in self.arrow_alignment_sheets.get(shape, ()))
         css = "\n".join(sheets)
         focus_color = settings["focus_color"]
         preset = FOCUS_PALETTES.get(focus_color)
@@ -506,8 +649,27 @@ class Theme:
             ink = default_ink if uses_default else key_label_color(color, mix_color(color, "#10121b", 0.18))
             variables.append(f"  --mk-control-{name}: {color};")
             variables.append(f"  --mk-control-{name}-ink: {ink};")
+            if name == "caps" and shape in self.rt_caps_shapes:
+                caps_face = scheme_key_face(active_scheme, "CapsLock") if active_scheme else color
+                focus_face = mix_color(colors[0], "#fff8e8", .22)
+                variables.append(f'  --mk-rt-l3-light: {int(key_label_color(caps_face, caps_face) == "#ffffff")};')
+                variables.append(f'  --mk-rt-l3-focus-light: {int(key_label_color(focus_face, focus_face) == "#ffffff")};')
             if profile.get("tint_artwork") and not uses_default:
                 variables.append(f"  --mk-control-{name}-tint: color-mix(in srgb, {color} 82%, transparent);")
+        if shape in self.rt_caps_shapes:
+            face = scheme_key_face(active_scheme, " ") if active_scheme else overrides.get("cream", profile["colors"]["cream"]["color"])
+            variables.append(f'  --mk-rt-y-base-light: {int(key_label_color(face, face) == "#ffffff")};')
+            if active_scheme and active_scheme.get("align_space_bands"):
+                layers = active_scheme.get("paints", {}).get(" ", ())
+                if len(layers) == 1:
+                    layer = layers[0]
+                    bands = layer.get("bands", ())
+                    if len(bands) == 6 and all(isinstance(stop, dict) for _, stop in bands[:-1]):
+                        tones = " ".join(str(int(key_label_color(pigment, pigment) == "#ffffff")) for pigment, _ in bands)
+                        angle = layer.get("angle", 90)
+                        slope = 1 / tan(radians(angle)) if angle != 90 else 0
+                        variables.append(f"  --mk-rt-y-band-tones: {tones};")
+                        variables.append(f"  --mk-rt-y-band-slope: {slope:.6f};")
         return css + "\n:root {\n" + "\n".join(variables) + "\n}\n"
 
     def stylesheet(self, settings):
@@ -628,6 +790,7 @@ async def style_page(client, url, css, revision, typing_sound, reference_script,
             style.textContent = styles;
             style.dataset.revision = {version};
             if (!style.isConnected) document.head.appendChild(style);
+            globalThis[Symbol.for("masterkeyboard.referenceLayout")]?.refreshSpaceBands?.();
         }})()""")
 
 
@@ -851,8 +1014,7 @@ class Plugin:
                 with suppress(OSError, ValueError):
                     if release_version(version) <= release_version(PLUGIN_VERSION):
                         archive.unlink()
-            self.theme = Theme(self.theme_dir, self.public.unlocked, (self.public.pack or {}).get("sheets"),
-                               local_wukong_art=self.local_wukong_art)
+            self.theme = self._public_theme()
         else:
             self.theme = Theme(self.theme_dir, local_wukong_art=self.local_wukong_art)
         self.render_lock = None
@@ -885,6 +1047,9 @@ class Plugin:
         if self.license_worker is not None:
             self.license_worker.cancel()
             workers.append(self.license_worker)
+        if self.public and self.public.trial_status_task is not None:
+            self.public.trial_status_task.cancel()
+            workers.append(self.public.trial_status_task)
         # Decky allows five seconds for the process to exit.
         try:
             with suppress(TimeoutError):
@@ -918,11 +1083,15 @@ class Plugin:
 
     @property
     def colors_locked(self):
-        return bool(self.public and self.public.pack is None)
+        return bool(self.public and self.public.effective_pack is None)
 
     @property
     def split_available(self):
-        return self.public is not None and self.public.pack is not None
+        return self.public is not None and self.public.effective_pack is not None
+
+    def _public_theme(self):
+        return Theme(self.theme_dir, self.public.unlocked, (self.public.effective_pack or {}).get("sheets"),
+                     local_wukong_art=self.local_wukong_art)
 
     def live_settings(self, settings=None):
         settings = self.settings if settings is None else settings
@@ -938,8 +1107,52 @@ class Plugin:
     async def get_access(self):
         if not self.public:
             return {"public": False, "store": None, "active": False, "pending": False, "locked": [],
-                    "colors_locked": False}
+                    "colors_locked": False, "paid": False, "trial_state": "unavailable", "trial_expires_at": None}
+        self._expire_trial()
+        self.public.check_trial_status()
+        return self._access_status()
+
+    def _access_status(self):
         return {**self.public.status(), "colors_locked": self.colors_locked}
+
+    async def start_trial(self):
+        if not self.public:
+            return {"error": "The trial is unavailable in this edition."}
+        async with self.public.activation_lock:
+            self._expire_trial()
+            if self.public.pack is not None:
+                return {"access": self._access_status(), "error": "Premium is already unlocked."}
+            if self.public.trial_remaining:
+                return {"access": self._access_status(), "settings": self.live_settings()}
+            if self.public.trial_state == "used":
+                return {"access": self._access_status(), "error": "This installation has already used its Premium trial."}
+            result = await self.public.download_trial()
+            if "error" in result:
+                return {**result, "access": self._access_status()}
+            try:
+                pack = result["pack"]
+                theme = Theme(self.theme_dir, SHAPES, pack["sheets"], local_wukong_art=self.local_wukong_art)
+                desired = theme.stylesheet(self.settings)
+                self.public.save(self.public.trial_file, result["envelope"])
+            except (OSError, ValueError):
+                decky.logger.warning("Could not install the Master Keyboard trial collection.")
+                return {"access": self._access_status(), "error": "Could not save the trial. Try again."}
+            self.public.use_trial_pack(pack)
+            self.theme = theme
+            self.desired = desired
+            self.change.set()
+            if self._expire_trial():
+                return {"access": self._access_status(), "error": "The Premium trial has ended."}
+            return {"access": self._access_status(), "settings": self.live_settings()}
+
+    def _expire_trial(self):
+        if not self.public or not self.public.expire_trial():
+            return False
+        if self.public.pack is None:
+            self.theme = self._public_theme()
+            self.desired = self.theme.stylesheet(self.live_settings())
+            self.change.set()
+        return True
 
     async def install_plasma(self):
         if self.plasma_installer is None:
@@ -1034,6 +1247,7 @@ class Plugin:
         write_settings(self.public.entitlement_file, result["envelope"])
         self.public.pack = result["pack"]
         self.public.renewal = None
+        self.public.finish_trial()
         self.public.clear_checkout()
         self.theme = theme
         self.desired = desired
@@ -1042,7 +1256,7 @@ class Plugin:
 
     def remove_entitlement(self):
         self.public.forget_purchase()
-        self.theme = Theme(self.theme_dir, self.public.unlocked, None, local_wukong_art=self.local_wukong_art)
+        self.theme = self._public_theme()
         self.desired = self.theme.stylesheet(self.live_settings())
         self.change.set()
         self.checkout_change.set()
@@ -1092,9 +1306,11 @@ class Plugin:
                 await asyncio.wait_for(self.checkout_change.wait(), delay)
 
     async def get_settings(self):
+        self._expire_trial()
         return dict(self.live_settings())
 
     async def get_preview(self, settings):
+        self._expire_trial()
         if not isinstance(settings, dict):
             raise ValueError("Masterkeyboard preview settings must be an object")
         options = dict(settings)
@@ -1110,6 +1326,7 @@ class Plugin:
         return self.theme.preview(preview_settings, show_focus)
 
     async def set_settings(self, settings):
+        self._expire_trial()
         patch = validate_settings(settings)
         if self.public and "shape" in patch and patch["shape"] not in self.public.unlocked:
             raise ValueError("Unlock this Premium theme before using it.")
@@ -1187,6 +1404,7 @@ class Plugin:
         timeout = aiohttp.ClientTimeout(total=3)
         async with aiohttp.ClientSession(timeout=timeout) as client:
             while True:
+                self._expire_trial()
                 self.change.clear()
                 preset = self.settings["typing_sound_style"]
                 if preset is None:
@@ -1197,7 +1415,10 @@ class Plugin:
                     if not revision and not self.settings["enabled"]:
                         self.release_renderer()
                 with suppress(TimeoutError):
-                    await asyncio.wait_for(self.change.wait(), POLL_INTERVAL)
+                    delay = POLL_INTERVAL
+                    if self.public and self.public.trial_pack is not None:
+                        delay = min(delay, self.public.trial_remaining)
+                    await asyncio.wait_for(self.change.wait(), delay)
 
     async def reconcile(self, client, css, revision, preset=None):
         try:
@@ -1205,7 +1426,7 @@ class Plugin:
                 response.raise_for_status()
                 targets = await response.json()
             typing_shortcuts = {name: self.settings[name] for name in TYPING_SHORTCUTS}
-            typing_shortcuts["space_cursor_swipe"] = self.public is not None and self.public.pack is not None
+            typing_shortcuts["space_cursor_swipe"] = self.split_available
             typing_shortcuts["split_available"] = self.split_available
             typing_shortcuts["split_keyboard"] = typing_shortcuts["split_available"] and self.settings["split_keyboard"]
             updates = [
